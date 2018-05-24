@@ -9,8 +9,8 @@ function y = icwt(W,scales,wav_typ,wav_par)
 %   W: vector containing wavelet transform
 %   scales : vector of scales
 %   wav_typ: wavelet type:
-%     wav_typ=0: new type
-%     wav_typ=1: classical type
+%     wav_typ='sharp': The sharp wavelet
+%     wav_typ='dgauss': analytic derivative of gaussian
 %   wav_par: parameter depending on the wavelet type
 %     wav_typ=0: wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
 %     wav_typ=1: wav_par = value of \hat{\psi}(Fs/2)
@@ -45,10 +45,10 @@ tmp = scales * fff;
 
 % Generate wavelets in the Fourier domain
 switch wav_typ
-    case 0
+    case 'sharp'
         fpsi = exp(-2*wav_par*((pi./(2*tmp)) + (2*tmp/pi) - 2));
 
-    case 1
+    case 'dgauss'
         Cst = 4*wav_par/(pi^2); % such as argmax fpsi = pi/2
         K = (2/pi)^wav_par*exp(wav_par/2); % such as fpsi(pi/2) = 1
         t_powV = tmp.^wav_par;

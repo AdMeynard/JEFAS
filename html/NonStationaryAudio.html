@@ -47,6 +47,9 @@ spectrum, Doppler effect</p>
 <p><font color="#800000"><b>Link to the manuscript&nbsp;:</b></font></p>
 <p><a href="https://hal.archives-ouvertes.fr/hal-01670187">Spectral
 analysis for non-stationary audio</a></p>
+<br>
+<p><font color="#800000"><b>Link to the code&nbsp;:</b></font></p>
+<p><a href="https://github.com/AdMeynard/JEFAS">JEFAS algorithm</a></p>
 
 <br>
 <p><font color="#800000"><b>Supplementary data&nbsp;:</b></font></p>
@@ -67,7 +70,13 @@ the car and the recording device.</p>
 
 <p><a href="estim_WPAM_sing.html">Singing female voice</a>&nbsp;: the
 signal is a recording from a soprano singing a simple melody. Time
-warping models picth variations.</p>
+warping models pitch variations.</p>
+
+<p><a href="estim_WPAM_dolphin.html">Dolphin sound</a>&nbsp;: the
+signal is a recording of a dolphin sound.</p>
+
+<p><a href="estim_WPAM_wind.html">Wind sound</a>&nbsp;: the
+signal is a recording of a wind sound.</p>
 
 <br>
 
@@ -131,6 +140,114 @@ warping models picth variations.</p>
 </td>
 </tr>
 
+<tr>
+<td style="height: 15px; width: 240px;";align="center">
+<font color="navy">Dolphin</font>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./dolphin.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./dolphin_unWP.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./dolphin_unWPAM.wav" controls preload="auto" autobuffer>
+</audio>
+</td>
+</tr>
+
+<tr>
+<td style="height: 15px; width: 240px;";align="center">
+<font color="navy">Wind</font>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./wind.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./wind_unWP.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./wind_unWPAM.wav" controls preload="auto" autobuffer>
+</audio>
+</td>
+</tr>
+
+</tbody>
+</table>
+
+<br>
+
+<p><font color="#800000"><b>Cross-synthesis&nbsp;:</b></font></p>
+
+<p>To synthesize new sounds, we start from a stationarized sound obtained with JEFAS and we apply the deformation estimated from another nonstationarysound.</p>
+
+<p><a href="cross_synthesis.html">Cross-synthesis </a>&nbsp;: Matlab file enabling the cross-synthesis.</p>
+
+<br>
+
+<table style="text-align: left; width: 300px; height: 184px;" border="1" cellpadding="2" cellspacing="2">
+<tbody>
+
+<tr>
+<th style="border-left:none; border-top:none;" colspan="2" rowspan="2"></th>
+<th colspan="3" align="center">Deformation</th>
+</tr>
+
+<tr>
+<td style="height: 15px; width: 240px;"align="center"><font color="navy">Female voice</font>
+</td>
+<td style="height: 15px; width: 240px;"align="center"><font color="navy">Wind</font>
+</td>
+<td style="height: 15px; width: 240px;"align="center"><font color="navy">Racing car</font>
+</td>
+</tr>
+
+<tr>
+<th rowspan="3" align="center"><div style="transform:rotate(-90deg)">Spectrum</div>
+</th>
+<td style="height: 15px; width: 240px;";align="center">
+<font color="navy">Female voice</font>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./sing.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./sing2wind.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./sing2f1.wav" controls preload="auto" autobuffer></audio>
+</td>
+</tr>
+
+<tr>
+<td style="height: 15px; width: 240px;";align="center">
+<font color="navy">Wind</font>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./wind2sing.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./wind.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./wind2f1.wav" controls preload="auto" autobuffer></audio>
+</td>
+</tr>
+
+<tr>
+<td style="height: 15px; width: 240px;";align="center">
+<font color="navy">Racing car</font>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./f12sing.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./f12wind.wav" controls preload="auto" autobuffer></audio>
+</td>
+<td style="height: 15px; width: 240px;";align="center">
+<audio  src="./f1.wav" controls preload="auto" autobuffer></audio>
+</td>
+</tr>
 
 </tbody>
 </table>
@@ -141,6 +258,6 @@ warping models picth variations.</p>
 <br>
 <div align="center"> <i> A. Meynard and B. Torr&eacute;sani</i></div>
 <br>
-<div align="center"> <i> December 22, 2017</i></div><br><br>
+<div align="center"> <i> Last update: May 24, 2018</i></div><br><br>
 </body>
 </html>

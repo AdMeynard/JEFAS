@@ -33,7 +33,7 @@ Dt = 100; % temporal subsampling for the deformation estimation
 dgamma0 = ones(1,T); % gamma'(t) initialization
 a0 = ones(1,T); % a(t) initialization
 
-wav_typ = 0; % wavelet type (cf. cwt.m)
+wav_typ = 'sharp'; % wavelet type (cf. cwt.m)
 wav_paramWP = 20; % corresponding parameter for warping estimation
 wav_param = 500; % corresponding parameter for spectrum and AM estimations
 
@@ -78,9 +78,9 @@ addpath('analysis');
 z = statAMWP(y,aML,dgammaML); % AM + WP estimations => stationarization
 z2 = statAMWP(y,aML2,dgammaML2); % WP estimation only => stationarization
 
-Wy = cwt(y,scalesAM,0,wav_param);
-Wz = cwt(z,scalesAM,0,wav_param);
-Wz2 = cwt(z2,scalesAM,0,wav_param);
+Wy = cwt(y,scalesAM,'sharp',wav_param);
+Wz = cwt(z,scalesAM,'sharp',wav_param);
+Wz2 = cwt(z2,scalesAM,'sharp',wav_param);
 
 t = linspace(0,(T-1)/Fs,T);
 

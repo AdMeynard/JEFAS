@@ -34,7 +34,7 @@ Dt = 100; % temporal subsampling for the theta estimator
 dgamma0 = ones(1,T);
 a0 = ones(1,T);
 
-wav_typ = 0; % wavelet type (cf. cwt)
+wav_typ = 'sharp'; % wavelet type (cf. cwt)
 wav_paramWP = 10; % corresponding parameter for warping estimation
 wav_param = 500; % for spectrum and AM estimations
 

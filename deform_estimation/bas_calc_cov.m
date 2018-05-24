@@ -36,11 +36,11 @@ scales = scales(:);
 M_tmp = scales*omega;
 
 switch wav_typ
-    case 0
+    case 'sharp'
         par = -2*wav_param;
         M_psi = exp(par*((pi./(2*M_tmp)) + (2*M_tmp/pi) - 2));
         
-    case 1
+    case 'dgauss'
         Cst = 4*wav_param/(pi^2);
         K = (2/pi)^wav_param*exp(wav_param/2);
         M_tmp_pow = M_tmp.^wav_param;

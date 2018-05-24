@@ -17,7 +17,7 @@ All the sounds and the published versions of the Matlab scripts are [available o
 
 Description of the different folders:
 - html: this folder contains the published versions (html) of these three scripts.
-- cwt: this folder contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the wavelets given in the paper (equation (2)). A script `JEFAS_toysig` enabling the display of the sharp wavelet is also given. 
+- cwt: this folder contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the wavelets given in the paper (equation (2)). A script `example_cwt` enabling the display of the sharp wavelet is also given. 
 - deform_estimation: this folder contains all the functions necessary to implement the alternate algorithm 1.
 - analysis: this folder contains some functions enabling the analysis of the results of the algorithm JEFAS (baseline estimations, CRLB, stationarization). It also contains functions enabling cross-synthesis (!).
 - signals: this folder contains some audio signals including those described in the article.

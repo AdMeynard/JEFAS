@@ -88,6 +88,9 @@ Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax); % initialize Sx
 
 %% Alternate algoritm
 n = 1;
+T_est = length(thetaAM);
+tm = round(0.05*T_est); % prevent edge effect from acting on convergence
+tM = round(0.95*T_est); % prevent edge effect from acting on convergence
 errWP = inf;
 errAM = inf;
 crit = [];
@@ -108,8 +111,8 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax);
     
     % Stopping criterion evolution
-    errWP = sum((thetaWP - thetaWP_old).^2)/sum(thetaWP_old.^2);
-    errAM = sum((thetaAM - thetaAM_old).^2)/sum(thetaAM_old.^2);
+    errWP = sum((thetaWP(tm:tM) - thetaWP_old(tm:tM)).^2)/sum(thetaWP_old(tm:tM).^2);
+    errAM = sum((thetaAM(tm:tM) - thetaAM_old(tm:tM)).^2)/sum(thetaAM_old(tm:tM).^2);
     errS = sum((Sx - Sx_old).^2)/sum(Sx_old.^2);
     crit = [crit; [errWP errAM errS]];
     if strcmpi(AMopt,'AM')

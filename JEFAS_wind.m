@@ -54,7 +54,7 @@ NbScalesS = 110;
 scalesS = 2.^(linspace(-1,7,NbScalesS)); % for spectrum estimation
 
 Nit = 10; % maximal number of iterations in the joint estimation
-stop_crit = 5e-3; % relative update threshold
+stop_crit = 25e-3; % relative update threshold
 
 paramWAV = {wav_typ,wav_param,wav_paramWP};
 paramWP = {scalesWP,itWP,stopWP};

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Spectral estimation from a dolphin sound recording</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-05-23"><meta name="DC.source" content="estim_WPAM_dolphin.m"><style type="text/css">
+      --><title>Spectral estimation from a dolphin sound recording</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-05-25"><meta name="DC.source" content="estim_WPAM_dolphin.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -111,21 +111,21 @@ tic;
 toc;
 </pre><pre class="codeoutput"> Iteration 1 
  Relative update WP: Inf % 
- Relative update AM: 33.31 %
+ Relative update AM: 27.00 %
 
  Iteration 2 
- Relative update WP: 444.76 % 
- Relative update AM: 6.55 %
+ Relative update WP: 253.84 % 
+ Relative update AM: 0.84 %
 
  Iteration 3 
- Relative update WP: 0.58 % 
- Relative update AM: 3.68 %
+ Relative update WP: 0.69 % 
+ Relative update AM: 1.56 %
 
  Iteration 4 
- Relative update WP: 0.10 % 
- Relative update AM: 0.04 %
+ Relative update WP: 0.13 % 
+ Relative update AM: 0.00 %
 
-Elapsed time is 162.065462 seconds.
+Elapsed time is 165.711539 seconds.
 </pre><h2 id="3">Analysis</h2><pre class="codeinput">t = 0:(1/Fs):((T-1)/Fs);
 figure;
 subplot(1,2,1);plot(t,dgammaML,<span class="string">'linewidth'</span>,2);

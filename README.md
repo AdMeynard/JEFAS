@@ -1,4 +1,4 @@
-Author: Adrien Meynard and Bruno Torrésani  
+Authors: Adrien Meynard and Bruno Torrésani  
 Email: adrien.meynard@univ-amu.fr  
 Created: 2017-12-19
 

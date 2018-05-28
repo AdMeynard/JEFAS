@@ -31,8 +31,8 @@ Td = length(dgamma);
 Tz = length(z);
 td = linspace(0,1,Td);
 tz = linspace(0,1,Tz);
-dgamma = interp1(td,dgamma,tz); % mathching size
-a = interp1(td,a,tz); % mathching size
+dgamma = interp1(td,dgamma,tz); % matching sizes
+a = interp1(td,a,tz); % matching sizes
 
 gamma = cumsum(dgamma);
 gamma = (gamma - gamma(1))/(gamma(end) - gamma(1)); % normalization such as gamma(end) = 1

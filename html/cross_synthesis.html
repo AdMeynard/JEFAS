@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Cross-synthetis of sounds</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-05-24"><meta name="DC.source" content="cross_synthesis.m"><style type="text/css">
+      --><title>Cross-synthetis of sounds</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-05-28"><meta name="DC.source" content="cross_synthesis.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -69,30 +69,20 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   </style></head><body><div class="content"><h1>Cross-synthetis of sounds</h1><!--introduction--><p>Copyright (C) 2018 Adrien MEYNARD</p><p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p><p>Author: Adrien MEYNARD Email: <a href="mailto:adrien.meynard@univ-amu.fr">adrien.meynard@univ-amu.fr</a> Created: 2018-05-23</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load signal</a></li><li><a href="#2">Synthesis</a></li></ul></div><h2 id="1">Load signal</h2><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>; clc;
 addpath(<span class="string">'analysis'</span>);
 
-T = 307400; <span class="comment">% max([length(awind) length(asing) length(af1)]);</span>
-alpha = 15;
-Nff = T;
-
-load <span class="string">res_wind</span>
+load(<span class="string">'results/res_wind'</span>)
 awind = aML;
 dgammawind = dgammaML;
+zwind = statAMWP(y,aML,dgammaML); <span class="comment">% stationarization</span>
 
-zwind = statAMWP(y,aML,dgammaML);
-Sx_wind = estim_spec(zwind,Nff,alpha);
-
-load <span class="string">res_sing</span>
+load(<span class="string">'results/res_sing'</span>)
 asing = aML;
 dgammasing = dgammaML;
-
 zsing = statAMWP(y,aML,dgammaML);
-Sx_sing = estim_spec(zsing,Nff,alpha);
 
-load <span class="string">res_f1</span>
+load(<span class="string">'results/res_f1'</span>)
 af1 = aML;
 dgammaf1 = dgammaML;
-
 zf1 = statAMWP(y,aML,dgammaML);
-Sx_f1 = estim_spec(zf1,Nff,alpha);
 </pre><h2 id="2">Synthesis</h2><pre class="codeinput">ywind2sing = deformAMWP(zwind,asing,dgammasing);
 ywind2f1 = deformAMWP(zwind,af1,dgammaf1);
 ysing2wind = deformAMWP(zsing,awind,dgammawind);
@@ -126,30 +116,20 @@ yf12sing = deformAMWP(zf1,asing,dgammasing);
 clear all; close all; clc;
 addpath('analysis');
 
-T = 307400; % max([length(awind) length(asing) length(af1)]);
-alpha = 15;
-Nff = T;
-
-load res_wind
+load('results/res_wind')
 awind = aML;
 dgammawind = dgammaML;
+zwind = statAMWP(y,aML,dgammaML); % stationarization
 
-zwind = statAMWP(y,aML,dgammaML);
-Sx_wind = estim_spec(zwind,Nff,alpha);
-
-load res_sing
+load('results/res_sing')
 asing = aML;
 dgammasing = dgammaML;
-
 zsing = statAMWP(y,aML,dgammaML);
-Sx_sing = estim_spec(zsing,Nff,alpha);
 
-load res_f1
+load('results/res_f1')
 af1 = aML;
 dgammaf1 = dgammaML;
-
 zf1 = statAMWP(y,aML,dgammaML);
-Sx_f1 = estim_spec(zf1,Nff,alpha);
 
 %% Synthesis
 

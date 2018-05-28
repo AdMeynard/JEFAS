@@ -23,30 +23,20 @@
 clear all; close all; clc;
 addpath('analysis');
 
-T = 307400; % max([length(awind) length(asing) length(af1)]);
-alpha = 15;
-Nff = T;
-
 load('results/res_wind')
 awind = aML;
 dgammawind = dgammaML;
-
-zwind = statAMWP(y,aML,dgammaML);
-Sx_wind = estim_spec(zwind,Nff,alpha);
+zwind = statAMWP(y,aML,dgammaML); % stationarization
 
 load('results/res_sing')
 asing = aML;
 dgammasing = dgammaML;
-
 zsing = statAMWP(y,aML,dgammaML);
-Sx_sing = estim_spec(zsing,Nff,alpha);
 
 load('results/res_f1')
 af1 = aML;
 dgammaf1 = dgammaML;
-
 zf1 = statAMWP(y,aML,dgammaML);
-Sx_f1 = estim_spec(zf1,Nff,alpha);
 
 %% Synthesis
 

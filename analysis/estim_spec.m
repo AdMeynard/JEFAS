@@ -1,6 +1,6 @@
 function S = estim_spec(x,Nf,alpha)
 % ESTIM_SPEC estimation the spectrum of a stationary signal (Welch method)
-% usage:	Sz = estim_spec(z,Nf)
+% usage:	Sz = estim_spec(x,Nf,alpha)
 %
 % Input:
 %   x: stationary signal

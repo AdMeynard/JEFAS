@@ -1,7 +1,7 @@
 function W = cwt(sig,scales,wav_typ,wav_par)
 % CWT:	Continuous wavelet transform with analytic derivative of Gaussian
 %       wavelet or the sharp wavelet
-% usage:	W = cwt(sig,scales,wav_typ,k)
+% usage:	W = cwt(sig,scales,wav_typ,wav_par)
 %
 % Input:
 %   sig: vector containing input signal

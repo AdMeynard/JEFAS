@@ -1,5 +1,5 @@
 function y = deformAMWP(z,a,dgamma)
-%STATAMWP:  synthesis of a new nonstationary signal
+%deformAMWP:  synthesis of a new nonstationary signal
 % usage:	y = deformAMWP(z,a,dgamma)
 %
 % Input:

@@ -1,10 +1,10 @@
 function b = crlbAM(thetaAM,scalesAM)
 % CRLBAM: Computation of an estimation of the CRLB
-% usage:	b = crlbAM(thetaWP,thetaAM,S,scales,wav_typ,wav_param,noise_param,reg_param)
+% usage:	b = crlbAM(thetaAM,scalesAM)
 %
 % Input:
 %   thetaAM: actual value of the amplitude modulation parameter
-%   scales: vector of scales for thetaAM estimation
+%   scalesAM: vector of scales for thetaAM estimation
 %
 % Output:
 %   b: CRLB wrt thetaAM

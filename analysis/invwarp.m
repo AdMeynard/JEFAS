@@ -1,5 +1,5 @@
 function x = invwarp(y,gamma,dgamma)
-%INV_WARP  straighten out the signal x which is time warped by gamma
+%INVWARP  straighten out the signal x which is time warped by gamma
 % usage:	x = invwarp(y,gamma,dgamma)
 %
 % Input:

@@ -1,12 +1,12 @@
 function y = icwt(W,scales,wav_typ,wav_par)
 %ICWT:	Continuous inverse wavelet transform with analytic derivative of
 %       Gaussian or the sharp wavelet
-% usage:	y = icwt(W,scales,wav_typ,k)
+% usage:	y = icwt(W,scales,wav_typ,wav_par)
 %
 %   warning: inversion up to a constant, to be fixed
 %
 % Input:
-%   W: vector containing wavelet transform
+%   W: wavelet transform coefficients matrix
 %   scales : vector of scales
 %   wav_typ: wavelet type:
 %     wav_typ='sharp': The sharp wavelet

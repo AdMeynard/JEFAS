@@ -1,6 +1,6 @@
 function thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt)
 %ESTIM_WP	Maximum likelihood estimation of the time warping parameter
-% usage:	thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,K,err,Dt)
+% usage:	thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt)
 %
 % Input:
 %   thetaAM: guess of AM parameter

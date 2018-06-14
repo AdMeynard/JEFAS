@@ -1,5 +1,5 @@
 function y = warp(x,gamma,dgamma)
-%INV_WARP  time warp the signal by deformation function gamma
+%WARP  time warp the signal by deformation function gamma
 % usage:	y = warp(x,gamma,dgamma)
 %
 % Input:

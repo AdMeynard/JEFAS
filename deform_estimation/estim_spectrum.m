@@ -1,5 +1,5 @@
 function hatSx = estim_spectrum(Wy,scales,Dt,thetaWP,thetaAM,Nf,sigmax)
-%STAT_FROM_CWT	Spectrum estimation
+%ESTIM_SPECTRUM:  Spectrum estimation
 % usage:	hatSx = stat_from_cwt(Wy,scales,Dt,thetaWP,thetaAM,Nf,sigmax)
 %
 % Input:

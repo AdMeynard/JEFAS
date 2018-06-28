@@ -35,7 +35,7 @@ function thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt
 % Created: 2017-12-19
 
 [~,Tf] = size(Wy);
-t_hor = 1:Dt:Tf;
+t_hor = 1:Dt:Tf; % estimation instants
 T_hor = length(t_hor);
 thetaWP = zeros(1,T_hor);
 

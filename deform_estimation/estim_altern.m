@@ -54,8 +54,8 @@ T = length(y);
 wav_typ = cell2mat(paramWAV(1));
 wav_param = cell2mat(paramWAV(2));
 wav_paramWP = cell2mat(paramWAV(3));
-%% Time warping initialization and parameters
 
+%% Time warping initialization and parameters
 scalesWP = cell2mat(paramWP(1));
 WyWP = cwt(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
 
@@ -86,7 +86,7 @@ Nf = cell2mat(paramS(2));
 sigmax = var(y);
 Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax); % initialize Sx
 
-%% Alternate algoritm
+%% Alternate algorithm
 n = 1;
 T_est = length(thetaAM);
 tm = round(0.05*T_est); % prevent edge effect from acting on convergence
@@ -120,6 +120,7 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     elseif strcmpi(AMopt,'no AM')
         fprintf(' Iteration %i \n Relative update WP: %.2f %% \n\n',[n 100*errWP]);
     end
+
     n = n+1;
 end
 

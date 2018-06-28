@@ -40,6 +40,7 @@ siglength = size(W,2);
 fff = (0:(siglength-1))*2*pi/siglength;
 
 scales = scales(:);
+ds = scales(2) - scales(1);
 
 tmp = scales * fff;
 
@@ -47,20 +48,22 @@ tmp = scales * fff;
 switch wav_typ
     case 'sharp'
         fpsi = exp(-2*wav_par*((pi./(2*tmp)) + (2*tmp/pi) - 2));
+        Cpsi = 7.1./wav_par.^0.5; % empirical
 
     case 'dgauss'
         Cst = 4*wav_par/(pi^2); % such as argmax fpsi = pi/2
         K = (2/pi)^wav_par*exp(wav_par/2); % such as fpsi(pi/2) = 1
         t_powV = tmp.^wav_par;
         fpsi = K*t_powV.* exp(-Cst*tmp.^2/2);
+        Cpsi = 8*(K^2/(2*Cst^wav_par))*gamma(wav_par); % to be fixed
     
     otherwise
         error('Unexpected wavelet type. ICWT not computed')    
 end
 
-U = bsxfun(@times,sqrt(scales),fpsi);
+U = bsxfun(@times,1./sqrt(scales),fpsi);
 fy = U .* fft(W,[],2);
 y = real(ifft(fy,[],2));
-y = sum(y);
+y = (2/Cpsi)*sum(y)*ds;
     
 end

@@ -49,8 +49,8 @@ switch wav_typ
         fpsi = exp(-2*wav_par*((pi./(2*tmp)) + (2*tmp/pi) - 2));
 
     case 'dgauss'
-        Cst = 4*wav_par/(pi^2); % such as argmax fpsi = pi/2
-        K = (2/pi)^wav_par*exp(wav_par/2); % such as fpsi(pi/2) = 1
+        Cst = 4*wav_par/(pi^2); % such that argmax fpsi = pi/2
+        K = (2/pi)^wav_par*exp(wav_par/2); % such that fpsi(pi/2) = 1
         t_powV = tmp.^wav_par;
         fpsi = K*t_powV.* exp(-Cst*tmp.^2/2);
     

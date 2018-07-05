@@ -10,7 +10,8 @@ Description of the different MATLAB scripts:
 - `JEFAS_toysig.m`: estimation of the deformation from the synthetic signal (see section IV.A). This script generates Fig. 1, Fig. 2 and the values in Table I.
 - `JEFAS_dolphin.m`: estimation of the spectrum of the underlying stationary signal from a recording a a dolphin sound". This script generates Fig. 3.
 - `JEFAS_dopperf1.m`: estimation of the deformation from the sound (see section IV.B). This script generates Fig. 4.
-- `JEFAS_sing.m`: estimation of the deformation from the sound produced by a singing female voice. This script also allows you to listen to the sound obtained after an estimated "stationarization". 
+- `JEFAS_sing.m`: estimation of the deformation from the sound produced by a singing female voice. This script also allows you to listen to the sound obtained after an estimated "stationarization".
+- `JEFAS_wind.m`: estimation of the deformation from a recording of wind howling. 
 - `cross_synthesis.m`: synthesis of nonstationary sounds starting from a sound stationarized by JEFAS algorithm, and deforming it using time-warping and amplitude modulation functions estimated from another signal.
 
 All the sounds and the published versions of the Matlab scripts are [available online](http://meynard.perso.math.cnrs.fr/paperJEFAS/NonStationaryAudio.html).

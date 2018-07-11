@@ -11,7 +11,7 @@ scales = 2.^linspace(3,6,200);
 wav_typ = 'sharp';
 
 wav_par1 = 50;
-W1 = cwt(y,scales,wav_typ,wav_par1); % wavelet trasform
+W1 = cwt(y,scales,wav_typ,wav_par1); % wavelet transform
 wav_par2 = 500;
 W2 = cwt(y,scales,wav_typ,wav_par2);
 
@@ -27,7 +27,7 @@ set(gca,'yticklabel',fobs);
 xlabel('Time (s)'); ylabel('Frequency (Hz)'); colormap(flipud(gray));
 
 yrec1 = icwt(W1,scales,wav_typ,wav_par1); % reconstructed signal from W1
-yrec1 = std(y)*yrec1/std(yrec1); % normalize the reconstructed signal (because ICWT given up to a constant)
+yrec1 = std(y)*yrec1/std(yrec1); % normalize the reconstructed signal (because ICWT is given up to a constant)
 yrec2 = icwt(W2,scales,wav_typ,wav_par2);
 yrec2 = std(y)*yrec2/std(yrec2);
 

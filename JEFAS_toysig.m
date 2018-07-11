@@ -86,13 +86,13 @@ th = t(1:Dt:end);
 figure;
 plot(t,thetaAM_B,'g',t,aML.^2,'r',t,a.^2,'b-.',th,AMinf,'b--',th,AMsup,'b--','linewidth',2); grid on;
 title('Amplitude modulation estimation'); 
-legend({'Baseline estimator','Algorithm estimator','$\theta_{n,1}$','$\theta_{n,1} \pm 3\sqrt{CRLB(\theta_{n,1})}$'},'Interpreter','latex'); axis([0 t(end) 0 3]);
+legend({'Baseline estimate','JEFAS estimate','$\theta_{n,1}$','$\theta_{n,1} \pm 3\sqrt{CRLB(\theta_{n,1})}$'},'Interpreter','latex'); axis([0 t(end) 0 3]);
 xlabel('Time (s)'); ylabel('');
 
 figure;
 plot(t,thetaWP_B,'g',t,log2(dgammaML),'r',t,log2(dgamma),'b-.',th,WPinf,'b--',th,WPsup,'b--','linewidth',2); grid on; axis tight;
 title('Warping estimation'); 
-legend({'Baseline estimator','Algorithm estimator','$\theta_{n,2}$','$\theta_{n,2}\pm 3\sqrt{CRLB(\theta_{n,2})}$'},'interpreter','latex');
+legend({'Baseline estimate','JEFAS estimate','$\theta_{n,2}$','$\theta_{n,2}\pm 3\sqrt{CRLB(\theta_{n,2})}$'},'interpreter','latex');
 xlabel('Time (s)'); ylabel('');
 
 %% Spectrum estimation

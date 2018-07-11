@@ -86,7 +86,7 @@ freq = linspace(0,Fs,Nff);
 
 figure;
 semilogy(freq,Sxw,'linewidth',2); 
-xlabel('Frequency (Hz)'); ylabel('Estimated spectrum'); axis tight;grid on;
+xlabel('Frequency (Hz)'); ylabel('Estimated spectrum'); axis tight; grid on;
 xlim([0 3000]); 
 %set(gca,'FontSize',24);
 

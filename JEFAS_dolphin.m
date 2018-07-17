@@ -43,7 +43,7 @@ scalesAM = 2.^(linspace(1,7,NbScales));
 subrate = 3; % subsampling step for the scales to ensure the covariance invertibility
 scalesWP = scalesAM(1:subrate:end);
 
-r = 1e-5; % regularization paramete
+r = 1e-5; % regularization parameter
 
 stopWP = 2e-2; % minimal gap between two steps in the gradient
 itWP = 6; % number of gradient iterations
@@ -59,8 +59,7 @@ paramWAV = {wav_typ,wav_param,wav_paramWP};
 paramWP = {scalesWP,itWP,stopWP};
 paramS = {scalesS,Nf};
 
-% WP estimation only
-paramAM = {'AM',scalesAM,r}; % model with time warping only
+paramAM = {'AM',scalesAM,r};
 tic;
 [aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
 toc;

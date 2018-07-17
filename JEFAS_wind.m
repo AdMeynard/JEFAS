@@ -60,8 +60,7 @@ paramWAV = {wav_typ,wav_param,wav_paramWP};
 paramWP = {scalesWP,itWP,stopWP};
 paramS = {scalesS,Nf};
 
-% WP estimation only
-paramAM = {'AM',scalesAM,r}; % model with time warping only
+paramAM = {'AM',scalesAM,r}; % model with time warping and amplitude modulation
 tic;
 [aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
 toc;

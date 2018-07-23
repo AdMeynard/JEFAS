@@ -84,24 +84,29 @@ Wz2 = cwt(z2,scalesAM,'sharp',wav_param);
 
 t = linspace(0,(T-1)/Fs,T);
 
-figure;
-subplot('Position', [0.005 0.52, 0.465, 0.465]);
-imagesc(t,log2(scalesAM),abs(Wy));
-xlabel('Time (s)')
-set(gca,'yticklabel',[])
+xi0 = Fs/4; % wavelet central frequency
+freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies
+sdisp = log2(xi0./(1e3*freqdisp)); % coreesponding log-scales
+
+figure; colormap(flipud(gray));
+
+subplot('Position', [0.05 0.535, 0.465, 0.465]);
+imagesc(t,log2(scalesAM),log1p(abs(Wy)));
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
+set(gca,'fontsize',18);
  
-p = subplot('Position', [0.53 0.52, 0.465, 0.465]);
-imagesc(t,log2(scalesAM),abs(Wz));
-xi0 = Fs/4;
-xlabel('Time (s)')
-sobs = cellfun(@str2num,get(p,'yticklabel'));
-fobs = round(xi0./2.^sobs);
-set(gca,'yticklabel',fobs);
-colormap(flipud(gray));
+subplot('Position', [0.53 0.535, 0.465, 0.465]);
+imagesc(t,log2(scalesAM),log1p(abs(Wz)));
+xlabel('Time (s)');
+yticks(sdisp); yticklabels([]);
+set(gca,'fontsize',18);
  
-subplot('Position', [0.005 0.005, 0.465, 0.465]);
-imagesc(t,log2(scalesAM),abs(Wz2));
-set(gca,'yticklabel',[])
+subplot('Position', [0.05 0.001, 0.465, 0.465]);
+imagesc(t,log2(scalesAM),log1p(abs(Wz2)));
+ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
+set(gca,'fontsize',18);
 
 
 %% Doppler effect
@@ -112,8 +117,9 @@ L = 25.2;
 dgammaTH = 1 + v.*(L-v.*t)./sqrt(d^2*(c^2-v.^2) + c^2*(L-v.*t).^2); % theoretical gamma'
 
 dgammaMLn = 1.02*dgammaML*mean(dgammaTH)/mean(dgammaML); % /!\ normalization (gamma' is estimated up to a multiplicative factor)
-p = subplot('Position', [0.53 0.05, 0.465, 0.42]);
+p = subplot('Position', [0.575 0.07, 0.42, 0.39]);
 plot(t,dgammaTH,'b-.',t,dgammaMLn,'r', 'linewidth',2); grid on; axis tight;
-V = axis; axis([0.02 1 V(3) V(4)]);
-legend({'Theoretical $\gamma''$','Estimation $\tilde\gamma''$'},'interpreter','latex')
-set(gca, 'FontSize', 22);
+xlabel('Time (s)'); ylabel('Time warping function');
+xlim([0.02 1]);
+legend({'Theoretical $\gamma''$','Estimated $\tilde\gamma''$'},'interpreter','latex','FontSize',30);
+set(gca, 'FontSize', 18);

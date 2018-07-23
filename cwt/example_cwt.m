@@ -49,7 +49,7 @@ hatpsi1 = exp( -wav_par1*( 0.5*(nu/nu0 + nu0./nu) - 1 )/(0.5*(nu1/nu0 + nu0./nu1
 hatpsi2 = exp( -wav_par2*( 0.5*(nu/nu0 + nu0./nu) - 1 )/(0.5*(nu1/nu0 + nu0./nu1) - 1 ) );
 figure;
 plot(nu,hatpsi1,'r',nu,hatpsi2,'b','linewidth',2); grid on; axis tight; xlim([0 Fs/2]);
-legend('\epsilon = 10^{-50}','\epsilon = 10^{-500}');
+legend('\epsilon = e^{-50}','\epsilon = e^{-500}');
 xlabel('Frequency (Hz)'); ylabel({'$\hat\psi_\sharp$'},'interpreter','latex');
 
 t = linspace(-(N-1)/(2*fsw),(N-1)/(2*fsw),N);

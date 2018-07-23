@@ -83,25 +83,27 @@ freq = linspace(0,Fs,Nff);
 figure;
 semilogy(freq,Sxw,'linewidth',2); 
 xlabel('Frequency (Hz)'); ylabel('Estimated spectrum'); grid on;
-axis tight;xlim([0 15000]);
+axis tight; xlim([0 15000]);
 
-scalesdisp = 2.^(linspace(1,6.2,250));
-Wy = cwt(y,scalesdisp,wav_typ,wav_param);
-Wz = cwt(z,scalesdisp,wav_typ,wav_param);
+scalesplot = 2.^(linspace(1,6.2,250));
+Wy = cwt(y,scalesplot,wav_typ,wav_param);
+Wz = cwt(z,scalesplot,wav_typ,wav_param);
 
-figure;
-subplot(1,2,1); imagesc(t,log2(scalesdisp),abs(Wy));
-nu0 = Fs/4;
-sobs = cellfun(@str2num,get(gca,'yticklabel'));
-fobs = round(nu0./2.^sobs);
-set(gca,'yticklabel',fobs);
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); colormap(flipud(gray));
+xi0 = Fs/4; % wavelet central frequency
+freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies
+sdisp = log2(xi0./(1e3*freqdisp)); % coreesponding log-scales
+
+figure; colormap(flipud(gray));
+subplot('Position', [0.05 0.07, 0.45, 0.7]);
+imagesc(t,log2(scalesplot),log1p(abs(Wy)/0.1));
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
 title('Original signal');
+set(gca,'fontsize',18);
 
-subplot(1,2,2); imagesc(t,log2(scalesdisp),abs(Wz));
-nu0 = Fs/4;
-sobs = cellfun(@str2num,get(gca,'yticklabel'));
-fobs = round(nu0./2.^sobs);
-set(gca,'yticklabel',fobs);
-xlabel('Time (s)'); colormap(flipud(gray));
+subplot('Position', [0.54 0.07, 0.45, 0.7]);
+imagesc(t,log2(scalesplot),log1p(abs(Wz)/0.1));
+xlabel('Time (s)'); %ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
 title('Stationarized signal');
+set(gca,'fontsize',18);

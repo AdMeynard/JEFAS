@@ -89,18 +89,20 @@ xlabel('Frequency (Hz)'); ylabel('Estimated spectrum'); axis tight; grid on;
 xlim([0 3000]); 
 %set(gca,'FontSize',24);
 
-scalesdisp = 2.^(linspace(0.5,3.3,250));
+scalesplot = 2.^(linspace(0.5,3.3,250));
 dt = 5;
-Wy = cwt(y(1:dt:end),scalesdisp,wav_typ,wav_param);
-Wz = cwt(z(1:dt:end),scalesdisp,wav_typ,wav_param);
+xi0 = Fs/4/dt; % wavelet central frequency
+freqdisp = [1500 1250 1000 750 500 250]; % Displayed frequencies
+sdisp = log2(xi0./freqdisp); % coreesponding log-scales
+
+Wy = cwt(y(1:dt:end),scalesplot,wav_typ,wav_param);
+Wz = cwt(z(1:dt:end),scalesplot,wav_typ,wav_param);
 figure;
 subplot(1,2,1); imagesc(abs(Wy));
 subplot(1,2,2); imagesc(abs(Wz));
 
-figure;
-imagesc(t(1:dt:end),log2(scalesdisp),abs(Wz));
-nu0 = Fs/4/dt;
-sobs = cellfun(@str2num,get(gca,'yticklabel'));
-fobs = round(nu0./2.^sobs);
-set(gca,'yticklabel',fobs); %set(gca,'FontSize',26);
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); colormap(flipud(gray));
+figure; colormap(flipud(gray));
+imagesc(t(1:dt:end),log2(scalesplot),abs(Wz));
+xlabel('Time (s)'); ylabel('Frequency (Hz)');
+yticks(sdisp); yticklabels(freqdisp);
+set(gca,'fontsize',26);

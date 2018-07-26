@@ -15,16 +15,20 @@ W1 = cwt(y,scales,wav_typ,wav_par1); % wavelet transform
 wav_par2 = 500;
 W2 = cwt(y,scales,wav_typ,wav_par2);
 
-figure;
-subplot(1,2,1);imagesc(t,scales,abs(W1)); % scalogram
-set(gca,'yticklabel',[]); xlabel('Time (s)');
-subplot(1,2,2);imagesc(t,log2(scales),abs(W2));
+nu0 = Fs/4; % wavelet central frequency
+freqdisp = [1.50 1.25 1.00 0.75 0.50 0.25]; % Displayed frequencies
+sdisp = log2(nu0./(1e3*freqdisp)); % coreesponding log-scales
 
-nu0 = Fs/4;
-sobs = cellfun(@str2num,get(gca,'yticklabel'));
-fobs = round(nu0./2.^sobs);
-set(gca,'yticklabel',fobs);
-xlabel('Time (s)'); ylabel('Frequency (Hz)'); colormap(flipud(gray));
+figure; colormap(flipud(gray))
+subplot(1,2,1);imagesc(t,log2(scales),log1p(abs(W1)/0.1)); % scalogram
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
+set(gca,'fontsize',24);
+
+subplot(1,2,2);imagesc(t,log2(scales),log1p(abs(W2)/0.1));
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
+set(gca,'fontsize',24);
 
 yrec1 = icwt(W1,scales,wav_typ,wav_par1); % reconstructed signal from W1
 yrec1 = std(y)*yrec1/std(yrec1); % normalize the reconstructed signal (because ICWT is given up to a constant)
@@ -39,7 +43,7 @@ title('Zoom'); xlabel('Time (s)'); ylabel('Signals'); legend('Original signal', 
 
 %% Plot the wavelet and its Fourier transform
 
-nu1 = Fs/2;
+nu1 = Fs/2; % wavelet frequency such that hatpsi(nu1) = epsilon
 
 N = 100001;
 fsw = 1e6;

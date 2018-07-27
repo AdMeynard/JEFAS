@@ -35,7 +35,7 @@ Dt = 400; % temporal subsampling for the deformation estimation
 dgamma0 = ones(1,T); % gamma'(t) initialization
 a0 = ones(1,T); % a(t) initialization
 
-wav_typ = 'sharp'; % wavelet type (cf. cwt.m)
+wav_typ = 'sharp'; % wavelet type (cf. cwt_JEFAS.m)
 wav_paramWP = 20; % corresponding parameter for warping estimation
 wav_param = 500; % corresponding parameter for spectrum and AM estimations
 
@@ -67,6 +67,8 @@ toc;
 
 
 %% Analysis
+
+% Deformations:
 t = 0:(1/Fs):((T-1)/Fs);
 figure;
 subplot(2,1,1);plot(t,dgammaML,'linewidth',2); 
@@ -76,6 +78,7 @@ subplot(2,1,2);plot(t,aML,'linewidth',2);
 xlabel('Time (s)'); ylabel('Estimated a^2(t)'); axis tight; grid on; ylim([0 2]);
 %set(gca,'FontSize',24);
 
+% Spectrum
 z = statAMWP(y,aML,dgammaML);
 
 alpha = 15;
@@ -89,20 +92,24 @@ xlabel('Frequency (Hz)'); ylabel('Estimated spectrum'); axis tight; grid on;
 xlim([0 3000]); 
 %set(gca,'FontSize',24);
 
+% Wavelet transforms:
 scalesplot = 2.^(linspace(0.5,3.3,250));
 dt = 5;
 xi0 = Fs/4/dt; % wavelet central frequency
-freqdisp = [1500 1250 1000 750 500 250]; % Displayed frequencies
-sdisp = log2(xi0./freqdisp); % coreesponding log-scales
+freqdisp = [1.50 1.25 1.00 0.75 0.50 0.25]; % Displayed frequencies
+sdisp = log2(xi0./(freqdisp*1e3)); % coreesponding log-scales
 
-Wy = cwt(y(1:dt:end),scalesplot,wav_typ,wav_param);
-Wz = cwt(z(1:dt:end),scalesplot,wav_typ,wav_param);
-figure;
-subplot(1,2,1); imagesc(abs(Wy));
-subplot(1,2,2); imagesc(abs(Wz));
+Wy = cwt_JEFAS(y(1:dt:end),scalesplot,wav_typ,wav_param);
+Wz = cwt_JEFAS(z(1:dt:end),scalesplot,wav_typ,wav_param);
 
 figure; colormap(flipud(gray));
-imagesc(t(1:dt:end),log2(scalesplot),abs(Wz));
-xlabel('Time (s)'); ylabel('Frequency (Hz)');
+subplot(1,2,1); 
+imagesc(t(1:dt:end),log2(scalesplot),abs(Wy));
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
 yticks(sdisp); yticklabels(freqdisp);
-set(gca,'fontsize',26);
+set(gca,'fontsize',18);
+subplot(1,2,2); 
+imagesc(t(1:dt:end),log2(scalesplot),abs(Wz));
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels(freqdisp);
+set(gca,'fontsize',18);

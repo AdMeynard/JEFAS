@@ -11,28 +11,28 @@ scales = 2.^linspace(3,6,200);
 wav_typ = 'sharp';
 
 wav_par1 = 50;
-W1 = cwt(y,scales,wav_typ,wav_par1); % wavelet transform
+W1 = cwt_JEFAS(y,scales,wav_typ,wav_par1); % wavelet transform
 wav_par2 = 500;
-W2 = cwt(y,scales,wav_typ,wav_par2);
+W2 = cwt_JEFAS(y,scales,wav_typ,wav_par2);
 
 nu0 = Fs/4; % wavelet central frequency
 freqdisp = [1.50 1.25 1.00 0.75 0.50 0.25]; % Displayed frequencies
-sdisp = log2(nu0./(1e3*freqdisp)); % coreesponding log-scales
+sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 
 figure; colormap(flipud(gray))
 subplot(1,2,1);imagesc(t,log2(scales),log1p(abs(W1)/0.1)); % scalogram
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
 yticks(sdisp); yticklabels(freqdisp);
-set(gca,'fontsize',24);
+set(gca,'fontsize',22);
 
 subplot(1,2,2);imagesc(t,log2(scales),log1p(abs(W2)/0.1));
-xlabel('Time (s)'); ylabel('Frequency (kHz)');
-yticks(sdisp); yticklabels(freqdisp);
-set(gca,'fontsize',24);
+xlabel('Time (s)'); %ylabel('Frequency (kHz)');
+yticks(sdisp); yticklabels([]);
+set(gca,'fontsize',22);
 
-yrec1 = icwt(W1,scales,wav_typ,wav_par1); % reconstructed signal from W1
+yrec1 = icwt_JEFAS(W1,scales,wav_typ,wav_par1); % reconstructed signal from W1
 yrec1 = std(y)*yrec1/std(yrec1); % normalize the reconstructed signal (because ICWT is given up to a constant)
-yrec2 = icwt(W2,scales,wav_typ,wav_par2);
+yrec2 = icwt_JEFAS(W2,scales,wav_typ,wav_par2);
 yrec2 = std(y)*yrec2/std(yrec2);
 
 figure; 

@@ -34,7 +34,7 @@ Dt = 100; % temporal subsampling for the theta estimator
 dgamma0 = ones(1,T);
 a0 = ones(1,T);
 
-wav_typ = 'sharp'; % wavelet type (cf. cwt)
+wav_typ = 'sharp'; % wavelet type (cf. cwt_JEFAS)
 wav_paramWP = 10; % corresponding parameter for warping estimation
 wav_param = 500; % for spectrum and AM estimations
 
@@ -69,26 +69,28 @@ addpath('analysis')
 z = statAMWP(y,aML,dgammaML);
 z0 = statAMWP(y,a0,dgammaML);
 
-Wz = cwt(z,scalesAM,wav_typ,wav_param);
-Wz0 = cwt(z0,scalesAM,wav_typ,wav_param);
+% Wavelet transforms:
+Wz = cwt_JEFAS(z,scalesAM,wav_typ,wav_param);
+Wz0 = cwt_JEFAS(z0,scalesAM,wav_typ,wav_param);
 
 t = linspace(0,(T-1)/Fs,T);
-figure;
+xi0 = Fs/4;
+freqdisp = [5 4 3 2 1.00 0.50 0.25]; % Displayed frequencies
+sdisp = log2(xi0./(freqdisp*1e3)); % coreesponding log-scales
+figure; colormap(flipud(gray))
 subplot(1,2,1);
 imagesc(t,log2(scalesAM),abs(Wz));
-xlabel('Time (s)')
-set(gca,'yticklabel',[]);
+yticks(sdisp); yticklabels(freqdisp);
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
 title('AM and Time Warping stationarization')
 p = subplot(1,2,2);
 imagesc(t,log2(scalesAM),abs(Wz0));
-xlabel('Time (s)');
-xi0 = Fs/4;
-sobs = cellfun(@str2num,get(p,'yticklabel'));
-fobs = round(xi0./2.^sobs);
-set(gca,'yticklabel',fobs);
+yticks(sdisp); yticklabels(freqdisp);
+xlabel('Time (s)'); ylabel('Frequency (kHz)');
 title('Time Warping stationarization only');
-ylabel('Frequency (Hz)');
 
+
+% Spectra:
 alpha = 50;
 Nf = 50000;
 Sy = estim_spec(y,Nf,alpha);

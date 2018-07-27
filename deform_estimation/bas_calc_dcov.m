@@ -6,7 +6,7 @@ function [M_psi,M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T)
 % Input:
 %   scales: vector of scales where the CWT is calculated
 %   wav_typ: type of wavelet
-% 	wav_param: cf. cwt
+% 	wav_param: cf. cwt_JEFAS
 %   T: length of the frequency vector
 % 
 % Output:

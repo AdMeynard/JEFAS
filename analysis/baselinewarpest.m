@@ -34,5 +34,5 @@ smoy = scales_log(:)' * scalogram;
 normwx = sum(scalogram);
 est = smoy ./normwx;
 
-thetaWP0 = - est - log2(mean(2.^(-est))); % such as <gamma'>=1
+thetaWP0 = - est - log2(mean(2.^(-est))); % such that <gamma'>=1
 end

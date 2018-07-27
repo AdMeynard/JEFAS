@@ -1,0 +1,284 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Deformation estimations on a singing female voice recording</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-07-27"><meta name="DC.source" content="JEFAS_sing.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Deformation estimations on a singing female voice recording</h1><!--introduction--><p>Copyright (C) 2017 Adrien MEYNARD</p><p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p><p>Author: Adrien MEYNARD Email: <a href="mailto:adrien.meynard@univ-amu.fr">adrien.meynard@univ-amu.fr</a> Created: 2017-12-19</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Load signal</a></li><li><a href="#2">Joint estimation</a></li><li><a href="#3">Analysis: stationarization (CWT and spectrum)</a></li><li><a href="#4">Audio</a></li></ul></div><h2 id="1">Load signal</h2><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>; clc;
+
+warning <span class="string">off</span>;
+addpath(<span class="string">'cwt'</span>);
+addpath(<span class="string">'deform_estimation'</span>);
+
+load(<span class="string">'signals/sing'</span>)
+
+T = length(y);
+</pre><h2 id="2">Joint estimation</h2><pre class="codeinput">Dt = 100; <span class="comment">% temporal subsampling for the theta estimator</span>
+dgamma0 = ones(1,T);
+a0 = ones(1,T);
+
+wav_typ = <span class="string">'sharp'</span>; <span class="comment">% wavelet type (cf. cwt_JEFAS)</span>
+wav_paramWP = 10; <span class="comment">% corresponding parameter for warping estimation</span>
+wav_param = 500; <span class="comment">% for spectrum and AM estimations</span>
+
+NbScales = 125;
+scalesAM = 2.^(linspace(1,6,NbScales));
+subrate = 7; <span class="comment">% subsampling step for the scales to ensure the covariance invertibility</span>
+scalesWP = scalesAM(1:subrate:end);
+
+stopWP = 2e-2; <span class="comment">% minimal gap between two steps in the gradient</span>
+itWP = 6; <span class="comment">% number of gradient iterations</span>
+
+r = 1e-3; <span class="comment">% regularization parameter</span>
+
+<span class="comment">% scales for spectrum estimation /!\must include scale=1/2 (ou pas)</span>
+Nf = 2500;
+NbScalesS = 200;
+scalesS = 2.^(linspace(-1,7,NbScalesS)); <span class="comment">% for spectrum estimation</span>
+
+Nit = 10; <span class="comment">% maximal number of iterations in the joint estimation</span>
+stop_crit = 5e-3; <span class="comment">% relative update threshold</span>
+
+paramWAV = {wav_typ,wav_param,wav_paramWP};
+paramAM = {<span class="string">'AM'</span>,scalesAM,r}; <span class="comment">% AM no noise</span>
+paramWP = {scalesWP,itWP,stopWP};
+paramS = {scalesS,Nf};
+tic;
+[aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
+toc;
+</pre><pre class="codeoutput"> Iteration 1 
+ Relative update WP: Inf % 
+ Relative update AM: 41.95 %
+
+ Iteration 2 
+ Relative update WP: 95.71 % 
+ Relative update AM: 40.11 %
+
+ Iteration 3 
+ Relative update WP: 1.09 % 
+ Relative update AM: 3.77 %
+
+ Iteration 4 
+ Relative update WP: 0.24 % 
+ Relative update AM: 0.02 %
+
+Elapsed time is 406.476894 seconds.
+</pre><h2 id="3">Analysis: stationarization (CWT and spectrum)</h2><pre class="codeinput">addpath(<span class="string">'analysis'</span>)
+z = statAMWP(y,aML,dgammaML);
+z0 = statAMWP(y,a0,dgammaML);
+
+Wz = cwt_JEFAS(z,scalesAM,wav_typ,wav_param);
+Wz0 = cwt_JEFAS(z0,scalesAM,wav_typ,wav_param);
+
+t = linspace(0,(T-1)/Fs,T);
+figure; colormap(flipud(gray))
+subplot(1,2,1);
+imagesc(t,log2(scalesAM),abs(Wz));
+xlabel(<span class="string">'Time (s)'</span>)
+set(gca,<span class="string">'yticklabel'</span>,[]);
+title(<span class="string">'AM and Time Warping stationarization'</span>)
+p = subplot(1,2,2);
+imagesc(t,log2(scalesAM),abs(Wz0));
+xlabel(<span class="string">'Time (s)'</span>);
+xi0 = Fs/4;
+sobs = cellfun(@str2num,get(p,<span class="string">'yticklabel'</span>));
+fobs = round(xi0./2.^sobs);
+set(gca,<span class="string">'yticklabel'</span>,fobs);
+title(<span class="string">'Time Warping stationarization only'</span>);
+ylabel(<span class="string">'Frequency (Hz)'</span>);
+
+alpha = 50;
+Nf = 50000;
+Sy = estim_spec(y,Nf,alpha);
+Sz = estim_spec(z,Nf,alpha);
+Sz0 = estim_spec(z0,Nf,alpha);
+freq = linspace(0,Fs,Nf);
+figure;
+semilogy(freq,Sy,freq,Sz,freq,Sz0,<span class="string">'linewidth'</span>,2);
+V = axis; axis([0 12000 V(3) V(4)]); grid <span class="string">on</span>;
+xlabel(<span class="string">'Frequency (Hz)'</span>); ylabel(<span class="string">'Spectrum'</span>); title (<span class="string">'Welch estimation method'</span>);
+legend(<span class="string">'estimation from y'</span>,<span class="string">'estimation from unwarped and unmodulated y'</span>,<span class="string">'estimation from unwarped y'</span>)
+</pre><img vspace="5" hspace="5" src="JEFAS_sing_01.png" alt=""> <img vspace="5" hspace="5" src="JEFAS_sing_02.png" alt=""> <h2 id="4">Audio</h2><pre class="codeinput">disp(<span class="string">'Press any key to listen to the original sound'</span>); pause;
+soundsc(y,Fs);
+disp(<span class="string">'Press any key to listen to the effect of AM and Time Warping stationarizations'</span>); pause;
+soundsc(z,Fs);
+disp(<span class="string">'Press any key to listen to the effect of Time Warping stationarization only'</span>); pause;
+soundsc(z0 ,Fs);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Deformation estimations on a singing female voice recording
+% Copyright (C) 2017 Adrien MEYNARD
+% 
+% This program is free software; you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+% 
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@univ-amu.fr
+% Created: 2017-12-19
+
+%%  Load signal
+clear all; close all; clc;
+
+warning off;
+addpath('cwt');
+addpath('deform_estimation');
+
+load('signals/sing')
+
+T = length(y);
+%% Joint estimation
+
+Dt = 100; % temporal subsampling for the theta estimator
+dgamma0 = ones(1,T);
+a0 = ones(1,T);
+
+wav_typ = 'sharp'; % wavelet type (cf. cwt_JEFAS)
+wav_paramWP = 10; % corresponding parameter for warping estimation
+wav_param = 500; % for spectrum and AM estimations
+
+NbScales = 125;
+scalesAM = 2.^(linspace(1,6,NbScales));
+subrate = 7; % subsampling step for the scales to ensure the covariance invertibility
+scalesWP = scalesAM(1:subrate:end);
+
+stopWP = 2e-2; % minimal gap between two steps in the gradient
+itWP = 6; % number of gradient iterations
+
+r = 1e-3; % regularization parameter
+
+% scales for spectrum estimation /!\must include scale=1/2 (ou pas)
+Nf = 2500;
+NbScalesS = 200;
+scalesS = 2.^(linspace(-1,7,NbScalesS)); % for spectrum estimation
+
+Nit = 10; % maximal number of iterations in the joint estimation
+stop_crit = 5e-3; % relative update threshold
+
+paramWAV = {wav_typ,wav_param,wav_paramWP};
+paramAM = {'AM',scalesAM,r}; % AM no noise
+paramWP = {scalesWP,itWP,stopWP};
+paramS = {scalesS,Nf};
+tic;
+[aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
+toc;
+
+%% Analysis: stationarization (CWT and spectrum)
+addpath('analysis')
+z = statAMWP(y,aML,dgammaML);
+z0 = statAMWP(y,a0,dgammaML);
+
+Wz = cwt_JEFAS(z,scalesAM,wav_typ,wav_param);
+Wz0 = cwt_JEFAS(z0,scalesAM,wav_typ,wav_param);
+
+t = linspace(0,(T-1)/Fs,T);
+figure; colormap(flipud(gray))
+subplot(1,2,1);
+imagesc(t,log2(scalesAM),abs(Wz));
+xlabel('Time (s)')
+set(gca,'yticklabel',[]);
+title('AM and Time Warping stationarization')
+p = subplot(1,2,2);
+imagesc(t,log2(scalesAM),abs(Wz0));
+xlabel('Time (s)');
+xi0 = Fs/4;
+sobs = cellfun(@str2num,get(p,'yticklabel'));
+fobs = round(xi0./2.^sobs);
+set(gca,'yticklabel',fobs);
+title('Time Warping stationarization only');
+ylabel('Frequency (Hz)');
+
+alpha = 50;
+Nf = 50000;
+Sy = estim_spec(y,Nf,alpha);
+Sz = estim_spec(z,Nf,alpha);
+Sz0 = estim_spec(z0,Nf,alpha);
+freq = linspace(0,Fs,Nf);
+figure;
+semilogy(freq,Sy,freq,Sz,freq,Sz0,'linewidth',2);
+V = axis; axis([0 12000 V(3) V(4)]); grid on;
+xlabel('Frequency (Hz)'); ylabel('Spectrum'); title ('Welch estimation method');
+legend('estimation from y','estimation from unwarped and unmodulated y','estimation from unwarped y')
+
+%% Audio
+
+disp('Press any key to listen to the original sound'); pause;
+soundsc(y,Fs);
+disp('Press any key to listen to the effect of AM and Time Warping stationarizations'); pause;
+soundsc(z,Fs);
+disp('Press any key to listen to the effect of Time Warping stationarization only'); pause;
+soundsc(z0 ,Fs);
+
+##### SOURCE END #####
+--></body></html>

@@ -28,7 +28,7 @@ function z = statAMWP(y,a,dgamma)
 % Created: 2017-12-19
 
 gamma = cumsum(dgamma);
-gamma = (gamma - gamma(1))/(gamma(end) - gamma(1)); % normalization such as gamma(end) = 1
+gamma = (gamma - gamma(1))/(gamma(end) - gamma(1)); % normalization such that gamma(end) = 1
 
 Dz = y(:)./(a(:));
 z = invwarp(Dz,gamma,dgamma)';

@@ -34,7 +34,7 @@ Dt = 100; % temporal subsampling for the deformation estimation
 dgamma0 = ones(1,T); % gamma'(t) initialization
 a0 = ones(1,T); % a(t) initialization
 
-wav_typ = 'sharp'; % wavelet type (cf. cwt.m)
+wav_typ = 'sharp'; % wavelet type (cf. cwt_JEFAS.m)
 wav_paramWP = 20; % corresponding parameter for warping estimation
 wav_param = 500; % corresponding parameter for spectrum and AM estimations
 
@@ -67,27 +67,38 @@ toc;
 
 %% Analysis
 t = 0:(1/Fs):((T-1)/Fs);
+
+% Deformations:
 figure;
 subplot(1,2,1);plot(t,dgammaML,'linewidth',2); 
 xlabel('Time (s)'); ylabel('Estimated log(\gamma''(t))'); axis tight; grid on;
 subplot(1,2,2);plot(t,aML,'linewidth',2); 
 xlabel('Time (s)'); ylabel('Estimated a^2(t)'); axis tight; grid on; ylim([0 2]);
 
+% Spectrum:
 z = statAMWP(y,aML,dgammaML);
 
 alpha = 15;
 Nff = 50000;
 Sxw = estim_spec(z,Nff,alpha);
+Syw = estim_spec(y,Nff,alpha);
 freq = linspace(0,Fs,Nff);
 
 figure;
-semilogy(freq,Sxw,'linewidth',2); 
-xlabel('Frequency (Hz)'); ylabel('Estimated spectrum'); grid on;
-axis tight; xlim([0 15000]);
+subplot('Position', [0.06 0.55, 0.93, 0.45]);
+plot(freq,log10(Syw),'linewidth',2); xlim([0 15000]); ylim([-6 1.5]); yticks([-6 -4 -2 0]); yticklabels({'10^{-6}' '10^{-4}' '10^{-2}' '10^{0}'});
+ylabel('Estimated spectrum'); xticklabels([]); grid on;
+set(gca,'fontsize',18);
+subplot('Position', [0.06 0.08, 0.93, 0.45]);
+plot(freq,log10(Sxw),'linewidth',2); xlim([0 15000]); ylim([-6 1.5]);
+xlabel('Frequency (kHz)'); ylabel('Estimated spectrum'); yticks([-6 -4 -2 0]); yticklabels({'10^{-6}' '10^{-4}' '10^{-2}' '10^{0}'}); xticklabels([0 5 10 15]); grid on;
+set(gca,'fontsize',18);
 
+
+% Wavelet transforms:
 scalesplot = 2.^(linspace(1,6.2,250));
-Wy = cwt(y,scalesplot,wav_typ,wav_param);
-Wz = cwt(z,scalesplot,wav_typ,wav_param);
+Wy = cwt_JEFAS(y,scalesplot,wav_typ,wav_param);
+Wz = cwt_JEFAS(z,scalesplot,wav_typ,wav_param);
 
 xi0 = Fs/4; % wavelet central frequency
 freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies

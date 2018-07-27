@@ -8,9 +8,9 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %   dgamma0: initial estimation of gamma'(t)
 %   a0: initial estimation of a(t)
 %   paramWAV: cell of three entries: {wav_typ,wav_param,wav_paramWP} where
-%       wav_typ: wavelet type (cf. cwt)
-%       wav_param: wavelet parameter for AM and spectrum estimations (cf. cwt)
-%       wav_paramWP: wavelet parameter for time warping estimation(cf. cwt)
+%       wav_typ: wavelet type (cf. cwt_JEFAS)
+%       wav_param: wavelet parameter for AM and spectrum estimations (cf. cwt_JEFAS)
+%       wav_paramWP: wavelet parameter for time warping estimation(cf. cwt_JEFAS)
 %   paramWP: cell of three entries: {scalesWP,itWP,stopWP} where
 %       scalesWP: vector of scales for the WP estimation
 %       itWP: maximum number of gradient iterations per instant
@@ -57,7 +57,7 @@ wav_paramWP = cell2mat(paramWAV(3));
 
 %% Time warping initialization and parameters
 scalesWP = cell2mat(paramWP(1));
-WyWP = cwt(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
+WyWP = cwt_JEFAS(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
 
 itWP = cell2mat(paramWP(2));
 stopWP = cell2mat(paramWP(3));
@@ -69,7 +69,7 @@ AMopt = cell2mat(paramAM(1));
 
 if strcmpi(AMopt,'AM')
     scalesAM = cell2mat(paramAM(2));
-    WyAM = cwt(y,scalesAM,wav_typ,wav_param); % Wavelet transform for thetaAM estimation
+    WyAM = cwt_JEFAS(y,scalesAM,wav_typ,wav_param); % Wavelet transform for thetaAM estimation
     r = cell2mat(paramAM(3));
     
 elseif ~strcmpi(AMopt,'no AM')
@@ -80,7 +80,7 @@ thetaAM = a0(1:Dt:end).^2; % Initialize thetaAM
 
 %% Spectrum initialization and parameters
 scalesS = cell2mat(paramS(1));
-WyS = cwt(y,scalesS,wav_typ,wav_param); % Wavelet transform for Sx estimation
+WyS = cwt_JEFAS(y,scalesS,wav_typ,wav_param); % Wavelet transform for Sx estimation
 
 Nf = cell2mat(paramS(2));
 sigmax = var(y);

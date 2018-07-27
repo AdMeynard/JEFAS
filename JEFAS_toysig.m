@@ -33,7 +33,7 @@ Dt = 200; % temporal subsampling for the deformation estimation
 dgamma0 = ones(1,T); % gamma'(t) initialization
 a0 = ones(1,T); % a(t) initialization
 
-wav_typ = 'sharp'; % wavelet type (cf. cwt.m)
+wav_typ = 'sharp'; % wavelet type (cf. cwt_JEFAS.m)
 wav_paramWP = 25; % corresponding parameter for warping estimation
 wav_param = 500; % corresponding parameter for spectrum and AM estimations
 
@@ -66,7 +66,7 @@ toc;
 %% Deformations estimation
 addpath('analysis')
 
-Wy = cwt(y,scalesAM,wav_typ,wav_param);
+Wy = cwt_JEFAS(y,scalesAM,wav_typ,wav_param);
 
 thetaWP_B = baselinewarpest(Wy,scalesAM);
 thetaAM_B = baselineAMest(Wy);

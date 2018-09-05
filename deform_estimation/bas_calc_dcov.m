@@ -11,7 +11,7 @@ function [M_psi,M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T)
 % 
 % Output:
 %   M_psi: matrix necessary for covariance matrix computation
-%   M_tmppsi: matrix necassary for covariance matrix computation
+%   M_tmpdpsi: matrix necessary for covariance matrix computation
 
 % Copyright (C) 2017 Adrien MEYNARD
 % 

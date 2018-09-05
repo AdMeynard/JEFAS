@@ -4,14 +4,14 @@ function W = cwt_JEFAS(sig,scales,wav_typ,wav_par)
 % usage:	W = cwt_JEFAS(sig,scales,wav_typ,wav_par)
 %
 % Input:
-%   sig: vector containing input signal
+%   sig: vector containing the input signal
 %   scales : vector of scales
 %   wav_typ: wavelet type:
 %     wav_typ='sharp': The sharp wavelet
 %     wav_typ='dgauss': analytic derivative of gaussian
 %   wav_par: parameter depending on the wavelet type
-%     wav_typ=0: wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
-%     wav_typ=1: wav_par = number of vanishing moments
+%     if wav_typ='sharp: wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
+%     if wav_typ='dgauss': wav_par = number of vanishing moments
 %
 % Output:
 %   W: continuous wavelet transform (complex valued)

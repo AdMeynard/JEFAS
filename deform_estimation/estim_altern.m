@@ -1,5 +1,5 @@
 function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit)
-%ESTIM_ALTERN	Alternate estimation of the deformations and the spectrum
+%ESTIM_ALTERN	Alternate estimation of the deformations and the spectrum (JEFAS)
 % usage:	[aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit)
 %
 % Input:
@@ -23,7 +23,7 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %       scalesS: vector of scales for the spectrum estimation
 %       Nf: number of frequencies where the spectrum is estimated
 %   stop_crit: stopping criterion for the alternative estimation
-%   Nit: maximum number of iterations of the alternating algorithm
+%   Nit: maximum number of iterations of the alternate algorithm
 % 
 % Output:
 %   aML : estimation of the amplitude modulation function

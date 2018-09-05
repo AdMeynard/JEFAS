@@ -10,7 +10,7 @@ function M_psi = bas_calc_cov(scales,wav_typ,wav_param,T)
 %   T: length of the frequency vector
 % 
 % Output:
-%   M_psi: matrix necasary for covariance matrix computation
+%   M_psi: matrix necessary for covariance matrix computation
 
 % Copyright (C) 2017 Adrien MEYNARD
 % 

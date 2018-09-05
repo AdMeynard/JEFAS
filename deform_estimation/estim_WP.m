@@ -14,7 +14,7 @@ function thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt
 %   Dt: subsampling rate used for the estimation of thetaWP
 % 
 % Output:
-%   thetaWP : estimation of the warping operator
+%   thetaWP : estimation of the time warping operator
 
 % Copyright (C) 2017 Adrien MEYNARD
 % 

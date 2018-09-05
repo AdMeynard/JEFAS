@@ -4,13 +4,13 @@ function [C,dC] = calc_dcov(M_psi,M_tmpdpsi,S,theta)
 %
 % Input:
 %   M_psi: first matrix output of the function BAS_CALC_DCOV
-%   M_psi: second matrix output of the function BAS_CALC_DCOV
+%   M_tmppsi: second matrix output of the function BAS_CALC_DCOV
 %   S: spectrum of X (row vector)
 %   theta: Time warping parameter 
 %
 % Output:
 %   C: covariance matrix
-%   dC: covariance matrix derivative
+%   dC: derivative of the covariance matrix
 
 % Copyright (C) 2017 Adrien MEYNARD
 % 

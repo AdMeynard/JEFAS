@@ -12,8 +12,8 @@ function y = icwt_JEFAS(W,scales,wav_typ,wav_par)
 %     wav_typ='sharp': The sharp wavelet
 %     wav_typ='dgauss': analytic derivative of gaussian
 %   wav_par: parameter depending on the wavelet type
-%     wav_typ=0: wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
-%     wav_typ=1: wav_par = value of \hat{\psi}(Fs/2)
+%     if wav_typ='sharp': wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
+%     if wav_typ='dgaudd: wav_par = value of \hat{\psi}(Fs/2)
 %
 % Output:
 %   y: reconstructed signal
@@ -61,9 +61,9 @@ switch wav_typ
         error('Unexpected wavelet type. ICWT not computed')    
 end
 
-U = bsxfun(@times,1./sqrt(scales),fpsi);
-fy = U .* fft(W,[],2);
-y = real(ifft(fy,[],2));
-y = (1/Cpsi)*sum(y)*ds;
+fy = fpsi .* fft(W,[],2);
+fy = real(ifft(fy,[],2));
+fy = bsxfun(@times,1./scales.^0.5,fy);
+y = (1/Cpsi)*sum(fy)*ds;
     
 end

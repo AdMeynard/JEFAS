@@ -2,9 +2,9 @@ Authors: Adrien Meynard and Bruno Torrésani
 Email: adrien.meynard@univ-amu.fr  
 Created: 2017-12-19
 
-This repository contains all the files necessary to perform the algorithm JEFAS (Joint Estimation of Frequency, Amplitude and Spectrum). The theoretical background relative to the algorithm can be found in the following paper: 
+This repository contains all the files necessary to perform the algorithm JEFAS (Joint Estimation of Frequency, Amplitude and Spectrum). The theoretical background relative to the algorithm can be found in the following paper:  
 A. Meynard and B. Torrésani, "Spectral Analysis for Nonstationary Audio", *IEEE/ACM Transactions on Audio,
-Speech and Language Processing*, vol. 26, pp. 2371–2380, Dec. 2018., [available online](https://hal.archives-ouvertes.fr/hal-01670187).
+Speech and Language Processing*, vol. 26, pp. 2371–2380, Dec. 2018, [available online](https://hal.archives-ouvertes.fr/hal-01670187).
 
 The implementation of the algorithm uses MATLAB functions from the Optimization Toolbox. Thus, this toolbox is necessary to run the algorithm. A less efficient version of the algorithm that does not require the Optimization Toolbox is available upon demand.
 

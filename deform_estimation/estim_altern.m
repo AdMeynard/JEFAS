@@ -4,7 +4,7 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %
 % Input:
 %   y: signal to analyze
-%   Dt: subsampling step for estimations
+%   Dt: subsampling step for estimations (integer >=1)
 %   dgamma0: initial estimation of gamma'(t)
 %   a0: initial estimation of a(t)
 %   paramWAV: cell of three entries: {wav_typ,wav_param,wav_paramWP} where
@@ -22,7 +22,7 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %   paramS: cell of 2 entries: paramS = {scalesS,Nf} where
 %       scalesS: vector of scales for the spectrum estimation
 %       Nf: number of frequencies where the spectrum is estimated
-%   stop_crit: stopping criterion for the alternative estimation
+%   stop_crit: stopping criterion for the alternate estimation
 %   Nit: maximum number of iterations of the alternate algorithm
 % 
 % Output:
@@ -51,6 +51,9 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 
 %% Some parameters
 T = length(y);
+if (length(dgamma0)~=T)||(length(a0)~=T)
+    error('The initial deformation functions must have the same length as the signal.')
+end
 wav_typ = cell2mat(paramWAV(1));
 wav_param = cell2mat(paramWAV(2));
 wav_paramWP = cell2mat(paramWAV(3));
@@ -73,7 +76,7 @@ if strcmpi(AMopt,'AM')
     r = cell2mat(paramAM(3));
     
 elseif ~strcmpi(AMopt,'no AM')
-    error('The first entry of paramAM must be ''no AM'' or ''AM''');
+    error('The first entry of paramAM must be ''no AM'' or ''AM''.');
 end
 
 thetaAM = a0(1:Dt:end).^2; % Initialize thetaAM

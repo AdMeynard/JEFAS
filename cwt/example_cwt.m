@@ -31,9 +31,7 @@ yticks(sdisp); yticklabels([]);
 set(gca,'fontsize',22);
 
 yrec1 = icwt_JEFAS(W1,scales,wav_typ,wav_par1); % reconstructed signal from W1
-yrec1 = std(y)*yrec1/std(yrec1); % normalize the reconstructed signal (because ICWT is given up to a constant)
 yrec2 = icwt_JEFAS(W2,scales,wav_typ,wav_par2);
-yrec2 = std(y)*yrec2/std(yrec2);
 
 figure; 
 subplot(2,1,1);plot(t,y,'r',t,yrec1,'b',t,yrec2,'c--','linewidth',2);

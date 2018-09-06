@@ -3,7 +3,6 @@ function y = icwt_JEFAS(W,scales,wav_typ,wav_par)
 %       Gaussian or the sharp wavelet
 % usage:	y = icwt_JEFAS(W,scales,wav_typ,wav_par)
 %
-%   warning: inversion up to a constant, to be fixed
 %
 % Input:
 %   W: wavelet transform coefficients matrix
@@ -40,7 +39,7 @@ siglength = size(W,2);
 fff = (0:(siglength-1))*2*pi/siglength;
 
 scales = scales(:);
-ds = scales(2) - scales(1);
+ds = log(scales(2)) - log(scales(1));
 
 tmp = scales * fff;
 
@@ -48,21 +47,21 @@ tmp = scales * fff;
 switch wav_typ
     case 'sharp'
         fpsi = exp(-2*wav_par*((pi./(2*tmp)) + (2*tmp/pi) - 2));
-        Cpsi = 4*0.88./wav_par.^0.5; % empirical
+        Cpsi = 0.88./wav_par.^0.5; % empirical
 
     case 'dgauss'
         Cst = 4*wav_par/(pi^2); % such that argmax fpsi = pi/2
         K = (2/pi)^wav_par*exp(wav_par/2); % such that fpsi(pi/2) = 1
         t_powV = tmp.^wav_par;
         fpsi = K*t_powV.* exp(-Cst*tmp.^2/2);
-        Cpsi = 4*(K^2/(2*Cst^wav_par))*gamma(wav_par); % to be fixed
+        Cpsi = (K^2/(2*Cst^wav_par))*gamma(wav_par); % theoretical
     
     otherwise
         error('Unexpected wavelet type. ICWT not computed')    
 end
 
 fy = fpsi .* fft(W,[],2);
-fy = real(ifft(fy,[],2));
+fy = 2*real(ifft(fy,[],2));
 fy = bsxfun(@times,1./scales.^0.5,fy);
 y = (1/Cpsi)*sum(fy)*ds;
     

@@ -3,7 +3,6 @@ function y = icwt_JEFAS(W,scales,wav_typ,wav_par)
 %       Gaussian or the sharp wavelet
 % usage:	y = icwt_JEFAS(W,scales,wav_typ,wav_par)
 %
-%
 % Input:
 %   W: wavelet transform coefficients matrix
 %   scales : vector of scales
@@ -12,7 +11,7 @@ function y = icwt_JEFAS(W,scales,wav_typ,wav_par)
 %     wav_typ='dgauss': analytic derivative of gaussian
 %   wav_par: parameter depending on the wavelet type
 %     if wav_typ='sharp': wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
-%     if wav_typ='dgaudd: wav_par = value of \hat{\psi}(Fs/2)
+%     if wav_typ='dgauss': wav_par = value of \hat{\psi}(Fs/2)
 %
 % Output:
 %   y: reconstructed signal

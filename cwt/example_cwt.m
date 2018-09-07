@@ -7,7 +7,7 @@ t = linspace(0,(T-1)/Fs,T);
 
 %% Two wavelet transforms of the same signal
 
-scales = 2.^linspace(3,6,200);
+scales = 2.^linspace(2,6,200);
 wav_typ = 'sharp';
 
 wav_par1 = 50;

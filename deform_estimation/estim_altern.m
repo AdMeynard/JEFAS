@@ -13,15 +13,15 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %       wav_paramWP: wavelet parameter for time warping estimation(cf. cwt_JEFAS)
 %   paramWP: cell of three entries: {scalesWP,itWP,stopWP} where
 %       scalesWP: vector of scales for the WP estimation
-%       itWP: maximum number of gradient iterations per instant
-%       stopWP: minimum gradient inovation
+%       itWP (optional): maximum number of gradient iterations per instant (default: itWP = 6)
+%       stopWP (optional): minimum gradient inovation (default: stopWP = 2e-2)
 %   paramAM: cell of 1 to 3 entries: paramAM = {AMopt,scalesAM,r} where
 %       AMopt: if AM is not estimated AMopt='no AM' => paramAM = {'no AM'}. Esle AMopt='AM' and:
 %       scalesAM: vector of scales for the AM estimation
 %       r: regularization parameter
 %   paramS: cell of 2 entries: paramS = {scalesS,Nf} where
 %       scalesS: vector of scales for the spectrum estimation
-%       Nf: number of frequencies where the spectrum is estimated
+%       Nf (optional): number of frequencies where the spectrum is estimated (default: Nf = 2500)
 %   stop_crit: stopping criterion for the alternate estimation
 %   Nit: maximum number of iterations of the alternate algorithm
 % 
@@ -62,8 +62,18 @@ wav_paramWP = cell2mat(paramWAV(3));
 scalesWP = cell2mat(paramWP(1));
 WyWP = cwt_JEFAS(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
 
-itWP = cell2mat(paramWP(2));
-stopWP = cell2mat(paramWP(3));
+if length(paramWP)==1
+    itWP = 6;
+    stopWP = 2e-2;
+elseif length(paramWP)==2
+    itWP = cell2mat(paramWP(2));
+    stopWP = 2e-2;
+elseif length(paramWP)==3
+    itWP = cell2mat(paramWP(2));
+    stopWP = cell2mat(paramWP(3));
+else
+    error('paramWP must contain 1, 2 or 3 entries')
+end
 
 thetaWP = log2(dgamma0(1:Dt:end)); % Initialize thetaWP
 
@@ -85,7 +95,12 @@ thetaAM = a0(1:Dt:end).^2; % Initialize thetaAM
 scalesS = cell2mat(paramS(1));
 WyS = cwt_JEFAS(y,scalesS,wav_typ,wav_param); % Wavelet transform for Sx estimation
 
-Nf = cell2mat(paramS(2));
+if length(paramS)==2
+    Nf = cell2mat(paramS(2));
+else
+    Nf = 2500;
+end
+
 sigmax = var(y);
 Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax); % initialize Sx
 

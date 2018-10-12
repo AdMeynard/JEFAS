@@ -14,7 +14,7 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %   paramWP: cell of three entries: {scalesWP,itWP,stopWP} where
 %       scalesWP: vector of scales for the WP estimation
 %       itWP (optional): maximum number of gradient iterations per instant (default: itWP = 6)
-%       stopWP (optional): minimum gradient inovation (default: stopWP = 2e-2)
+%       stopWP (optional): minimum gradient innovation (default: stopWP = 2e-2)
 %   paramAM: cell of 1 to 3 entries: paramAM = {AMopt,scalesAM,r} where
 %       AMopt: if AM is not estimated AMopt='no AM' => paramAM = {'no AM'}. Esle AMopt='AM' and:
 %       scalesAM: vector of scales for the AM estimation

@@ -49,7 +49,6 @@ r = 1e-5; % regularization parameter
 NbScalesS = 110;
 scalesS = 2.^(linspace(-1,7,NbScalesS)); % for spectrum estimation
 
-Nit = 10; % maximal number of iterations in the joint estimation
 stop_crit = 25e-3; % relative update threshold
 
 paramWAV = {wav_typ,wav_param,wav_paramWP};
@@ -58,7 +57,7 @@ paramAM = {'AM',scalesAM,r}; % model with time warping and amplitude modulation
 paramS = {scalesS};
 
 tic;
-[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
+[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 

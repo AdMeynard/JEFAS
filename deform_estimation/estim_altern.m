@@ -1,4 +1,4 @@
-function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit)
+function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,varargin)
 %ESTIM_ALTERN	Alternate estimation of the deformations and the spectrum (JEFAS)
 % usage:	[aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit)
 %
@@ -18,12 +18,12 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %   paramAM: cell of 1 to 3 entries: paramAM = {AMopt,scalesAM,r} where
 %       AMopt: if AM is not estimated AMopt='no AM' => paramAM = {'no AM'}. Esle AMopt='AM' and:
 %       scalesAM: vector of scales for the AM estimation
-%       r: regularization parameter
+%       r: regularization parameter of the covariance matrix in the AM estimation
 %   paramS: cell of 2 entries: paramS = {scalesS,Nf} where
 %       scalesS: vector of scales for the spectrum estimation
 %       Nf (optional): number of frequencies where the spectrum is estimated (default: Nf = 2500)
 %   stop_crit: stopping criterion for the alternate estimation
-%   Nit: maximum number of iterations of the alternate algorithm
+%   Nit (optional): maximum number of iterations of the alternate algorithm (default: Nit = 10)
 % 
 % Output:
 %   aML : estimation of the amplitude modulation function
@@ -105,6 +105,12 @@ sigmax = var(y);
 Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax); % initialize Sx
 
 %% Alternate algorithm
+if isempty(varargin)
+    Nit = 10;
+else
+    Nit = varargin{1};
+end
+
 n = 1;
 T_est = length(thetaAM);
 tm = round(0.05*T_est); % prevent edge effect from acting on convergence

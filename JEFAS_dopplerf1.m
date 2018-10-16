@@ -85,8 +85,8 @@ Wz2 = cwt_JEFAS(z2,scalesAM,'sharp',wav_param);
 t = linspace(0,(T-1)/Fs,T);
 
 xi0 = Fs/4; % wavelet central frequency
-freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies
-sdisp = log2(xi0./(1e3*freqdisp)); % coreesponding log-scales
+freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies in kHz
+sdisp = log2(xi0./(1e3*freqdisp)); % corresponding log-scales
 
 figure; colormap(flipud(gray));
 

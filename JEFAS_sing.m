@@ -75,8 +75,8 @@ Wz0 = cwt_JEFAS(z0,scalesAM,wav_typ,wav_param);
 
 t = linspace(0,(T-1)/Fs,T);
 xi0 = Fs/4;
-freqdisp = [5 4 3 2 1.00 0.50 0.25]; % Displayed frequencies
-sdisp = log2(xi0./(freqdisp*1e3)); % coreesponding log-scales
+freqdisp = [5 4 3 2 1.00 0.50 0.25]; % Displayed frequencies in kHz
+sdisp = log2(xi0./(freqdisp*1e3)); % corresponding log-scales
 figure; colormap(flipud(gray))
 subplot(1,2,1);
 imagesc(t,log2(scalesAM),abs(Wz));

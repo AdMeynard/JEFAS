@@ -91,8 +91,8 @@ xlim([0 3000]);
 scalesplot = 2.^(linspace(0.5,3.3,250));
 dt = 5;
 xi0 = Fs/4/dt; % wavelet central frequency
-freqdisp = [1.50 1.25 1.00 0.75 0.50 0.25]; % Displayed frequencies
-sdisp = log2(xi0./(freqdisp*1e3)); % coreesponding log-scales
+freqdisp = [1.50 1.25 1.00 0.75 0.50 0.25]; % Displayed frequencies in kHz
+sdisp = log2(xi0./(freqdisp*1e3)); % corresponding log-scales
 
 Wy = cwt_JEFAS(y(1:dt:end),scalesplot,wav_typ,wav_param);
 Wz = cwt_JEFAS(z(1:dt:end),scalesplot,wav_typ,wav_param);

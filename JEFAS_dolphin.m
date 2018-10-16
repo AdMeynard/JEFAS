@@ -101,8 +101,8 @@ Wy = cwt_JEFAS(y,scalesplot,wav_typ,wav_param);
 Wz = cwt_JEFAS(z,scalesplot,wav_typ,wav_param);
 
 xi0 = Fs/4; % wavelet central frequency
-freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies
-sdisp = log2(xi0./(1e3*freqdisp)); % coreesponding log-scales
+freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies in kHz
+sdisp = log2(xi0./(1e3*freqdisp)); % corresponding log-scales
 
 figure; colormap(flipud(gray));
 subplot('Position', [0.05 0.07, 0.45, 0.7]);

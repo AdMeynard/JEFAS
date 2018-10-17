@@ -1,6 +1,6 @@
 function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,varargin)
 %ESTIM_ALTERN	Alternate estimation of the deformations and the spectrum (JEFAS)
-% usage:	[aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit)
+% usage:	[aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit,disp)
 %
 % Input:
 %   y: signal to analyze
@@ -24,6 +24,7 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %       Nf (optional): number of frequencies where the spectrum is estimated (default: Nf = 2500)
 %   stop_crit: stopping criterion for the alternate estimation
 %   Nit (optional): maximum number of iterations of the alternate algorithm (default: Nit = 10)
+%   disp (optional): if disp = 0 disable relative update evolution (default: disp = 1)
 % 
 % Output:
 %   aML : estimation of the amplitude modulation function
@@ -54,23 +55,23 @@ T = length(y);
 if (length(dgamma0)~=T)||(length(a0)~=T)
     error('The initial deformation functions must have the same length as the signal.')
 end
-wav_typ = cell2mat(paramWAV(1));
-wav_param = cell2mat(paramWAV(2));
-wav_paramWP = cell2mat(paramWAV(3));
+wav_typ = paramWAV{1};
+wav_param = paramWAV{2};
+wav_paramWP = paramWAV{3};
 
 %% Time warping initialization and parameters
-scalesWP = cell2mat(paramWP(1));
+scalesWP = paramWP{1};
 WyWP = cwt_JEFAS(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
 
 if length(paramWP)==1
     itWP = 6;
     stopWP = 2e-2;
 elseif length(paramWP)==2
-    itWP = cell2mat(paramWP(2));
+    itWP = paramWP{2};
     stopWP = 2e-2;
 elseif length(paramWP)==3
-    itWP = cell2mat(paramWP(2));
-    stopWP = cell2mat(paramWP(3));
+    itWP = paramWP{2};
+    stopWP = paramWP{3};
 else
     error('paramWP must contain 1, 2 or 3 entries')
 end
@@ -78,12 +79,12 @@ end
 thetaWP = log2(dgamma0(1:Dt:end)); % Initialize thetaWP
 
 %% Amplitude modulation initialization and parameters
-AMopt = cell2mat(paramAM(1));
+AMopt = paramAM{1};
 
 if strcmpi(AMopt,'AM')
-    scalesAM = cell2mat(paramAM(2));
+    scalesAM = paramAM{2};
     WyAM = cwt_JEFAS(y,scalesAM,wav_typ,wav_param); % Wavelet transform for thetaAM estimation
-    r = cell2mat(paramAM(3));
+    r = paramAM{3};
     
 elseif ~strcmpi(AMopt,'no AM')
     error('The first entry of paramAM must be ''no AM'' or ''AM''.');
@@ -92,11 +93,11 @@ end
 thetaAM = a0(1:Dt:end).^2; % Initialize thetaAM
 
 %% Spectrum initialization and parameters
-scalesS = cell2mat(paramS(1));
+scalesS = paramS{1};
 WyS = cwt_JEFAS(y,scalesS,wav_typ,wav_param); % Wavelet transform for Sx estimation
 
 if length(paramS)==2
-    Nf = cell2mat(paramS(2));
+    Nf = paramS{2};
 else
     Nf = 2500;
 end
@@ -109,6 +110,12 @@ if isempty(varargin)
     Nit = 10;
 else
     Nit = varargin{1};
+end
+
+if (nargin==11)&&(varargin{2}==0)
+    disp = 0; % disable evolution criterion display
+else
+    disp = 1; % enable evolution criterion display
 end
 
 n = 1;
@@ -139,10 +146,12 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     errAM = sum((thetaAM(tm:tM) - thetaAM_old(tm:tM)).^2)/sum(thetaAM_old(tm:tM).^2);
     errS = sum((Sx - Sx_old).^2)/sum(Sx_old.^2);
     crit = [crit; [errWP errAM errS]];
-    if strcmpi(AMopt,'AM')
-        fprintf(' Iteration %i \n Relative update WP: %.2f %% \n Relative update AM: %.2f %%\n\n',[n 100*errWP 100*errAM]);
-    elseif strcmpi(AMopt,'no AM')
-        fprintf(' Iteration %i \n Relative update WP: %.2f %% \n\n',[n 100*errWP]);
+    if disp
+        if strcmpi(AMopt,'AM')
+            fprintf(' Iteration %i \n Relative update WP: %.2f %% \n Relative update AM: %.2f %%\n\n',[n 100*errWP 100*errAM]);
+        elseif strcmpi(AMopt,'no AM')
+            fprintf(' Iteration %i \n Relative update WP: %.2f %% \n\n',[n 100*errWP]);
+        end
     end
 
     n = n+1;

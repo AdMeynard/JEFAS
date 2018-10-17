@@ -25,9 +25,10 @@ eps3 = 0.01;
 eps4 = 500;
 [ZDmat, Dmat, ptszd, ptsd] = selecpts(z,pp,eps1,eps2, eps3, eps4); % select_pts
 
-nn = 4;
-Aest = BSS_Moreau(Dmat,N,nn); % BSS dessus
+nn = 2;
+Aest2 = BSS_TFQ(z, pp, eps3, eps4, nn);
 display(Aest);
+display(Aest2);
 
 Mzd = zeros(TT);
 Mzd(ptszd) = 1;

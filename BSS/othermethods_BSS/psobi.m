@@ -1,4 +1,4 @@
-function [pileA0, pileB0] = sobi_nonstat(z,vectau)
+function [pileA0, pileB0] = psobi(z,vectau)
 [N,T] = size(z);
 dtau = vectau(2) -vectau(1);
 ltau = length(vectau);

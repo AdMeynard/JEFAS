@@ -1,4 +1,7 @@
-function [A] = BSS_TFQ(Dmat,N, nn)
+function [A] = BSS_TFQ(z,pp, eps3, eps4, nn)
+
+N = size(z,1);
+[~, Dmat] = selecpts(z, pp, 0, 1, eps3, eps4);
 
 Kd = size(Dmat,3);
 for k= 1:Kd
@@ -7,14 +10,9 @@ for k= 1:Kd
     colA(:,k) = U(:,1);
 end
 
-% Z = linkage(colA','ward');
-% idx = cluster(Z,'Maxclust',6);
-
 [idx,C] = kmeans(colA',nn); % clustering
-nC = histc(idx(:),1:nn); % occurence de chaque classe
+nC = histc(idx(:),1:nn); % frequency of each class
 for k=1:N
     A(:,k) = C(nC==max(nC),:).';
-%     u = (idx==find(nC==max(nC)));
-%     A(:,k) = mean(colA(:,u),2);
     nC(nC==max(nC)) = 0;
 end

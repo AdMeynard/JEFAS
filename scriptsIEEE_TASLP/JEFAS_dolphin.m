@@ -23,7 +23,6 @@ clear all; close all; clc;
 
 warning off;
 addpath('../cwt');
-addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 
 load('../signals/dolphin');
@@ -45,23 +44,18 @@ scalesWP = scalesAM(1:subrate:end);
 
 r = 1e-5; % regularization parameter
 
-stopWP = 2e-2; % minimal gap between two steps in the gradient
-itWP = 6; % number of gradient iterations
-
-Nf = 2500; % number of frequencies for spectrum estimation
 NbScalesS = 110;
 scalesS = 2.^(linspace(-1,7,NbScalesS)); % for spectrum estimation
 
-Nit = 10; % maximal number of iterations in the joint estimation
 stop_crit = 5e-3; % relative update threshold
 
 paramWAV = {wav_typ,wav_param,wav_paramWP};
-paramWP = {scalesWP,itWP,stopWP};
-paramS = {scalesS,Nf};
+paramWP = {scalesWP};
+paramS = {scalesS};
 
 paramAM = {'AM',scalesAM,r};
 tic;
-[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
+[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 

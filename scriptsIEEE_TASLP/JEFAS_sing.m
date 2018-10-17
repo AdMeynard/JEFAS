@@ -26,7 +26,6 @@ addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 
 load('../signals/sing')
-
 T = length(y);
 %% Joint estimation
 

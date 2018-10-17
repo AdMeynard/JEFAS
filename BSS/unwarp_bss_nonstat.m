@@ -1,6 +1,8 @@
 clear all; close all; clc;
-addpath(genpath('JEFAS-BSS'));
-addpath(genpath('MoreauBSS'));
+addpath('../cwt');
+addpath(genpath('../JEFASalgo'));
+addpath('JEFAS-BSS');
+addpath(genpath('QTF_BSS')); % quadratic TF BSS mmethod
 
 % load('sig_compBSS.mat'); Fs = 44100; pileA = repmat(A,1,1,Fs);
 load('sig_compBSS_nonstat.mat'); Fs = 44100;

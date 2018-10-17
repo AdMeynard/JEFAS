@@ -1,5 +1,5 @@
 clear all; close all;
-load('../sig_compBSS.mat');
+load('../sig_compBSS_nonstat.mat');
 addpath(genpath('tftb'));
 
 [N,T] = size(z);
@@ -21,11 +21,11 @@ subplot(2,2,4); imagesc(t,f,abs(tfr2)); axis xy; title('sig 2');
 %% Points d'interet
 eps1 = 10;
 eps2 = 0.1;
-eps3 = 0.1;
-eps4 = 20;
+eps3 = 0.01;
+eps4 = 500;
 [ZDmat, Dmat, ptszd, ptsd] = selecpts(z,pp,eps1,eps2, eps3, eps4); % select_pts
 
-nn = 9;
+nn = 4;
 Aest = BSS_Moreau(Dmat,N,nn); % BSS dessus
 display(Aest);
 

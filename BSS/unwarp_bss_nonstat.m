@@ -23,25 +23,22 @@ Bsobi = Bsobi./sqrt(sum(abs(Bsobi).^2,2));
 %% 2eme methode: via SOBI par morceaux
 Dt = 4000;
 vectauns = 1:Dt:T;
-[pile_Asobins, pile_Bsobins] = sobi_nonstat(z,vectauns);
-haty0 = nonstatunmixing(z,pile_Bsobins,vectauns);
+[pile_Apsobi, pile_Bpsobi] = psobi(z,vectauns);
+haty0 = nonstatunmixing(z,pile_Bpsobi,vectauns);
 
-[SDRsobins,SIRsobins,SARsobins,permsobins] = bss_eval_sources(haty0,y);
+[SDRpsobi,SIRpsobi,SARpsobi,permpsobi] = bss_eval_sources(haty0,y);
 
 %% 3eme methode: via TFQ
-eps1 = 10;
-eps2 = 0.1;
 eps3 = 0.1;
 eps4 = 100;
 
-pp = 10; % subsampling 
-[~, Dmat] = selecpts(z, pp, eps1, eps2, eps3, eps4); % select_pts
-nn = 4;
-Aest = BSS_TFQ(Dmat,N,nn); % BSS dessus
+pp = 10; % subsampling
+nn = 2; % number of classes
+Aest = BSS_TFQ(z, pp, eps3, eps4,nn); % TFQ BSS
 BTFQ = inv(Aest);
 
-hatymoreau = BTFQ*z;
-[SDRmoreau,SIRmoreau,SARmoreau,permmoreau] = bss_eval_sources(hatymoreau,y);
+hatytfq = BTFQ*z;
+[SDRtfq,SIRtfq,SARtfq,permtfq] = bss_eval_sources(hatytfq,y);
 
 %% 4eme methode: via mon algo de max de vraisemblance
 dgamma0 = dgamma;%ones(N,T);
@@ -123,13 +120,13 @@ for k=1:Kmat
    indSOBI(k) = amari(Bsobi,pileA(:,:,vectau(k)));
    indTFQ(k) = amari(BTFQ,pileA(:,:,vectau(k)));
    k2 = length(vectauns(vectauns<=vectau(k)));
-   indPSOBI(k) = amari(pile_Bsobins(:,:,k2),pileA(:,:,vectau(k)));
+   indPSOBI(k) = amari(pile_Bpsobi(:,:,k2),pileA(:,:,vectau(k)));
 end
 
 fprintf('Critère | SOBI    | p-SOBI  | TFQ  | JEFAS-BSS \n')
-fprintf('SIR     |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIRsobi),mean(SIRsobins),mean(SIRmoreau),mean(SIR))
-fprintf('SDR     |  %.2f  |  %.2f  |  %.2f  |  %.2f\n', mean(SDRsobi),mean(SDRsobins),mean(SDRmoreau),mean(SDR))
-fprintf('SAR     |  %.2f  |  %.2f  | %.2f  |  %.2f\n', mean(SARsobi),mean(SARsobins),mean(SARmoreau),mean(SAR))
+fprintf('SIR     |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIRsobi),mean(SIRpsobi),mean(SIRtfq),mean(SIR))
+fprintf('SDR     |  %.2f  |  %.2f  |  %.2f  |  %.2f\n', mean(SDRsobi),mean(SDRpsobi),mean(SDRtfq),mean(SDR))
+fprintf('SAR     |  %.2f  |  %.2f  | %.2f  |  %.2f\n', mean(SARsobi),mean(SARpsobi),mean(SARtfq),mean(SAR))
 fprintf('Amari   | %.2f  | %.2f  | %.2f  | %.2f\n', mean(indSOBI),mean(indPSOBI),mean(indTFQ),mean(indJEFAS))
 
 figure;subplot(2,1,2);

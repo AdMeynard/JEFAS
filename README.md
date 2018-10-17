@@ -10,9 +10,9 @@ The implementation of the algorithm uses MATLAB functions from the Optimization 
 
 Descriptions of the different folders:
 - `cwt`: contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the wavelets given in the paper (equation (2)). A script `example_cwt.m` enabling the display of the sharp wavelet is also given (including Supplementary material, figs. 1 and 2). 
-- `JEFAS_algo`: contains all the functions necessary to implement JEFAS algorithm (subfolder `estimation`), together with some functions enabling the analysis (subfolder `analysis`) of the results of the JEFAS algorithm (baseline estimations, CRLB, stationarization). It also contains functions enabling cross-synthesis.
+- `JEFASalgo`: contains all the functions necessary to implement JEFAS algorithm (subfolder `estimation`), together with some functions enabling the analysis (subfolder `analysis`) of the results of the JEFAS algorithm (baseline estimations, CRLB, stationarization). It also contains functions enabling cross-synthesis.
 - `signals`: contains some audio signals including those described in the article.
-- `scriptsIEEE_TASLP`: contains the scripts detailed above, together with the published versions (subfolder `html`), and some corresponding results of JEFAS (time warping functions, amplitude modulation functions, and spectrum) in subfolder `results`.
+- `scriptsIEEE_TASLP`: contains the scripts detailed below, together with their published versions (subfolder `html`), and some corresponding results of JEFAS (estimated time warping functions, amplitude modulation functions, and spectra) in subfolder `results`.
 
 Descriptions of the different MATLAB scripts in the folder scriptsIEEE_TASLP:
 - `JEFAS_toysig.m`: estimation of the deformations and spectrum from a synthetic signal (see section IV.A of the article). This script generates Fig. 1, Fig. 2 and the values in Table I (of the paper).

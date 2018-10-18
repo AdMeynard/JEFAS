@@ -1,12 +1,12 @@
-function [pileBoptim,dgamma,a,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_deform_nonstat(yv,z,pileB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,cvmax,stopSIR,options)
-%ESTIM_ALTERN	Alternate BSS and estimation of the deformations and the spectrum of the sources
-% usage:	[pileBoptim,dgamma,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_deform_nonstat(yv,z,pileB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,cvmax,stopSIR,options)
+function [heapBoptim,dgamma,a,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_deform_nonstat(yv,z,heapB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,cvmax,stopSIR,options)
+%ALTERN_BSS_DEFORM_NONSTAT	Alternate BSS and estimation of the deformations and the spectrum of the sources
+% usage:	[heapBoptim,dgamma,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_deform_nonstat(yv,z,heapB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,cvmax,stopSIR,options)
 %
 % Input:
 % 
 % Output:
 %
-% Copyright (C) 2017 Adrien MEYNARD
+% Copyright (C) 2018 Adrien MEYNARD
 % 
 % This program is free software; you can redistribute it and/or modify it
 % under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ function [pileBoptim,dgamma,a,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_defor
 % along with this program.  If not, see <http://www.gnu.org/licenses/>.
 % 
 % Author: Adrien MEYNARD
-% Created: 2018-07-11
+% Created: 2018-10-18
 
 [N,T] = size(z);
 
@@ -35,10 +35,10 @@ else
     Nf = 2500;
 end
 
-scalesBSS = cell2mat(paramBSS(1));
-vectau = cell2mat(paramBSS(2));
-epsBSS = cell2mat(paramBSS(3));
-rBSS = cell2mat(paramBSS(4));
+scalesBSS = paramBSS{1};
+vectau = paramBSS{2};
+epsBSS = paramBSS{3};
+rBSS = paramBSS{4};
 
 % Compute the CWT of the observations:
 for n=1:N
@@ -47,14 +47,13 @@ end
 M_psi = bas_calc_cov(scalesBSS,wav_typ,wav_param,2*Nf-1);
 
 % Initializations:
-pileBoptim = pileB0;
+heapBoptim = heapB0;
 dgamma = dgamma0;
 a = ones(N,T);
 
 nonlcon = @norm_row;
 
-haty = nonstatunmixing(z,pileBoptim,vectau0); % revoir cette fonction
-% haty = association_mariage(haty,vectau0(2:(end-1)),2000); % reordering sources
+haty = nonstatunmixing(z,heapBoptim,vectau0); % revoir cette fonction
 
 [SDR,SIR,SAR,~] = bss_eval_sources(haty,yv); % unmixing quality of the initialization
 
@@ -75,17 +74,13 @@ while ((cv<=cvmax)&&(mean(SIRit)<=stopSIR))
     end
     
     % BSS estimation
-    B0 = pileBoptim(:,:,1);
-    pileBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,epsBSS,rBSS,nonlcon,options);
+    B0 = heapBoptim(:,:,1);
+    heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,epsBSS,rBSS,nonlcon,options);
     
     % reordering sources to keep correspondency between dgamma and haty
     oldhaty = haty;
-    haty = nonstatunmixing(z,pileBoptim,vectau);
+    haty = nonstatunmixing(z,heapBoptim,vectau);
     haty = reordersig(oldhaty,haty);
-%     s = std(haty.').';
-%     haty = haty./s; %/!\
-%     pileBoptim = pileBoptim.*repmat(s,1,N,length(vectau));  %/!\
-%     haty = association_mariage(haty,vectau(2:(end-1)),1000); % reordering sources
     for n=1:N
         Why(:,:,n) = cwt_JEFAS(haty(n,:),scalesBSS,wav_typ,wav_param);
         subplot(1,N,n); imagesc(abs(Why(:,:,n)));

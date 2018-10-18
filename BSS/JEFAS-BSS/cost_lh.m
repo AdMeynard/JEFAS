@@ -5,6 +5,7 @@ function g = cost_lh(B,tau,Wz,Cn)
 % Input:
 % B: unmixing matrix
 % tau: evaluation time
+% Wz: wavelet 
 % Cn: covariances matrices for each source
 %
 % Output:

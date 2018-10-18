@@ -1,6 +1,6 @@
-function pileBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,r,nonlcon,options)
+function heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,r,nonlcon,options)
 % ESTIM_MIXINGMATRIX_NONSTAT unmixing matrix estimation 
-% usage:	pileBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,r,nonlcon,options)
+% usage:	heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,r,nonlcon,options)
 %
 % Input:
 % B0: initial unmixing matrix
@@ -8,7 +8,7 @@ function pileBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,ep
 % Wz: CWT of the observations
 %
 % Output:
-% pileBoptim: 
+% heapBoptim: 
 
 % Copyright (C) 2018 Adrien MEYNARD
 % 
@@ -32,7 +32,7 @@ function pileBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,ep
 [Ms,~,N] = size(Wz);
 Kmat = length(vectau);
 
-pileBoptim = zeros(N,N,Kmat);
+heapBoptim = zeros(N,N,Kmat);
 Bold = B0;
 errmat = eps_bss*ones(N); % 0.05*ones(N); On empeche les variations brusques de la matrice de démélange
 k = 1;
@@ -46,7 +46,7 @@ for tau0 = vectau
     % log-likelihood optimization:
     costB = @(B)cost_lh(B,tau0,Wz,C);
     Boptim = fmincon(costB,Bold,[],[],[],[],Bold-errmat,Bold+errmat,nonlcon,options);
-    pileBoptim(:,:,k) = Boptim;
+    heapBoptim(:,:,k) = Boptim;
     
     k = k+1;
     Bold = Boptim;

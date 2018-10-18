@@ -1,17 +1,45 @@
-function [pileA0, pileB0] = psobi(z,vectau)
+function [heapA, heapB] = psobi(z,vectau)
+% PSOBI Piecewise SOBI BSS algorithm
+% usage:	[heapA, heapB] = psobi(z,vectau)
+%
+% Input:
+%   z: observed signals
+%   vectau:
+%
+% Output:
+%   heapA: estimated mixing matrix
+%   heapB: estimated unmixing matrix
+
+% Copyright (C) 2018 Adrien MEYNARD
+% 
+% This program is free software; you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+% 
+% Author: Adrien MEYNARD
+% Created: 2018-10-18
+
 [N,T] = size(z);
 dtau = vectau(2) -vectau(1);
 ltau = length(vectau);
 
-pileA0 = zeros(N,N,ltau);
-pileB0 = zeros(N,N,ltau);
+heapA = zeros(N,N,ltau);
+heapB = zeros(N,N,ltau);
 k = 1;
 for tau=vectau
    Tau = tau:min((tau+dtau-1),T); 
    ztau = z(:,Tau);
-   pileA0(:,:,k) = sobi(ztau,N);
-%    pileB0(:,:,k) = inv(pileA0(:,:,k));
-    B0 = inv(pileA0(:,:,k));
-    pileB0(:,:,k) = B0./sqrt(sum(abs(B0).^2,2)); % rows normalization
+   heapA(:,:,k) = sobi(ztau,N);
+   B = inv(heapA(:,:,k));
+   heapB(:,:,k) = B./sqrt(sum(abs(B).^2,2)); % rows normalization
    k = k+1;
 end

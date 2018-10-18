@@ -2,10 +2,10 @@ clear all; close all; clc;
 addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath('JEFAS-BSS');
-addpath(genpath('othermethods_BSS')); % quadratic TF BSS mmethod
+addpath(genpath('othermethods_BSS')); % quadratic TF BSS method
 
-% load('sig_compBSS.mat'); Fs = 44100; pileA = repmat(A,1,1,Fs);
-load('sig_compBSS_nonstat.mat'); Fs = 44100;
+% load('../signals/sig_compBSS.mat'); Fs = 44100; heapA = repmat(A,1,1,Fs);
+load('../signals/sig_compBSS_nonstat.mat'); Fs = 44100;
 
 [N,T] = size(z);
 
@@ -23,8 +23,8 @@ Bsobi = Bsobi./sqrt(sum(abs(Bsobi).^2,2));
 %% 2eme methode: via SOBI par morceaux
 Dt = 4000;
 vectauns = 1:Dt:T;
-[pile_Apsobi, pile_Bpsobi] = psobi(z,vectauns);
-haty0 = nonstatunmixing(z,pile_Bpsobi,vectauns);
+[heap_Apsobi, heap_Bpsobi] = psobi(z,vectauns);
+haty0 = nonstatunmixing(z,heap_Bpsobi,vectauns);
 
 [SDRpsobi,SIRpsobi,SARpsobi,permpsobi] = bss_eval_sources(haty0,y);
 
@@ -34,11 +34,11 @@ eps4 = 100;
 
 pp = 10; % subsampling
 nn = 2; % number of classes
-Aest = BSS_TFQ(z, pp, eps3, eps4,nn); % TFQ BSS
-BTFQ = inv(Aest);
+AQTF = BSS_QTF(z, pp, eps3, eps4,nn); % TFQ BSS
+BQTF = inv(AQTF);
 
-hatytfq = BTFQ*z;
-[SDRtfq,SIRtfq,SARtfq,permtfq] = bss_eval_sources(hatytfq,y);
+hatyqtf = BQTF*z;
+[SDRqtf,SIRqtf,SARqtf,permqtf] = bss_eval_sources(hatyqtf,y);
 
 %% 4eme methode: via mon algo de max de vraisemblance
 dgamma0 = dgamma;%ones(N,T);
@@ -77,20 +77,20 @@ cvmax = 20;
 stopSIR = 90; % critère d'arret sur l'amélioration
 
 init_meth = 'sobi';
-[pileB_init, vectau_init] = JEFASBSSinit(z, init_meth);
+[heapB_init, vectau_init] = JEFASBSSinit(z, init_meth);
 
 tic;
-[pileBoptim,dgammaML,aML,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_deform_nonstat(y,z,pileB_init,vectau_init,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,cvmax,stopSIR,options);
+[heapBoptim,dgammaML,aML,Sx,errSIR,errSAR,errSDR,estSIR] = altern_bss_deform_nonstat(y,z,heapB_init,vectau_init,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,cvmax,stopSIR,options);
 toc;
 
-haty = nonstatunmixing(z,pileBoptim,vectau); % unmixing
+haty = nonstatunmixing(z,heapBoptim,vectau); % unmixing
 
 
 %% Analysis
 t = linspace(0,(T-1)/Fs,T);
 nu0 = Fs/4;
 freqdisp = [16 8 4 2]; % Displayed frequencies in kHz
-sdisp = log2(nu0./(1e3*freqdisp)); % coreesponding log-scales
+sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 
 figure;
 for n=1:N
@@ -110,23 +110,23 @@ for n=1:N
 end
 title('Observations')
 
-% save('res_bss_nonstat','y','pileBoptim','dgammaML','Sx');
+% save('res_bss_nonstat','y','heapBoptim','dgammaML','Sx');
 %% Performances
 [SDR,SIR,SAR,perm] = bss_eval_sources(haty,y);
 
 % Amari index
 for k=1:Kmat
-   indJEFAS(k) = amari(pileBoptim(:,:,k),pileA(:,:,vectau(k)));
-   indSOBI(k) = amari(Bsobi,pileA(:,:,vectau(k)));
-   indTFQ(k) = amari(BTFQ,pileA(:,:,vectau(k)));
+   indJEFAS(k) = amari(heapBoptim(:,:,k),heapA(:,:,vectau(k)));
+   indSOBI(k) = amari(Bsobi,heapA(:,:,vectau(k)));
+   indTFQ(k) = amari(BQTF,heapA(:,:,vectau(k)));
    k2 = length(vectauns(vectauns<=vectau(k)));
-   indPSOBI(k) = amari(pile_Bpsobi(:,:,k2),pileA(:,:,vectau(k)));
+   indPSOBI(k) = amari(heap_Bpsobi(:,:,k2),heapA(:,:,vectau(k)));
 end
 
 fprintf('Critère | SOBI    | p-SOBI  | TFQ  | JEFAS-BSS \n')
-fprintf('SIR     |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIRsobi),mean(SIRpsobi),mean(SIRtfq),mean(SIR))
-fprintf('SDR     |  %.2f  |  %.2f  |  %.2f  |  %.2f\n', mean(SDRsobi),mean(SDRpsobi),mean(SDRtfq),mean(SDR))
-fprintf('SAR     |  %.2f  |  %.2f  | %.2f  |  %.2f\n', mean(SARsobi),mean(SARpsobi),mean(SARtfq),mean(SAR))
+fprintf('SIR     |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIRsobi),mean(SIRpsobi),mean(SIRqtf),mean(SIR))
+fprintf('SDR     |  %.2f  |  %.2f  |  %.2f  |  %.2f\n', mean(SDRsobi),mean(SDRpsobi),mean(SDRqtf),mean(SDR))
+fprintf('SAR     |  %.2f  |  %.2f  | %.2f  |  %.2f\n', mean(SARsobi),mean(SARpsobi),mean(SARqtf),mean(SAR))
 fprintf('Amari   | %.2f  | %.2f  | %.2f  | %.2f\n', mean(indSOBI),mean(indPSOBI),mean(indTFQ),mean(indJEFAS))
 
 figure;subplot(2,1,2);

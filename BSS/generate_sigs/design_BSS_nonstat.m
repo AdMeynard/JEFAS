@@ -54,6 +54,7 @@ switch typmel
         b22=pileB(2,2,:); b22 = b22(:);
         plot(1:T,b11,'b',1:T,b12,'k',1:T,b21,'r',1:T,b22,'g');
         title('éléments de B');
+%         save('sig_compBSS_nonstat','y','z','A','Sx','dgamma');
 end
 
 scales = 2.^(linspace(-1,4,100));

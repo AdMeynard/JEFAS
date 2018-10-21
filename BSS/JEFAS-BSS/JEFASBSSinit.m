@@ -2,9 +2,10 @@ function [heapB_init, vectau_init] = JEFASBSSinit(z, init_meth, varargin)
 
 switch init_meth
     case 'psobi'
+        T = size(z,2);
         Dt = varargin{1};
         vectauns = 1:Dt:T;
-        [~, heap_Bsobins] = sobi_nonstat(z,vectauns);
+        [~, heap_Bsobins] = psobi(z,vectauns);
         vectau_init = vectauns;
         heapB_init = heap_Bsobins;
     case 'sobi'

@@ -5,8 +5,7 @@ addpath('JEFAS-BSS');
 addpath(genpath('othermethods_BSS')); % quadratic TF BSS method
 
 % load('../signals/sig_compBSS.mat'); Fs = 44100; heapA = repmat(A,1,1,Fs);
-% load('../signals/sig_compBSS_nonstat.mat'); Fs = 44100;
-load('../signals/sig_compBSS_nonstatX4.mat'); Fs = 44100;
+load('../signals/sig_compBSS_nonstat.mat'); Fs = 44100;
 
 [N,T] = size(z);
 

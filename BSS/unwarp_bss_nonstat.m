@@ -95,40 +95,41 @@ sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 
 figure;
 for n=1:N
-    Whyr = cwt_JEFAS(z(n,:),scales,wav_typ,wav_param);
-    subplot(1,N,n); imagesc(t,log2(scales),abs(Whyr));
+    Wz = cwt_JEFAS(z(n,:),scales,wav_typ,wav_param);
+    subplot(1,N,n); imagesc(t,log2(scales),abs(Wz));
     yticks(sdisp); yticklabels(freqdisp);
-    xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray));
+    xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end
-title('Observations')
+title('Observations'); 
 
 figure;
 for n=1:N
-    Whyr = cwt_JEFAS(haty(n,:),scales,wav_typ,wav_param);
-    subplot(1,N,n); imagesc(t,log2(scales),abs(Whyr));
+    Why = cwt_JEFAS(haty(n,:),scales,wav_typ,wav_param);
+    subplot(1,N,n); imagesc(t,log2(scales),abs(Why));
     yticks(sdisp); yticklabels(freqdisp);
-    xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray));
+    xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end
 title('Estimated sources');
 
 figure;
 for n=1:N
     subplot(1,N,n); plot(t,dgamma(N-n+1,:),'b--',t,dgammaML(n,:),'r','linewidth',2);
-    xlabel('Time (s)'); ylabel('\gamma''(t)'); grid on; legend('True function','Estimated function');
+    xlabel('Time (s)'); ylabel('\gamma''(t)'); grid on; legend('True function','Estimated function'); set(gca,'fontsize',18);
 end
 title('Estimated Time warping');
 
 figure;
 for n=1:N
-    z = statAMWP(haty(n,:),aML(n,:),dgammaML(n,:));
+    hatx = statAMWP(haty(n,:),aML(n,:),dgammaML(n,:));
     alpha = 15;
     Nff = 50000;
-    Sxw = estim_spec(z,Nff,alpha);
+    Sxw = estim_spec(hatx,Nff,alpha);
     freq = linspace(0,Fs,Nff);
     freq2 = linspace(0,(T-1)*Fs/T,Fs);
-    subplot(1,N,n); semilogy(freq,Sxw,freq2,Sx(N+1-n,:),'linewidth',2); 
-    xlabel('Frequency (Hz)'); ylabel('S_x'); axis tight; grid on;
-    xlim([0 13000]); ylim([1e-5 5]);
+    subplot(1,N,n); plot(freq2/1e3,log10(Sx(N+1-n,:)),'b--',freq/1e3,log10(Sxw),'r','linewidth',2); 
+    xlabel('Frequency (kHz)'); ylabel('S_x'); axis tight; grid on;
+    xlim([0 13]); ylim([-5.1 1]); yticks([-5 -4 -3 -2 -1 0]); yticklabels({'10^{-5}' '10^{-4}' '10^{-3}' '10^{-2}' '10^{-1}' '10^{0}'}); 
+    legend('True spectrum','Estimated spectrum'); set(gca,'fontsize',18);
 end
 title('Estimated spectrum');
 
@@ -152,8 +153,8 @@ fprintf('SAR     |  %.2f  |  %.2f  | %.2f  |  %.2f\n', mean(SARsobi),mean(SARpso
 fprintf('Amari   | %.2f  | %.2f  | %.2f  | %.2f\n', mean(indSOBI),mean(indPSOBI),mean(indQTF),mean(indJEFAS))
 
 figure;subplot(2,1,2);
-plot(t(vectau),indJEFAS,t(vectau),indSOBI,'k--',t(vectau),indQTF,'g-.',t(vectau),indPSOBI,'r:','linewidth',2); grid on; axis tight;
-xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('JEFAS-BSS','SOBI','QTF','p-SOBI');
+plot(t(vectau),indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
+xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('SOBI','p-SOBI','QTF-BSS','JEFAS-BSS'); set(gca,'fontsize',24);
 %% Convergence
 iter = 1:length(errSAR);
 

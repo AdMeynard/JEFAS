@@ -1,4 +1,4 @@
-function [heapBoptim,dgamma,a,Sx,SIRupdate] = altern_bss_deform_nonstat(z,heapB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,stopSIR,Nit,varargin)
+function [heapBoptim,dgamma,a,Sx,SIRupdate] = altern_bss_deform_nonstat(z,heapB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,stopSIR,varargin)
 %ALTERN_BSS_DEFORM_NONSTAT	Alternate BSS and estimation of the deformations and the spectrum of the sources
 % usage:	[heapBoptim,dgamma,Sx,a,SIRupdate] = altern_bss_deform_nonstat(z,heapB0,vectau0,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,stopSIR,Nit,itMAX,stop0)
 %
@@ -12,7 +12,7 @@ function [heapBoptim,dgamma,a,Sx,SIRupdate] = altern_bss_deform_nonstat(z,heapB0
 %       scales: vector of scales for the BSS estimation
 %       vectau: vector of times where the unmixing matrices is estimated in JEFAS-BSS
 %       eps_bss: constant of the bayesian prior on the unmixing matrix
-%       rBSS: regularization parameter 
+%       rBSS: regularization parameter for covariance matrices
 %   paramWP: cell of three entries: {scalesWP,itWP,stopWP} where
 %       scalesWP: vector of scales for the WP estimation
 %       itWP (optional): maximum number of gradient iterations per instant (default: itWP = 6)
@@ -67,13 +67,6 @@ scalesBSS = paramBSS{1};
 vectau = paramBSS{2};
 epsBSS = paramBSS{3};
 rBSS = paramBSS{4};
-
-if nargin >= 13
-    Nit = varargin{1};
-else
-    
-end
-
 
 % fmincon parameters
 nonlcon = @norm_row;

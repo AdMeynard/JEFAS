@@ -1,12 +1,11 @@
 function [y,gamma,dgamma] = chirpwarp(x,Index)
-% SINEWARP:   warp a vector using sinusoidal warping function derivative
+% CHIRPWARP:   warp a vector using linear function for the log of time warping function derivative
 %
 % usage:    [y,gamma,dgamma] = sinewarp(x,f1,Index)
 %
 % Input:
 %   x: original signal
-%   f1: frequency of warping function
-%   Index: amplitude of warping function
+%   Index: Slope of the linear function
 %
 % Output:
 %   y: output signal

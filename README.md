@@ -14,4 +14,4 @@ Descriptions of the different folders:
 - `signals`: contains some audio signals including those described in the article.
 - `scriptsIEEE_TASLP`: contains the scripts detailed below, together with their published versions (subfolder `html`), and some corresponding results of JEFAS (estimated time warping functions, amplitude modulation functions, and spectra) in subfolder `results`. All the sounds and the published versions of the Matlab scripts are also [available online](http://meynard.perso.math.cnrs.fr/paperJEFAS/NonStationaryAudio.html).
 - `JEFAS-BSS`: contains the functions to performs a Blind Source Separation (BSS) from a mixture of nonstationary signals following the model given in [1].
-- `scriptsIEEE_TASLP`: contains the scripts that perform JEFAS-BSS on a synthetic mixture.
+- `scriptsBSS`: contains the scripts that perform JEFAS-BSS on a synthetic mixture.

@@ -8,7 +8,7 @@ function heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,ep
 %   Wz: CWT of the observations
 %   Sx: current guess of the spectra of the stationary sources 
 %   dgamma: current guess of the time warping functions
-%   M_psi:
+%   M_psi: matrix output of the function BAS_CALC_COV
 %   eps_bss: constant on the bayesian prior
 %   r: regularization parameter on the covariance matrix
 %   nonlcon: non linear constaint in fmincon for optimization

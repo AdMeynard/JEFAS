@@ -10,7 +10,7 @@ The implementation of the algorithm uses MATLAB functions from the Optimization 
 
 Descriptions of the different folders:
 - `cwt`: contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the wavelets given in the paper (equation (2)). A script `example_cwt.m` enabling the display of the sharp wavelet is also given (including Supplementary material, figs. 1 and 2). 
-- `JEFASalgo`: contains all the functions necessary to implement JEFAS algorithm (subfolder `estimation`), together with some functions enabling the analysis (subfolder `analysis`) of the results of the JEFAS algorithm (baseline estimations, CRLB, stationarization). It also contains functions enabling cross-synthesis.
+- `JEFASalgo`: contains all the functions necessary to implement JEFAS (subfolder `estimation`), together with some functions enabling the analysis (subfolder `analysis`) of the results of JEFAS (comparison with baseline estimations, Cramér-Rao Lower Bound, stationarization). It also contains functions enabling cross-synthesis.
 - `signals`: contains some audio signals including those described in the article.
 - `scriptsIEEE_TASLP`: contains the scripts detailed below, together with their published versions (subfolder `html`), and some corresponding results of JEFAS (estimated time warping functions, amplitude modulation functions, and spectra) in subfolder `results`. All the sounds and the published versions of the Matlab scripts are also [available online](http://meynard.perso.math.cnrs.fr/paperJEFAS/NonStationaryAudio.html).
 - `JEFAS-BSS`: contains the functions to performs a Blind Source Separation (BSS) from a mixture of nonstationary signals following the model given in [1].

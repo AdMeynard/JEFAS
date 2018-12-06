@@ -28,7 +28,7 @@ BQTF = inv(AQTF);
 
 hatyqtf = BQTF*z;
 
-%% JEFAS- BSS estimation
+%% JEFAS-BSS estimation
 
 dgamma0 = ones(N,T);
 

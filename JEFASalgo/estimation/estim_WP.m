@@ -49,7 +49,7 @@ options = optimoptions('fmincon','Algorithm','trust-region-reflective','SpecifyO
 for n = 1:T_hor
     t = t_hor(n);
     S_AM = thetaAM(n)*S;
-    U = Wy(:,max(1,(t+1-Dt/2)):min((t+Dt/2),Tf)); % column(s) we are interested in (we compute a mean over Dt columns)
+    U = Wy(:,max(1,(t+1-ceil(Dt/2))):min((t+floor(Dt/2)),Tf)); % column(s) we are interested in (we compute a mean over Dt columns)
     
     llh = @(x)dloglh(x,U,M_psi,M_tmpdpsi,S_AM);
     theta = fmincon(llh,theta,[],[],[],[],-1.5,1.5,[],options);

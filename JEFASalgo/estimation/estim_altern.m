@@ -120,8 +120,8 @@ end
 
 n = 1;
 T_est = length(thetaAM);
-tm = round(0.05*T_est); % prevent edge effect from acting on convergence
-tM = round(0.95*T_est); % prevent edge effect from acting on convergence
+tm = ceil(0.05*T_est); % prevent edge effect from acting on convergence
+tM = floor(0.95*T_est); % prevent edge effect from acting on convergence
 errWP = inf;
 errAM = inf;
 crit = [];

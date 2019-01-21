@@ -30,6 +30,10 @@ function S = estim_spec(x,Nf,alpha)
 % Author: Adrien MEYNARD
 % Created: 2017-12-20
 
+if alpha<1
+    error('alpha must be greater than one')
+end
+
 T = length(x);
 nwin = floor(T/alpha);
 S = pwelch(x,nwin,[],Nf);

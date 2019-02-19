@@ -66,7 +66,6 @@ wav_param = paramWAV{2};
 scalesBSS = paramBSS{1};
 vectau = paramBSS{2};
 epsBSS = paramBSS{3};
-rBSS = paramBSS{4};
 
 % fmincon parameters
 nonlcon = @norm_row;
@@ -76,7 +75,7 @@ if nargin == 15
     itMAX = varargin{2};
     stop0 = varargin{3};
 else
-    Nit = 15;
+    Nit = 10;
     itMAX = 100;
     stop0 = 1e-5;
 end
@@ -112,7 +111,7 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     aprec = a;
     for n=1:N
         y = haty(n,:); % estimated source n
-        [aML,dgammaML, Sxn] = estim_altern(y,Dt,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,2,0); % J'ai mis 2 itérations, ça améliore l'algo...
+        [aML,dgammaML, Sxn] = estim_altern(y,Dt,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,0);
         dgamma(n,:) = dgammaML;
         a(n,:) = aML;
         Sx(n,:) = Sxn;
@@ -120,15 +119,17 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     
     % BSS estimation
     B0 = heapBoptim(:,:,1);
-    heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,epsBSS,rBSS,nonlcon,options);
+%     heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,epsBSS,nonlcon,options);
+    A0 = inv(B0); L = 10;
+    heapBoptim = NEWTON_estim_mixingmatrix_nonstat(A0,Wz,vectau,M_psi,Sx,dgamma,L);
     
     % reordering sources to keep correspondency between dgamma and haty
     oldhaty = haty;
     haty = nonstatunmixing(z,heapBoptim,vectau);
     haty = reordersig(oldhaty,haty);
+    
     for n=1:N
-        Why(:,:,n) = cwt_JEFAS(haty(n,:),scalesBSS,wav_typ,wav_param);
-        subplot(1,N,n); imagesc(abs(Why(:,:,n)));
+        subplot(1,N,n); plot(dgamma(n,:));
     end
     drawnow;
     

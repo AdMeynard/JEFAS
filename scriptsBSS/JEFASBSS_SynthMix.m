@@ -3,7 +3,9 @@ addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-BSS'));
 
-load('../signals/synthetic_NonstatMixture.mat'); Fs = 44100;
+% load('../signals/synthetic_NonstatMixture.mat'); Fs = 44100;
+% load('../signals/synthetic_StatMixtureCrossing.mat'); Fs = 44100;
+load('../signals/synthetic_NonstatMixtureCrossing.mat'); Fs = 44100;
 [N,T] = size(z);
 
 %% SOBI estimation
@@ -36,32 +38,33 @@ Dt = 200;
 
 Kmat = 200; % number of instants where we estimate the unmixing matrix
 vectau = floor(linspace(1,T-1,Kmat)); % corresponding instants
-eps_bss = 0.5;
-rBSS = 1e-7; %1e-5
+eps_bss = 10; %0.01; %
 
 wav_typ = 'sharp';
 wav_param = 500;
 wav_paramWP = 20;
 
 NbScales = 100;
-scales = 2.^(linspace(-1,4,NbScales));
-subrate = 8; % subsampling step for the scales to ensure the covariance invertibility
-scalesWP = scales(1:subrate:end);
+scales = 2.^(linspace(0,5,NbScales));
+subrateWP = 8; % subsampling step for the scales to ensure the covariance invertibility
+scalesWP = scales(1:subrateWP:end);
+subrateBSS = 2;
+scalesBSS = scales(1:subrateBSS:end);
 
 rAM = 1e-3;
 
 NbScalesS = 110;
 scalesS = 2.^(linspace(-1,7,NbScalesS));
 
-paramBSS = {scales,vectau,eps_bss,rBSS};
+paramBSS = {scalesBSS,vectau,eps_bss};
 paramWAV = {wav_typ,wav_param,wav_paramWP};
-paramWP = {scalesWP};
-% paramAM = {'no AM'};
-paramAM = {'AM',scales,rAM};
+paramWP = {scalesWP,0.05};
+paramAM = {'no AM'};
+% paramAM = {'AM',scales,rAM};
 paramS = {scalesS};
 
 stop_crit = 5e-3;
-stopSIR = 70; % stopping criterion
+stopSIR = 75; % stopping criterion
 
 init_meth = 'sobi';
 [heapB_init, vectau_init] = JEFASBSSinit(z, init_meth, Dtp);
@@ -90,6 +93,8 @@ for n=1:N
     xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end
 
+[haty, stablematch] = reordersig(y,haty);
+
 figure; title('Estimated sources');
 for n=1:N
     Why = cwt_JEFAS(haty(n,:),scales,wav_typ,wav_param);
@@ -98,22 +103,22 @@ for n=1:N
     xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end
 
-
 figure; title('Estimated Time warpings');
 for n=1:N
-    subplot(1,N,n); plot(t,dgamma(N-n+1,:),'b--',t,dgammaML(n,:),'r','linewidth',2);
+    subplot(1,N,n); plot(t,dgamma(n,:),'b--',t,dgammaML(stablematch(n),:),'r','linewidth',2);
     xlabel('Time (s)'); ylabel('\gamma''(t)'); grid on; legend('Ground truth function','Estimated function'); set(gca,'fontsize',18);
 end
 
 figure; title('Estimated spectra');
 for n=1:N
-    hatx = statAMWP(haty(n,:),aML(n,:),dgammaML(n,:));
+    hatx = statAMWP(haty(n,:),aML(stablematch(n),:),dgammaML(stablematch(n),:));
     alpha = 15;
     Nff = 50000;
     Sxw = estim_spec(hatx,Nff,alpha);
+    Sxw = Sxw*sum(Sx(n,:)  + 25e-4)/sum(Sxw); % normalization
     freq = linspace(0,Fs,Nff);
     freq2 = linspace(0,(T-1)*Fs/T,Fs);
-    subplot(1,N,n); plot(freq2/1e3,log10(Sx(N+1-n,:)),'b--',freq/1e3,log10(Sxw),'r','linewidth',2); 
+    subplot(1,N,n); plot(freq2/1e3,log10(Sx(n,:)  + 25e-4),'b--',freq/1e3,log10(Sxw),'r','linewidth',2); 
     xlabel('Frequency (kHz)'); ylabel('S_x'); axis tight; grid on;
     xlim([0 13]); ylim([-5.1 1]); yticks([-5 -4 -3 -2 -1 0]); yticklabels({'10^{-5}' '10^{-4}' '10^{-3}' '10^{-2}' '10^{-1}' '10^{0}'}); 
     legend('Ground truth spectrum','Estimated spectrum'); set(gca,'fontsize',18);

@@ -33,7 +33,7 @@ function [C,dC] = calc_dcov(M_psi,M_tmpdpsi,S,theta)
 T = length(S);
 omega = (0:(T-1))*2*pi/T;
 
-Stheta = interp1(omega,S,2^(-theta)*omega,'linear',0);
+Stheta = interp1(omega,S,2^(-theta)*omega,'linear',S(end));
 U = bsxfun(@times,sqrt(Stheta),M_psi);
 V = bsxfun(@times,sqrt(Stheta),M_tmpdpsi);
 

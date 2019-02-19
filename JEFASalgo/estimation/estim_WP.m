@@ -1,8 +1,9 @@
-function thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt)
+function thetaWP = estim_WP(thetaWP0,thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt,dmaxWP)
 %ESTIM_WP	Maximum likelihood estimation of the time warping parameter
-% usage:	thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt)
+% usage:	thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt,dmaxWP)
 %
 % Input:
+%   thetaWP0: initial guess of the WP parameter at time t=0
 %   thetaAM: guess of AM parameter
 %   Wy: wavelet transform of the signal
 %   scales: scales on which the CWT is calculated
@@ -12,6 +13,7 @@ function thetaWP = estim_WP(thetaAM,Wy,scales,S,wav_typ,wav_param,itWP,stopWP,Dt
 %   itWP: maximum number of iteration for each gradient descent
 %   stopWP: stopping criterion for the gradient descent
 %   Dt: subsampling rate used for the estimation of thetaWP
+%   dmaxWP: maximum accepted difference between two consecutive terms of thetaWP
 % 
 % Output:
 %   thetaWP : estimation of the time warping operator
@@ -42,7 +44,7 @@ thetaWP = zeros(1,T_hor);
 Nf = length(S);
 [M_psi, M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,Nf); % matrices for covariance computations 
 
-theta = 0;
+theta = thetaWP0;
 
 options = optimoptions('fmincon','Algorithm','trust-region-reflective','SpecifyObjectiveGradient',true,'MaxIterations',itWP,'StepTolerance',stopWP,'Display','off');
 % At each time, we run an optimization method
@@ -52,7 +54,11 @@ for n = 1:T_hor
     U = Wy(:,max(1,(t+1-ceil(Dt/2))):min((t+floor(Dt/2)),Tf)); % column(s) we are interested in (we compute a mean over Dt columns)
     
     llh = @(x)dloglh(x,U,M_psi,M_tmpdpsi,S_AM);
-    theta = fmincon(llh,theta,[],[],[],[],-1.5,1.5,[],options);
+    if (t>0.04*Tf)&&(t<0.96*Tf) % outside edges
+        theta = fmincon(llh,theta,[],[],[],[],theta-dmaxWP,theta+dmaxWP,[],options);
+    else % edge effects
+        theta = fmincon(llh,theta,[],[],[],[],-1.5,1.5,[],options);
+    end
     thetaWP(n) = theta;
 end
 

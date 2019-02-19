@@ -13,6 +13,7 @@ function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramW
 %       wav_paramWP: wavelet parameter for time warping estimation(cf. cwt_JEFAS)
 %   paramWP: cell of three entries: {scalesWP,itWP,stopWP} where
 %       scalesWP: vector of scales for the WP estimation
+%       dmaxWP (optional): maximum accepted difference between two consecutive terms of thetaWP
 %       itWP (optional): maximum number of gradient iterations per instant (default: itWP = 6)
 %       stopWP (optional): minimum gradient innovation (default: stopWP = 2e-2)
 %   paramAM: cell of 1 to 3 entries: paramAM = {AMopt,scalesAM,r} where
@@ -64,14 +65,21 @@ scalesWP = paramWP{1};
 WyWP = cwt_JEFAS(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
 
 if length(paramWP)==1
+    dmaxWP = 0.5;
     itWP = 6;
     stopWP = 2e-2;
 elseif length(paramWP)==2
-    itWP = paramWP{2};
+    dmaxWP = paramWP{2};
+    itWP = 6;
     stopWP = 2e-2;
 elseif length(paramWP)==3
-    itWP = paramWP{2};
-    stopWP = paramWP{3};
+    dmaxWP = paramWP{2};
+    itWP = paramWP{3};
+    stopWP = 2e-2;
+elseif length(paramWP)==4
+    dmaxWP = paramWP{2};
+    itWP = paramWP{3};
+    stopWP = paramWP{4};
 else
     error('paramWP must contain 1, 2 or 3 entries')
 end
@@ -129,7 +137,8 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     
     % Step 1: Time warping estimation
     thetaWP_old = thetaWP;
-    thetaWP = estim_WP(thetaAM,WyWP,scalesWP,Sx,wav_typ,wav_paramWP,itWP,stopWP,Dt);
+    thetaWP0 = thetaWP_old(1);
+    thetaWP = estim_WP(thetaWP0,thetaAM,WyWP,scalesWP,Sx,wav_typ,wav_paramWP,itWP,stopWP,Dt,dmaxWP);
     
     % Step 2: AM estimation
     thetaAM_old = thetaAM;

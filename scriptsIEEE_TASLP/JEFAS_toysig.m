@@ -42,6 +42,7 @@ scalesAM = 2.^(linspace(-1,3.5,NbScales));
 subrate = 7; % subsampling step for the scales to ensure the covariance invertibility
 scalesWP = scalesAM(1:subrate:end);
 
+dmaxWP = 1;
 stopWP = 2e-2; % minimal gap between two steps in the gradient
 itWP = 6; % number of gradient iterations
 
@@ -56,7 +57,7 @@ stop_crit = 1e-3; % relative update threshold
 
 paramWAV = {wav_typ,wav_param,wav_paramWP};
 paramAM = {'AM',scalesAM,r}; % AM (model without noise)
-paramWP = {scalesWP,itWP,stopWP};
+paramWP = {scalesWP,dmaxWP,itWP,stopWP};
 paramS = {scalesS,Nf};
 
 tic;

@@ -1,4 +1,4 @@
-function heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,r,nonlcon,options)
+function heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,nonlcon,options)
 % ESTIM_MIXINGMATRIX_NONSTAT unmixing matrix estimation 
 % usage:	heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,eps_bss,r,nonlcon,options)
 %
@@ -10,12 +10,11 @@ function heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,ep
 %   dgamma: current guess of the time warping functions
 %   M_psi: matrix output of the function BAS_CALC_COV
 %   eps_bss: constant on the bayesian prior
-%   r: regularization parameter on the covariance matrix
 %   nonlcon: non linear constaint in fmincon for optimization
 %   options: options in fmincom for optimization
 %
 % Output:
-% heapBoptim: estimated unmixing matrices
+%   heapBoptim: estimated unmixing matrices
 
 % Copyright (C) 2018 Adrien MEYNARD
 % 
@@ -36,7 +35,7 @@ function heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,ep
 % Created: 2018-07-11
 
 
-[Ms,~,N] = size(Wz);
+N = size(Wz,3);
 Kmat = length(vectau);
 
 heapBoptim = zeros(N,N,Kmat);
@@ -46,8 +45,7 @@ k = 1;
 for tau0 = vectau
     % covariance matrices:
     for n=1:N
-        Cn = calc_cov(M_psi,Sx(n,:),log2(dgamma(n,tau0)));
-        C(:,:,n) = (1-r)*Cn + r*eye(Ms); % regularization
+        C(:,:,n) = calc_cov(M_psi,Sx(n,:),log2(dgamma(n,tau0)));
     end
     
     % log-likelihood optimization:

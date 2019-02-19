@@ -31,7 +31,7 @@ function C = calc_cov(M_psi,S,theta)
 T = length(S);
 omega = (0:(T-1))*2*pi/T;
 
-Stheta = interp1(omega,S,2^(-theta)*omega,'linear',0);
+Stheta = interp1(omega,S,2^(-theta)*omega,'linear',S(end));
 U = bsxfun(@times,sqrt(Stheta),M_psi);
 C = (U*U')/T;
 

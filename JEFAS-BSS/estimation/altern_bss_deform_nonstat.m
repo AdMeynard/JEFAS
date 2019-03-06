@@ -10,9 +10,8 @@ function [heapBoptim,dgamma,a,Sx,SIRupdate] = altern_bss_deform_nonstat(z,heapB0
 %   Dt: subsampling step for time warping estimations (integer >=1)
 %   paramBSS: cell of four entries: {scales,vectau,eps_bss,rBSS}
 %       scales: vector of scales for the BSS estimation
-%       vectau: vector of times where the unmixing matrices is estimated in JEFAS-BSS
-%       eps_bss: constant of the bayesian prior on the unmixing matrix
-%       rBSS: regularization parameter for covariance matrices
+%       vectau: vector of times where the mixing matrices is estimated in JEFAS-BSS
+%       L_bss: number of iterations in the Newton descent
 %   paramWP: cell of three entries: {scalesWP,itWP,stopWP} where
 %       scalesWP: vector of scales for the WP estimation
 %       itWP (optional): maximum number of gradient iterations per instant (default: itWP = 6)
@@ -65,21 +64,22 @@ wav_param = paramWAV{2};
 
 scalesBSS = paramBSS{1};
 vectau = paramBSS{2};
-epsBSS = paramBSS{3};
+% epsBSS = paramBSS{3};
+L = paramBSS{3};
 
 % fmincon parameters
 nonlcon = @norm_row;
 
-if nargin == 15
+if nargin == 13
     Nit = varargin{1};
-    itMAX = varargin{2};
-    stop0 = varargin{3};
+%     itMAX = varargin{2};
+%     stop0 = varargin{3};
 else
     Nit = 10;
-    itMAX = 100;
-    stop0 = 1e-5;
+%     itMAX = 100;
+%     stop0 = 1e-5;
 end
-options = optimoptions('fmincon','Algorithm','interior-point','MaxIterations',itMAX,'StepTolerance',stop0,'Display','off');
+% options = optimoptions('fmincon','Algorithm','interior-point','MaxIterations',itMAX,'StepTolerance',stop0,'Display','off');
 
 % Compute the CWT of the observations:
 for n=1:N
@@ -120,7 +120,7 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     % BSS estimation
     B0 = heapBoptim(:,:,1);
 %     heapBoptim = estim_mixingmatrix_nonstat(B0,vectau,Wz,Sx,dgamma,M_psi,epsBSS,nonlcon,options);
-    A0 = inv(B0); L = 10;
+    A0 = inv(B0);
     heapBoptim = NEWTON_estim_mixingmatrix_nonstat(A0,Wz,vectau,M_psi,Sx,dgamma,L);
     
     % reordering sources to keep correspondency between dgamma and haty

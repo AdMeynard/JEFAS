@@ -3,9 +3,10 @@ addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-BSS'));
 
-% load('../signals/synthetic_NonstatMixture.mat'); Fs = 44100;
-% load('../signals/synthetic_StatMixtureCrossing.mat'); Fs = 44100;
-load('../signals/synthetic_NonstatMixtureCrossing.mat'); Fs = 44100;
+load('../signals/synthetic_NonstatMixture.mat');
+% load('../signals/synthetic_NonstatMixtureCrossingSameSpec.mat');
+Fs = 44100;
+
 [N,T] = size(z);
 
 %% SOBI estimation
@@ -24,7 +25,7 @@ eps3 = 0.1; % imaginary part threshold
 eps4 = 100; % real part threshold
 
 pp = 10; % subsampling
-nn = 2; % number of classes
+nn = N; % number of classes
 AQTF = BSS_QTF(z, pp, eps3, eps4, nn); % QTF BSS
 BQTF = inv(AQTF);
 
@@ -38,7 +39,8 @@ Dt = 200;
 
 Kmat = 200; % number of instants where we estimate the unmixing matrix
 vectau = floor(linspace(1,T-1,Kmat)); % corresponding instants
-eps_bss = 10; %0.01; %
+L_bss = 10; 
+% rBSS = 1e-7;
 
 wav_typ = 'sharp';
 wav_param = 500;
@@ -56,7 +58,7 @@ rAM = 1e-3;
 NbScalesS = 110;
 scalesS = 2.^(linspace(-1,7,NbScalesS));
 
-paramBSS = {scalesBSS,vectau,eps_bss};
+paramBSS = {scalesBSS,vectau,L_bss};
 paramWAV = {wav_typ,wav_param,wav_paramWP};
 paramWP = {scalesWP,0.05};
 paramAM = {'no AM'};
@@ -80,16 +82,16 @@ haty = nonstatunmixing(z,heapBoptim,vectau); % unmixing
 close all;
 t = linspace(0,(T-1)/Fs,T);
 nu0 = Fs/4;
-freqdisp = [16 8 4 2 1]; % Displayed frequencies in kHz
+freqdisp = [8 4 2 1 0.5]; % Displayed frequencies in kHz
 sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 
 figure; title('Sources and observations');
 for n=1:N
     Wy = cwt_JEFAS(y(n,:),scales,wav_typ,wav_param);
-    subplot(N,N,n); imagesc(t,log2(scales),abs(Wy)); yticks(sdisp); yticklabels(freqdisp);
+    subplot(2,N,n); imagesc(t,log2(scales),abs(Wy)); yticks(sdisp); yticklabels(freqdisp);
     ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
     Wz = cwt_JEFAS(z(n,:),scales,wav_typ,wav_param);
-    subplot(N,N,N+n); imagesc(t,log2(scales),abs(Wz)); yticks(sdisp); yticklabels(freqdisp);
+    subplot(2,N,N+n); imagesc(t,log2(scales),abs(Wz)); yticks(sdisp); yticklabels(freqdisp);
     xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end
 
@@ -125,6 +127,7 @@ for n=1:N
 end
 
 %% Performances
+[SDR0,SIR0] = bss_eval_sources(z,y); % no unmixing
 [SDRsobi,SIRsobi] = bss_eval_sources(ysobi,y); % SOBI
 [SDRpsobi,SIRpsobi] = bss_eval_sources(haty0,y); %p-SOBI
 [SDRqtf,SIRqtf] = bss_eval_sources(hatyqtf,y); % QTF-BSS
@@ -132,6 +135,7 @@ end
 
 % Amari index
 for k=1:Kmat
+   ind0(k) = amari(eye(N),heapA(:,:,vectau(k)));
    indJEFAS(k) = amari(heapBoptim(:,:,k),heapA(:,:,vectau(k)));
    indSOBI(k) = amari(Bsobi,heapA(:,:,vectau(k)));
    indQTF(k) = amari(BQTF,heapA(:,:,vectau(k)));
@@ -139,14 +143,14 @@ for k=1:Kmat
    indPSOBI(k) = amari(heap_Bpsobi(:,:,k2),heapA(:,:,vectau(k)));
 end
 
-fprintf('Index   |   SOBI  |  p-SOBI | QTF-BSS | JEFAS-BSS \n')
-fprintf('SIR     |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIRsobi),mean(SIRpsobi),mean(SIRqtf),mean(SIR))
-fprintf('SDR     |  %.2f  | %.2f  |  %.2f  |  %.2f\n', mean(SDRsobi),mean(SDRpsobi),mean(SDRqtf),mean(SDR))
-fprintf('Amari   |  %.2f  |  %.2f  |  %.2f  | %.2f\n', mean(indSOBI),mean(indPSOBI),mean(indQTF),mean(indJEFAS))
+fprintf('Index   | No unmixing |   SOBI  |  p-SOBI | QTF-BSS | JEFAS-BSS \n')
+fprintf('SIR     |    %.2f    |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIR0), mean(SIRsobi), mean(SIRpsobi),mean(SIRqtf),mean(SIR))
+fprintf('SDR     |    %.2f    |  %.2f  | %.2f  |  %.2f  |  %.2f\n', mean(SDR0), mean(SDRsobi),mean(SDRpsobi),mean(SDRqtf),mean(SDR))
+fprintf('Amari   |    %.2f    |  %.2f  |  %.2f  |  %.2f  | %.2f\n', mean(ind0), mean(indSOBI),mean(indPSOBI),mean(indQTF),mean(indJEFAS))
 
 figure;subplot(2,1,2);
-plot(t(vectau),indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
-xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('SOBI','p-SOBI','QTF-BSS','JEFAS-BSS'); set(gca,'fontsize',24);
+plot(t(vectau),ind0,t(vectau),indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
+xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('no unmixing','SOBI','p-SOBI','QTF-BSS','JEFAS-BSS'); set(gca,'fontsize',24);
 %% Convergence
 
 subplot(2,1,1);

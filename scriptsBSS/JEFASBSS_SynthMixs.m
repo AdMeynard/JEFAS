@@ -3,7 +3,8 @@ addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-BSS'));
 
-load('../signals/synthetic_NonstatMixtures.mat'); Fs = 44100;
+load('../signals/synthetic_NonstatMixtures3.mat'); 
+Fs = 44100;
 
 K = 20; % Number of synthetic signals
 for l = 1:K
@@ -39,7 +40,7 @@ for l = 1:K
     eps4 = 100; % real part threshold
 
     pp = 10; % subsampling
-    nn = 2; % number of classes
+    nn = N; % number of classes
     AQTF = BSS_QTF(z, pp, eps3, eps4, nn); % QTF BSS
     BQTF = inv(AQTF);
 
@@ -52,32 +53,34 @@ for l = 1:K
 
     Kmat = 200; % number of instants where we estimate the unmixing matrix
     vectau = floor(linspace(1,T-1,Kmat)); % corresponding instants
-    eps_bss = 0.5;
-    rBSS = 1e-7; %1e-5
+    L_bss = 10;
+%     rBSS = 1e-7; %1e-5
 
     wav_typ = 'sharp';
     wav_param = 500;
     wav_paramWP = 20;
 
     NbScales = 100;
-    scales = 2.^(linspace(-1,4,NbScales));
-    subrate = 8; % subsampling step for the scales to ensure the covariance invertibility
-    scalesWP = scales(1:subrate:end);
+    scales = 2.^(linspace(0,5,NbScales));
+    subrateWP = 8; % subsampling step for the scales to ensure the covariance invertibility
+    scalesWP = scales(1:subrateWP:end);
+    subrateBSS = 2;
+    scalesBSS = scales(1:subrateBSS:end);
 
     rAM = 1e-3;
 
     NbScalesS = 110;
     scalesS = 2.^(linspace(-1,7,NbScalesS));
 
-    paramBSS = {scales,vectau,eps_bss,rBSS};
+    paramBSS = {scales,vectau,L_bss};
     paramWAV = {wav_typ,wav_param,wav_paramWP};
-    paramWP = {scalesWP};
-    % paramAM = {'no AM'};
-    paramAM = {'AM',scales,rAM};
+    paramWP = {scalesWP,0.05};
+    paramAM = {'no AM'};
+%     paramAM = {'AM',scales,rAM};
     paramS = {scalesS};
 
     stop_crit = 5e-3;
-    stopSIR = 70; % stopping criterion
+    stopSIR = 75; % stopping criterion
 
     init_meth = 'sobi';
     [heapB_init, vectau_init] = JEFASBSSinit(z, init_meth, Dtp);
@@ -119,7 +122,7 @@ fprintf('Algorithm ||      SIR     ||  Amari index \n')
 fprintf('          ||  Mean |  SD  ||  Mean |  SD   \n')
 fprintf('SOBI      || %.2f | %.2f || %.2f | %.2f\n', mean(SIRsobiK),std(SIRsobiK),mean(indSOBIK),std(indSOBIK))
 fprintf('p-SOBI    ||  %.2f | %.2f || %.2f | %.2f\n', mean(SIRpsobiK),std(SIRpsobiK),mean(indPSOBIK),std(indPSOBIK))
-fprintf('QTF-BSS   || %.2f | %.2f || %.2f | %.2f\n', mean(SIRqtfK),std(SIRqtfK),mean(indQTFK),std(indQTFK))
+fprintf('QTF-BSS   ||  %.2f | %.2f || %.2f | %.2f\n', mean(SIRqtfK),std(SIRqtfK),mean(indQTFK),std(indQTFK))
 fprintf('JEFAS-BSS || %.2f | %.2f ||%.2f | %.2f\n', mean(SIRK),std(SIRK),mean(indJEFASK),std(indJEFASK))
 
 

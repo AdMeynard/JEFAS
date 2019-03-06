@@ -4,7 +4,7 @@ clear all; close all;
 K = 1;
 for k= 1:K
 %% Stationary sources 
-    N = 2;
+    N = 3;
     T = 44100;
     x = randn(T,N);
 
@@ -14,22 +14,25 @@ for k= 1:K
     Sx1 = 4*Sx11 + Sx12;
     
     [x21,Sx21] = BandPassApprox(x(:,2),floor(0.025*T),floor(0.03*T));
-    [x22,Sx22] = BandPassApprox(x(:,1),floor(0.055*T),floor(0.075*T));
-    [x23,Sx23] = BandPassApprox(x(:,1),floor(0.10*T),floor(0.105*T));
+    [x22,Sx22] = BandPassApprox(x(:,2),floor(0.055*T),floor(0.075*T));
+    [x23,Sx23] = BandPassApprox(x(:,2),floor(0.10*T),floor(0.105*T));
     x2 = x21 + x22 + 2*x23;
     Sx2 = Sx21 + Sx22 + 4*Sx23;
+    
+    [x3,Sx3] = BandPassApprox(x(:,3),floor(0.035*T),floor(0.045*T));
 
-    Sx = [Sx1'; Sx2'];
+    Sx = [Sx1'; Sx2'; Sx3'];
 
     %% Time warpings
 
     [y1,~,dgamma1] = chirpwarp(x1,1);
 %     [y2,~,dgamma2] = chirpwarp(x2,-2);
     [y2,~,dgamma2] = sinewarp(x2,1,0.1);
+    [y3,~,dgamma3] = chirpwarp(x3,-0.5);
 
     sigmay = 5e-2;
-    y = [y1';y2'] + sigmay*randn(N,T);
-    dgamma = [dgamma1'; dgamma2'];
+    y = [y1';y2';y3'] + sigmay*randn(N,T);
+    dgamma = [dgamma1'; dgamma2'; dgamma3'];
 
     %% Mixing matrix
 
@@ -37,7 +40,7 @@ for k= 1:K
 
     switch typmel
         case 'stat'
-            A = [1 0.75; -0.5 1];
+            A = [1 0.75 -0.1; -0.5 1 0.3;-0.5 1 1];
             B = inv(A);
             z = A*y;
             for t=1:T
@@ -50,24 +53,25 @@ for k= 1:K
             heapB = zeros(N,N,T);
             z = zeros(N,T);
             for t=1:T
-                A = [1+0.3*cos(5*pi*t/T) 0.75+0.4*cos(3*pi*t/T);
-                    -0.5+0.5*cos(11*pi*t/T) 1+0.1*cos(8*pi*t/T)];
+                A = [1+0.3*cos(5*pi*t/T) 0.75+0.4*cos(3*pi*t/T) 0.6+0.1*cos(2*pi*t/T);
+                    -0.5+0.5*cos(11*pi*t/T) 1+0.1*cos(8*pi*t/T) -0.8+0.3*cos(5*pi*t/T);
+                    -0.5+0.2*cos(1*pi*t/T) 0.5+0.1*cos(2*pi*t/T) 0.2+0.1*cos(3*pi*t/T)];
                 B = inv(A);
                 z(:,t) = A*y(:,t);
                 c(t)=cond(A);
                 heapA(:,:,t) = A;
                 heapB(:,:,t) = B;
             end
-            figure;
-            plot(c);
-            title('A Condition number');
-            figure;
-            b11=heapB(1,1,:); b11 = b11(:);
-            b12=heapB(1,2,:); b12 = b12(:);
-            b21=heapB(2,1,:); b21 = b21(:);
-            b22=heapB(2,2,:); b22 = b22(:);
-            plot(1:T,b11,'b',1:T,b12,'k',1:T,b21,'r',1:T,b22,'g');
-            title('B entries');
+%             figure;
+%             plot(c);
+%             title('A Condition number');
+%             figure;
+%             b11=heapB(1,1,:); b11 = b11(:);
+%             b12=heapB(1,2,:); b12 = b12(:);
+%             b21=heapB(2,1,:); b21 = b21(:);
+%             b22=heapB(2,2,:); b22 = b22(:);
+%             plot(1:T,b11,'b',1:T,b12,'k',1:T,b21,'r',1:T,b22,'g');
+%             title('B entries');
             
             yK(:,:,k) = y;
             zK(:,:,k) = z;
@@ -96,10 +100,9 @@ sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 figure; title('Sources and observations');
 for n=1:N
     Wy = cwt_JEFAS(y(n,:),scales,wav_typ,wav_param);
-    subplot(N,N,n); imagesc(t,log2(scales),abs(Wy)); yticks(sdisp); yticklabels(freqdisp);
+    subplot(2,N,n); imagesc(t,log2(scales),abs(Wy)); yticks(sdisp); yticklabels(freqdisp);
     ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
     Wz = cwt_JEFAS(z(n,:),scales,wav_typ,wav_param);
-    subplot(N,N,N+n); imagesc(t,log2(scales),abs(Wz)); yticks(sdisp); yticklabels(freqdisp);
+    subplot(2,N,N+n); imagesc(t,log2(scales),abs(Wz)); yticks(sdisp); yticklabels(freqdisp);
     xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end
-

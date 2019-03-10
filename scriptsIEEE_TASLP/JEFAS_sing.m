@@ -30,6 +30,7 @@ T = length(y);
 %% Joint estimation
 
 Dt = 100; % temporal subsampling for the theta estimator
+ratio = 0.05; % activity threshold
 dgamma0 = ones(1,T);
 a0 = ones(1,T);
 
@@ -54,9 +55,9 @@ paramWAV = {wav_typ,wav_param,wav_paramWP};
 paramAM = {'AM',scalesAM,r}; % AM no noise
 paramWP = {scalesWP};
 paramS = {scalesS};
+
 tic;
-% [aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
-[aML, dgammaML, Sx, stop_crit] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+[aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,ratio,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 %% Analysis: stationarization (CWT and spectrum)

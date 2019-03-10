@@ -31,6 +31,7 @@ T = length(y);
 %% Joint estimation
 
 Dt = 400; % temporal subsampling for the deformation estimation
+ratio = 0.05; % activity threshold
 dgamma0 = ones(1,T); % gamma'(t) initialization
 a0 = ones(1,T); % a(t) initialization
 
@@ -56,7 +57,7 @@ paramAM = {'AM',scalesAM,r}; % model with time warping and amplitude modulation
 paramS = {scalesS};
 
 tic;
-[aML, dgammaML, Sx, evol_crit] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,ratio,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 

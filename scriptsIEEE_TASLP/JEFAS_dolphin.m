@@ -55,7 +55,8 @@ paramS = {scalesS};
 
 paramAM = {'AM',scalesAM,r};
 tic;
-[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+% [aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+[aML, dgammaML, Sx, evol_crit] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 

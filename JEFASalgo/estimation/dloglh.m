@@ -37,13 +37,13 @@ function [g,dg] = dloglh(theta,U,M_psi,M_tmpdpsi,S)
 switch nargout
     case 1
         C = calc_cov(M_psi,S,theta); % estimated covariance matrix
-        g = logdet(C) + real(trace(U'*(C\U)))/M;
+        g = real(logdet(C)) + real(trace(U'*(C\U)))/M;
         
     case 2
         [C,dC] = calc_dcov(M_psi,M_tmpdpsi,S,theta); % estimated covariance matrix and its derivative
         v = C\U;
         CdC = C\dC;
-        g = logdet(C) + real(trace(U'*v))/M;
+        g = real(logdet(C)) + real(trace(U'*v))/M;
         dg = trace(CdC) - real(trace(U'*CdC*v))/M;
 end
 

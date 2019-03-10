@@ -1,9 +1,11 @@
-function thetaAM = estim_AM(thetaWP,Wy,S,r,scales,wav_typ,wav_param,Dt)
+function thetaAM = estim_AM(thetaWP,times,act,Wy,S,r,scales,wav_typ,wav_param,Dt)
 %ESTIM_AM	Maximum likelihood estimation of the AM parameter
 % usage:	thetaAM = estim_AM(thetaWP,Wy,S,r,scales,wav_typ,wav_param,Dt)
 %
 % Input:
 %   thetaWP: guess of the time warping parameter
+%   times: vector of times for theta estimation
+%   act: instants where the signal is active
 %   Wy: wavelet transform of the signal
 %   S: current guess of the spectrum
 %   r: regularization parameter
@@ -40,8 +42,10 @@ Nf = length(S);
 M_psi = bas_calc_cov(scales,wav_typ,wav_param,Nf);
 n = 1;
 thetaAM = zeros(1,N);
-for t=1:Dt:Tf
-    U = Wy(:,max(1,(t+1-Dt/2)):min((t+Dt/2),Tf));
+for t=times
+    inst = max(1,(t+1-Dt/2)):min((t+Dt/2),Tf);
+    inst = inst(act(inst)==1);
+    U = Wy(:,inst);
     [~,Mu] = size(U);
     C = calc_cov(M_psi,S,thetaWP(n));
     C = (1-r)*C + r*eye(Ms); % regularization

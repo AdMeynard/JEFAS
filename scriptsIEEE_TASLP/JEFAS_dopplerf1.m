@@ -58,14 +58,16 @@ paramS = {scalesS};
 % AM + WP estimation
 fprintf('\nJoint AM and Time Warping estimation: \n\n')
 tic;
-[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+% [aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+[aML, dgammaML, Sx, evol_crit] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 % WP estimation only
 fprintf('\nTime Warping estimation only (model without AM): \n\n')
 paramAM2 = {'no AM'}; % model with time warping only
 tic;
-[aML2, dgammaML2, Sx2, evol_crit2] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM2,paramS,stop_crit);
+% [aML2, dgammaML2, Sx2, evol_crit2] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM2,paramS,stop_crit);
+[aML2, dgammaML2, Sx2, evol_crit2] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM2,paramS,stop_crit);
 toc;
 
 %% Wavelet transforms

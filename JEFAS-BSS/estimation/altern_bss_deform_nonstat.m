@@ -64,22 +64,18 @@ wav_param = paramWAV{2};
 
 scalesBSS = paramBSS{1};
 vectau = paramBSS{2};
-% epsBSS = paramBSS{3};
 L = paramBSS{3};
 
+ratio = 0; % signals active everytime
+
 % fmincon parameters
-nonlcon = @norm_row;
+% nonlcon = @norm_row;
 
 if nargin == 13
     Nit = varargin{1};
-%     itMAX = varargin{2};
-%     stop0 = varargin{3};
 else
     Nit = 10;
-%     itMAX = 100;
-%     stop0 = 1e-5;
 end
-% options = optimoptions('fmincon','Algorithm','interior-point','MaxIterations',itMAX,'StepTolerance',stop0,'Display','off');
 
 % Compute the CWT of the observations:
 for n=1:N
@@ -111,7 +107,7 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     aprec = a;
     for n=1:N
         y = haty(n,:); % estimated source n
-        [aML,dgammaML, Sxn] = estim_altern(y,Dt,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,0);
+        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,0);
         dgamma(n,:) = dgammaML;
         a(n,:) = aML;
         Sx(n,:) = Sxn;

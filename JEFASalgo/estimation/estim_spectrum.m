@@ -1,11 +1,11 @@
-function hatSx = estim_spectrum(Wy,scales,Dt,thetaWP,thetaAM,Nf,sigmax)
+function hatSx = estim_spectrum(Wy,scales,times,thetaWP,thetaAM,Nf,sigmax)
 %ESTIM_SPECTRUM:  Spectrum estimation
 % usage:	hatSx = stat_from_cwt(Wy,scales,Dt,thetaWP,thetaAM,Nf,sigmax)
 %
 % Input:
 %   Wy: wavelet transform of the signal
 %   scales: scales on which the CWT is calculated
-%   Dt: subsampling step for theta estimation
+%   times: vector of time for theta estimation
 %   thetaWP: time warping estimator
 %   thetaAM: Amplitude modulation estimator
 %   Nf : number of discrete frequencies
@@ -42,7 +42,7 @@ mWy = abs(Wy).^2; % scalogram of y
 
 mWx = zeros(Ms,N);
 n = 1;
-for t = 1:Dt:T
+for t = times
     scalesX = scales_log + thetaWP(n);
     mWx(:,n) = interp1(scalesX,mWy(:,t),scales_log,'linear',0);
     n = n+1;

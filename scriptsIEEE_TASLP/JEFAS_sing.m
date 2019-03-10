@@ -55,7 +55,8 @@ paramAM = {'AM',scalesAM,r}; % AM no noise
 paramWP = {scalesWP};
 paramS = {scalesS};
 tic;
-[aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+% [aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+[aML, dgammaML, Sx, stop_crit] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 %% Analysis: stationarization (CWT and spectrum)

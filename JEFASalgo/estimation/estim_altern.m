@@ -1,10 +1,11 @@
-function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,varargin)
+function [aML,dgammaML, Sx, crit] = estim_altern(y,Dt,ratio,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,varargin)
 %ESTIM_ALTERN	Alternate estimation of the deformations and the spectrum (JEFAS)
 % usage:	[aML,dgammaML, Sx, crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit,disp)
 %
 % Input:
 %   y: signal to analyze
 %   Dt: subsampling step for estimations (integer >=1)
+%   ratio: activity threshold for JEFAS estimation
 %   dgamma0: initial estimation of gamma'(t)
 %   a0: initial estimation of a(t)
 %   paramWAV: cell of three entries: {wav_typ,wav_param,wav_paramWP} where
@@ -60,7 +61,7 @@ wav_typ = paramWAV{1};
 wav_param = paramWAV{2};
 wav_paramWP = paramWAV{3};
 
-%% Time warping initialization and parameters
+%% Time warping parameters
 scalesWP = paramWP{1};
 WyWP = cwt_JEFAS(y,scalesWP,wav_typ,wav_paramWP); % Wavelet transform for thetaWP estimation
 
@@ -84,9 +85,7 @@ else
     error('paramWP must contain 1, 2 or 3 entries')
 end
 
-thetaWP = log2(dgamma0(1:Dt:end)); % Initialize thetaWP
-
-%% Amplitude modulation initialization and parameters
+%% Amplitude modulation parameters
 AMopt = paramAM{1};
 
 if strcmpi(AMopt,'AM')
@@ -98,9 +97,7 @@ elseif ~strcmpi(AMopt,'no AM')
     error('The first entry of paramAM must be ''no AM'' or ''AM''.');
 end
 
-thetaAM = a0(1:Dt:end).^2; % Initialize thetaAM
-
-%% Spectrum initialization and parameters
+%% Spectrum parameters
 scalesS = paramS{1};
 WyS = cwt_JEFAS(y,scalesS,wav_typ,wav_param); % Wavelet transform for Sx estimation
 
@@ -111,7 +108,18 @@ else
 end
 
 sigmax = var(y);
-Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax); % initialize Sx
+
+%% Active time instants and initializations
+act = sigDetection(y,ratio,scalesWP,wav_typ,wav_param);
+timesAct = find( subplus( diff(act) ) );
+
+times = 1:Dt:T;
+times = [times(act(times)==1) timesAct];
+times = sort(times);
+
+thetaWP = log2(dgamma0(times)); % Initialize thetaWP
+thetaAM = a0(times).^2; % Initialize thetaAM
+Sx = estim_spectrum(WyS,scalesS,times,thetaWP,thetaAM,Nf,sigmax); % initialize Sx
 
 %% Alternate algorithm
 if isempty(varargin)
@@ -120,7 +128,7 @@ else
     Nit = varargin{1};
 end
 
-if (nargin==11)&&(varargin{2}==0)
+if (nargin==12)&&(varargin{2}==0)
     disp = 0; % disable evolution criterion display
 else
     disp = 1; % enable evolution criterion display
@@ -138,17 +146,17 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     % Step 1: Time warping estimation
     thetaWP_old = thetaWP;
     thetaWP0 = thetaWP_old(1);
-    thetaWP = estim_WP(thetaWP0,thetaAM,WyWP,scalesWP,Sx,wav_typ,wav_paramWP,itWP,stopWP,Dt,dmaxWP);
+    thetaWP = estim_WP(thetaWP0,thetaAM,times,act,WyWP,scalesWP,Sx,wav_typ,wav_paramWP,itWP,stopWP,Dt,dmaxWP);
     
     % Step 2: AM estimation
     thetaAM_old = thetaAM;
     if strcmpi(AMopt,'AM')
-        thetaAM = estim_AM(thetaWP,WyAM,Sx,r,scalesAM,wav_typ,wav_param,Dt);
+        thetaAM = estim_AM(thetaWP,times,act,WyAM,Sx,r,scalesAM,wav_typ,wav_param,Dt);
     end
       
     % Step 3: Spectrum estimation
     Sx_old = Sx;
-    Sx = estim_spectrum(WyS,scalesS,Dt,thetaWP,thetaAM,Nf,sigmax);
+    Sx = estim_spectrum(WyS,scalesS,times,thetaWP,thetaAM,Nf,sigmax);
     
     % Stopping criterion evolution
     errWP = sum((thetaWP(tm:tM) - thetaWP_old(tm:tM)).^2)/sum(thetaWP_old(tm:tM).^2);
@@ -166,6 +174,6 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     n = n+1;
 end
 
-aML = interp1(1:Dt:T,sqrt(abs(thetaAM)),1:T,'linear',1);
-dgammaML = interp1(1:Dt:T,2.^thetaWP,1:T,'linear',1);
+aML = interp1(times,sqrt(abs(thetaAM)),1:T,'linear',1);
+dgammaML = interp1(times,2.^thetaWP,1:T,'linear',1);
 end

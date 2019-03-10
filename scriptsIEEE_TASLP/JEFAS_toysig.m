@@ -61,7 +61,8 @@ paramWP = {scalesWP,dmaxWP,itWP,stopWP};
 paramS = {scalesS,Nf};
 
 tic;
-[aML, dgammaML, Sxest, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
+% [aML, dgammaML, Sxest, evol_crit] = estim_altern(y,Dt,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
+[aML, dgammaML, Sxest, evol_crit] = estim_alternNEW(y,Dt,0.05,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,Nit);
 toc;
 
 %% Deformations estimation

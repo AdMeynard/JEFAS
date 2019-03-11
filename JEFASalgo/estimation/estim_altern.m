@@ -174,6 +174,6 @@ while (n<=Nit)&&((errWP>stop_crit)||(errAM>stop_crit))
     n = n+1;
 end
 
-aML = interp1(times,sqrt(abs(thetaAM)),1:T,'linear',1);
-dgammaML = interp1(times,2.^thetaWP,1:T,'linear',1);
+aML = interp1(times,sqrt(abs(thetaAM)),1:T,'linear',1).*act + (1-act); % interpolate where the signal is active
+dgammaML = interp1(times,2.^thetaWP,1:T,'linear',1).*act + (1-act);
 end

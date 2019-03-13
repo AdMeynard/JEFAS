@@ -91,25 +91,22 @@ set(gca,'fontsize',18);
 
 
 % Wavelet transforms:
-scalesplot = 2.^(linspace(1,6.2,250));
-Wy = cwt_JEFAS(y,scalesplot,wav_typ,wav_param);
-Wz = cwt_JEFAS(z,scalesplot,wav_typ,wav_param);
-
-xi0 = Fs/4; % wavelet central frequency
-freqdisp = [5 4 3 2 1 0.5 0.2]; % Displayed frequencies in kHz
-sdisp = log2(xi0./(1e3*freqdisp)); % corresponding log-scales
+fmax = 5000;
+fmin = 150;
+Ms = 250;
+freqdisp = [5 4 3 2 1 0.5 0.2]*1e3; % Displayed frequencies in kHz
 
 figure; colormap(flipud(gray));
 subplot('Position', [0.05 0.07, 0.45, 0.7]);
-imagesc(t,log2(scalesplot),log1p(abs(Wy)/0.1));
+display_cwt_JEFAS(y,Fs,fmin,fmax,Ms,wav_typ,wav_param,freqdisp);
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
-yticks(sdisp); yticklabels(freqdisp);
+yticklabels(freqdisp/1e3);
 title('Original signal');
 set(gca,'fontsize',18);
 
 subplot('Position', [0.54 0.07, 0.45, 0.7]);
-imagesc(t,log2(scalesplot),log1p(abs(Wz)/0.1));
+display_cwt_JEFAS(y,Fs,fmin,fmax,Ms,wav_typ,wav_param,freqdisp);
 xlabel('Time (s)'); %ylabel('Frequency (kHz)');
-yticks(sdisp); yticklabels(freqdisp);
+yticklabels(freqdisp/1e3);
 title('Stationarized signal');
 set(gca,'fontsize',18);

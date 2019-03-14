@@ -1,5 +1,5 @@
 function W = cwt_JEFAS(sig,scales,wav_typ,wav_par)
-% CWT:	Continuous wavelet transform with analytic derivative of Gaussian
+% CWT_JEFAS:	Continuous wavelet transform with analytic derivative of Gaussian
 %       wavelet or the sharp wavelet
 % usage:	W = cwt_JEFAS(sig,scales,wav_typ,wav_par)
 %

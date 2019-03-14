@@ -1,5 +1,5 @@
 function [W,t,s] = display_cwt_JEFAS(sig,Fs,fmin,fmax,Ms,wav_typ,wav_par,varargin)
-% CWT:	Display the continuous wavelet transform with analytic derivative of Gaussian
+% display_cwt_JEFAS:	Display the continuous wavelet transform with analytic derivative of Gaussian
 %       wavelet or the sharp wavelet
 % usage:	W = display_cwt_JEFAS(sig,Fs,fmin,fmax,Ms,wav_typ,wav_par,freqtick)
 %   /!\ If you do not want to display the CWT, replace freqtick by a 0 argument

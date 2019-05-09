@@ -37,7 +37,7 @@ function heapBoptim = NEWTON_estim_mixingmatrix_nonstat(A0,Wz,vectau,M_psi,Sx,dg
 Kmat = length(vectau);
 
 heapBoptim = zeros(N,N,Kmat);
-a = A0(:);
+a = A0(:); % vectorized mixing matrix
 A = A0;
 
 % errmat = eps_bss*ones(N); % prevent brutal variations of the unmixing matrix
@@ -57,14 +57,14 @@ for tau0 = vectau
         aold = a;
         Aold = A;
         
-        J = zeros(N^2, N^2);
+        J = zeros(N^2, N^2); % Jacobian matrix
         for n=1:N
             Mna = M(:,:,n) \ Aold ;
             ga( ((n-1)*N+1) : n*N ) = Aold(:,n).' * Mna - double(delta==n) ;
             J( ((n-1)*N+1) : n*N, ((n-1)*N+1) : n*N ) = Mna.' ;
             J( ((n-1)*N+1) : n*N, : )  = J( ((n-1)*N+1) : n*N, : ) + kron( eye(N), Mna(:,n).' );
         end  
-        a = aold - J\ga(:) ;
+        a = aold - J\ga(:) ; % Newton step
         A = reshape(a,N,N);
     end
     heapBoptim(:,:,k) = inv(A);

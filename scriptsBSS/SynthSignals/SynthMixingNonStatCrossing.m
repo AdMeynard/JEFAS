@@ -1,7 +1,7 @@
 addpath('../../cwt');
 clear all; close all;
 
-K = 1;
+K = 20;
 for k= 1:K
 %% Stationary sources 
     N = 3;

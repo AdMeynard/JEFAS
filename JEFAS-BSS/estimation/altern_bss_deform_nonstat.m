@@ -107,7 +107,7 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     aprec = a;
     for n=1:N
         y = haty(n,:); % estimated source n
-        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,0);
+        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,1);
         dgamma(n,:) = dgammaML;
         a(n,:) = aML;
         Sx(n,:) = Sxn;

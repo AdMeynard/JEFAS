@@ -3,7 +3,8 @@ addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-BSS'));
 
-load('../signals/synthetic_NonstatMixtures3.mat'); 
+load('../signals/synthetic_NonstatMixtures.mat'); 
+
 Fs = 44100;
 
 K = 20; % Number of synthetic signals
@@ -110,6 +111,10 @@ for l = 1:K
     SIRpsobiK(l) = mean(SIRpsobi);
     SIRqtfK(l) = mean(SIRqtf);
     SIRK(l) = mean(SIR);
+    SDRsobiK(l) = mean(SDRsobi);
+    SDRpsobiK(l) = mean(SDRpsobi);
+    SDRqtfK(l) = mean(SDRqtf);
+    SDRK(l) = mean(SDR);
     indSOBIK(l) = mean(indSOBI);
     indPSOBIK(l) = mean(indPSOBI);
     indQTFK(l) = mean(indQTF);
@@ -118,11 +123,11 @@ for l = 1:K
 
 end
 
-fprintf('Algorithm ||      SIR     ||  Amari index \n')
-fprintf('          ||  Mean |  SD  ||  Mean |  SD   \n')
-fprintf('SOBI      || %.2f | %.2f || %.2f | %.2f\n', mean(SIRsobiK),std(SIRsobiK),mean(indSOBIK),std(indSOBIK))
-fprintf('p-SOBI    ||  %.2f | %.2f || %.2f | %.2f\n', mean(SIRpsobiK),std(SIRpsobiK),mean(indPSOBIK),std(indPSOBIK))
-fprintf('QTF-BSS   ||  %.2f | %.2f || %.2f | %.2f\n', mean(SIRqtfK),std(SIRqtfK),mean(indQTFK),std(indQTFK))
-fprintf('JEFAS-BSS || %.2f | %.2f ||%.2f | %.2f\n', mean(SIRK),std(SIRK),mean(indJEFASK),std(indJEFASK))
+fprintf('Algorithm ||      SDR      ||      SIR     ||  Amari index \n')
+fprintf('          ||  Mean  |  SD  ||  Mean |  SD  ||  Mean |  SD   \n')
+fprintf('SOBI      ||  %.2f  | %.2f || %.2f | %.2f || %.2f | %.2f\n', mean(SDRsobiK),std(SDRsobiK),mean(SIRsobiK),std(SIRsobiK),mean(indSOBIK),std(indSOBIK))
+fprintf('p-SOBI    ||  %.2f | %.2f ||  %.2f | %.2f || %.2f | %.2f\n', mean(SDRpsobiK),std(SDRpsobiK),mean(SIRpsobiK),std(SIRpsobiK),mean(indPSOBIK),std(indPSOBIK))
+fprintf('QTF-BSS   ||  %.2f | %.2f ||  %.2f | %.2f || %.2f | %.2f\n', mean(SDRqtfK),std(SDRqtfK),mean(SIRqtfK),std(SIRqtfK),mean(indQTFK),std(indQTFK))
+fprintf('JEFAS-BSS ||  %.2f | %.2f || %.2f | %.2f ||%.2f | %.2f\n', mean(SDRK),std(SDRK),mean(SIRK),std(SIRK),mean(indJEFASK),std(indJEFASK))
 
 

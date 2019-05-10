@@ -3,7 +3,7 @@ addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-BSS'));
 
-load('../signals/sounds_NonstatMixture.mat'); Fs = 44100;
+load('../signals/sound_Mixture.mat');
 [N,T] = size(z);
 
 %% SOBI estimation
@@ -17,46 +17,37 @@ vectauns = 1:Dtp:T;
 [heap_Apsobi, heap_Bpsobi] = psobi(z,vectauns);
 haty0 = nonstatunmixing(z,heap_Bpsobi,vectauns);
 
-%% QTF-BSS estimation
-% eps3 = 0.1; % imaginary part threshold
-% eps4 = 100; % real part threshold
-% 
-% pp = 10; % subsampling
-% nn = 2; % number of classes
-% AQTF = BSS_QTF(z, pp, eps3, eps4, nn); % QTF BSS
-% BQTF = inv(AQTF);
-% 
-% hatyqtf = BQTF*z;
-
 %% JEFAS-BSS estimation
 
 dgamma0 = ones(N,T);
 
-Dt = 200;
+Dt = 500;
 
-Kmat = 200; % number of instants where we estimate the unmixing matrix
+Kmat = 300; % number of instants where we estimate the unmixing matrix
 vectau = floor(linspace(1,T-1,Kmat)); % corresponding instants
 eps_bss = 10; %0.01; %
 
 wav_typ = 'sharp';
-wav_param = 500;
+wav_param = 1000;
 wav_paramWP = 20;
 
-NbScales = 100;
-scales = 2.^(linspace(1,6,NbScales));
-subrateWP = 8; % subsampling step for the scales to ensure the covariance invertibility
+NbScales = 125;
+scales = 2.^(linspace(1,5.5,NbScales));
+subrateWP = 3; % subsampling step for the scales to ensure the covariance invertibility
 scalesWP = scales(1:subrateWP:end);
 subrateBSS = 2;
 scalesBSS = scales(1:subrateBSS:end);
 
-rAM = 1e-3;
+rAM = 1e-4;
+
+L_bss = 10; % nb it newton
 
 NbScalesS = 110;
 scalesS = 2.^(linspace(-1,7,NbScalesS));
 
-paramBSS = {scalesBSS,vectau,eps_bss};
+paramBSS = {scalesBSS,vectau,L_bss};
 paramWAV = {wav_typ,wav_param,wav_paramWP};
-paramWP = {scalesWP,0.05};
+paramWP = {scalesWP,0.1};
 paramAM = {'no AM'};
 % paramAM = {'AM',scales,rAM};
 paramS = {scalesS};
@@ -64,11 +55,13 @@ paramS = {scalesS};
 stop_crit = 5e-3;
 stopSIR = 75; % stopping criterion
 
+Nit = 7;
+
 init_meth = 'sobi';
 [heapB_init, vectau_init] = JEFASBSSinit(z, init_meth, Dtp);
 
 tic;
-[heapBoptim,dgammaML,aML,SxML,convergeSIR] = altern_bss_deform_nonstat(z,heapB_init,vectau_init,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,stopSIR);
+[heapBoptim,dgammaML,aML,SxML,convergeSIR] = altern_bss_deform_nonstat(z,heapB_init,vectau_init,dgamma0,Dt,paramBSS,paramWAV,paramWP,paramAM,paramS,stop_crit,stopSIR,Nit);
 toc;
 
 haty = nonstatunmixing(z,heapBoptim,vectau); % unmixing
@@ -78,7 +71,7 @@ haty = nonstatunmixing(z,heapBoptim,vectau); % unmixing
 close all;
 t = linspace(0,(T-1)/Fs,T);
 nu0 = Fs/4;
-freqdisp = [16 8 4 2 1]; % Displayed frequencies in kHz
+freqdisp = [16 8 4 2 1 0.5 0.25]; % Displayed frequencies in kHz
 sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 
 figure; title('Sources and observations');
@@ -103,8 +96,8 @@ end
 
 figure; title('Estimated Time warpings');
 for n=1:N
-    subplot(1,N,n); plot(t,dgammaML(stablematch(n),:),'r','linewidth',2);
-    xlabel('Time (s)'); ylabel('\gamma''(t)'); grid on; legend('Estimated function'); set(gca,'fontsize',18);
+    hold on; plot(t,dgammaML(stablematch(n),:),'linewidth',2);
+    xlabel('Time (s)'); ylabel('\gamma''(t)'); grid on; legend('Estimated wolf 1','Estimated wolf 2'); set(gca,'fontsize',18);
 end
 
 figure; title('Estimated spectra');
@@ -115,11 +108,11 @@ for n=1:N
     Sxw = estim_spec(hatx,Nff,alpha);
     freq = linspace(0,Fs,Nff);
     freq2 = linspace(0,(T-1)*Fs/T,Fs);
-    subplot(1,N,n); plot(freq/1e3,log10(Sxw),'r','linewidth',2); 
-    xlabel('Frequency (kHz)'); ylabel('S_x'); axis tight; grid on;
+    hold on; plot(freq/1e3,log10(Sxw),'linewidth',2); 
+    xlabel('Frequency (kHz)'); ylabel('Sprectra'); axis tight; grid on;
     xlim([0 5]); 
 %     ylim([-5.1 1]); yticks([-5 -4 -3 -2 -1 0]); yticklabels({'10^{-5}' '10^{-4}' '10^{-3}' '10^{-2}' '10^{-1}' '10^{0}'}); 
-    legend('Estimated spectrum'); set(gca,'fontsize',18);
+    legend('Source 1','Source 2'); set(gca,'fontsize',18);
 end
 
 %% Performances

@@ -9,10 +9,22 @@ Fs = 44100;
 
 [No,T] = size(z);
 
-Delta = 0.01*T;
-thres = 0.5;
-N = estimSourcesNb(z,Delta,thres);
 
+%% Source number estimation
+thres = 0.5;
+winlength = round(logspace(-3.5, -0.3, 10)*T);
+k = 1;
+for Delta=winlength
+    [~,vecSV] = estimSourcesNb(z,Delta,thres);
+    sv = mean(vecSV,2);
+    rap(k) = sv(No)/sv(No-1);
+    k = k+1;
+end
+
+semilogx(winlength/Fs,rap,'-bo','linewidth',2); axis tight; grid on;
+xlabel('Window Length (s)'); ylabel('Singular values ratio'); set(gca,'FontSize',18)
+
+N = estimSourcesNb(z,round(0.01*T),thres);
 %% JEFAS-BSS estimation
 
 dgamma0 = ones(N,T);

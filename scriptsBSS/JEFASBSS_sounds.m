@@ -17,6 +17,17 @@ vectauns = 1:Dtp:T;
 [heap_Apsobi, heap_Bpsobi] = psobi(z,vectauns);
 haty0 = nonstatunmixing(z,heap_Bpsobi,vectauns);
 
+%% QTF-BSS estimation
+eps3 = 0.1; % imaginary part threshold
+eps4 = 100; % real part threshold
+
+pp = 10; % subsampling
+nn = N; % number of classes
+AQTF = BSS_QTF(z, pp, eps3, eps4, nn); % QTF BSS
+BQTF = inv(AQTF);
+
+hatyqtf = BQTF*z;
+
 %% JEFAS-BSS estimation
 
 dgamma0 = ones(N,T);
@@ -116,24 +127,25 @@ for n=1:N
 end
 
 %% Performances
+[SDR0,SIR0] = bss_eval_sources(z,y); % no unmixing
 [SDRsobi,SIRsobi] = bss_eval_sources(ysobi,y); % SOBI
 [SDRpsobi,SIRpsobi] = bss_eval_sources(haty0,y); %p-SOBI
-% [SDRqtf,SIRqtf] = bss_eval_sources(hatyqtf,y); % QTF-BSS
+[SDRqtf,SIRqtf] = bss_eval_sources(hatyqtf,y); % QTF-BSS
 [SDR,SIR] = bss_eval_sources(haty,y); % JEFAS-BSS
 
 % Amari index
 for k=1:Kmat
    indJEFAS(k) = amari(heapBoptim(:,:,k),heapA(:,:,vectau(k)));
    indSOBI(k) = amari(Bsobi,heapA(:,:,vectau(k)));
-%    indQTF(k) = amari(BQTF,heapA(:,:,vectau(k)));
+   indQTF(k) = amari(BQTF,heapA(:,:,vectau(k)));
    k2 = length(vectauns(vectauns<=vectau(k)));
    indPSOBI(k) = amari(heap_Bpsobi(:,:,k2),heapA(:,:,vectau(k)));
 end
 
-fprintf('Index   |   SOBI  |  p-SOBI | JEFAS-BSS \n')
-fprintf('SIR     |  %.2f  |   %.2f  |  %.2f\n', mean(SIRsobi),mean(SIRpsobi),mean(SIR))
-fprintf('SDR     |  %.2f  | %.2f  |  %.2f\n', mean(SDRsobi),mean(SDRpsobi),mean(SDR))
-fprintf('Amari   |  %.2f  |  %.2f  | %.2f\n', mean(indSOBI),mean(indPSOBI),mean(indJEFAS))
+fprintf('Index   | No unmixing |   SOBI  |  p-SOBI | QTF-BSS | JEFAS-BSS \n')
+fprintf('SIR     |    %.2f    |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIR0), mean(SIRsobi), mean(SIRpsobi),mean(SIRqtf),mean(SIR))
+fprintf('SDR     |    %.2f    |  %.2f  | %.2f  |  %.2f  |  %.2f\n', mean(SDR0), mean(SDRsobi),mean(SDRpsobi),mean(SDRqtf),mean(SDR))
+fprintf('Amari   |    %.2f    |  %.2f  |  %.2f  |  %.2f  | %.2f\n', mean(ind0), mean(indSOBI),mean(indPSOBI),mean(indQTF),mean(indJEFAS))
 
 figure;subplot(2,1,2);
 plot(t(vectau),indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 

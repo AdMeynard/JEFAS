@@ -1,14 +1,15 @@
-function N = estimSourcesNb(z,Delta,thres)
+function [N,vecSV] = estimSourcesNb(z,Delta,thres)
 % ESTIMSOURCESNB estimate the sources number
-% usage:	Nt = estimSourcesNb(z,Delta,thres)
+% usage:	[N,vecSV] = estimSourcesNb(z,Delta,thres)
 %
 % Input:
 %   z: observations
-%   Delta: length of the windows
+%   Delta: window length
 %   thres: threshold for the singular values
 %
 % Output:
 %   N: estimated number of sources
+%   vecSV: concatenated vectors of singular values for each SVD
 
 % Copyright (C) 2019 Adrien MEYNARD
 % 
@@ -40,6 +41,8 @@ while tf<T
     ztt = z(:,tt);
     
     u = svd(ztt);
+    vecSV(:,k+1) = u;
+    
     Nt(k+1) = length(u(u>thres));
     
     k = k+1;

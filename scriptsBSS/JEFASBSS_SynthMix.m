@@ -149,8 +149,8 @@ fprintf('SDR     |    %.2f    |  %.2f  | %.2f  |  %.2f  |  %.2f\n', mean(SDR0), 
 fprintf('Amari   |    %.2f    |  %.2f  |  %.2f  |  %.2f  | %.2f\n', mean(ind0), mean(indSOBI),mean(indPSOBI),mean(indQTF),mean(indJEFAS))
 
 figure;subplot(2,1,2);
-plot(t(vectau),ind0,t(vectau),indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
-xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('no unmixing','SOBI','p-SOBI','QTF-BSS','JEFAS-BSS'); set(gca,'fontsize',24);
+plot(t(vectau),ind0,t(vectau),'c:',indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
+xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('Without BSS','SOBI','p-SOBI','QTF-BSS','JEFAS-BSS'); set(gca,'fontsize',24);
 %% Convergence
 
 subplot(2,1,1);

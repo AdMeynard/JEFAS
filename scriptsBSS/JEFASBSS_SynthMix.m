@@ -21,8 +21,8 @@ vectauns = 1:Dtp:T;
 haty0 = nonstatunmixing(z,heap_Bpsobi,vectauns);
 
 %% QTF-BSS estimation
-eps3 = 0.1; % imaginary part threshold
-eps4 = 100; % real part threshold
+eps3 = 0.05; % imaginary part threshold
+eps4 = 200; % real part threshold
 
 pp = 10; % subsampling
 nn = N; % number of classes
@@ -144,12 +144,12 @@ for k=1:Kmat
 end
 
 fprintf('Index   | No unmixing |   SOBI  |  p-SOBI | QTF-BSS | JEFAS-BSS \n')
-fprintf('SIR     |    %.2f    |  %.2f  |   %.2f  |  %.2f  |  %.2f\n', mean(SIR0), mean(SIRsobi), mean(SIRpsobi),mean(SIRqtf),mean(SIR))
-fprintf('SDR     |    %.2f    |  %.2f  | %.2f  |  %.2f  |  %.2f\n', mean(SDR0), mean(SDRsobi),mean(SDRpsobi),mean(SDRqtf),mean(SDR))
+fprintf('SIR     |    %.2f    |  %.2f  |   %.2f  |   %.2f  |  %.2f\n', mean(SIR0), mean(SIRsobi), mean(SIRpsobi),mean(SIRqtf),mean(SIR))
+fprintf('SDR     |    %.2f    |   %.2f  |  %.2f  |   %.2f  |  %.2f\n', mean(SDR0), mean(SDRsobi),mean(SDRpsobi),mean(SDRqtf),mean(SDR))
 fprintf('Amari   |    %.2f    |  %.2f  |  %.2f  |  %.2f  | %.2f\n', mean(ind0), mean(indSOBI),mean(indPSOBI),mean(indQTF),mean(indJEFAS))
 
 figure;subplot(2,1,2);
-plot(t(vectau),ind0,t(vectau),'c:',indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
+plot(t(vectau),ind0,'c:',t(vectau),indSOBI,'k--',t(vectau),indPSOBI,'r:',t(vectau),indQTF,'g-.',t(vectau),indJEFAS,'b','linewidth',2); grid on; axis tight; 
 xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('Without BSS','SOBI','p-SOBI','QTF-BSS','JEFAS-BSS'); set(gca,'fontsize',24);
 %% Convergence
 

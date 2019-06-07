@@ -22,7 +22,7 @@ for l = 1:K
     
     [N,T] = size(z);
 
-    Kmat = 200; % nombre d'instants ou l'on calcule Boptim
+    Kmat = 200; % number of instants where we estimate the unmixing matrix
     vectau = floor(linspace(1,T-1,Kmat));
 
     %% SOBI estimation
@@ -47,7 +47,7 @@ for l = 1:K
 
     hatyqtf = BQTF*z;
 
-    %% 4eme methode: via mon algo de max de vraisemblance
+    %% JEFAS-BSS estimation
     dgamma0 = ones(N,T);
 
     Dt = 200;
@@ -55,7 +55,6 @@ for l = 1:K
     Kmat = 200; % number of instants where we estimate the unmixing matrix
     vectau = floor(linspace(1,T-1,Kmat)); % corresponding instants
     L_bss = 10;
-%     rBSS = 1e-7; %1e-5
 
     wav_typ = 'sharp';
     wav_param = 500;

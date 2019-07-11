@@ -67,7 +67,7 @@ toc;
 t = 0:(1/Fs):((T-1)/Fs);
 figure;
 subplot(2,1,1);plot(t,dgammaML,'linewidth',2); 
-ylabel('Estimated log(\gamma''(t))'); axis tight; grid on; ylim([0.5 1.5]);
+ylabel('Estimated \gamma''(t)'); axis tight; grid on; ylim([0.5 1.5]);
 %set(gca,'FontSize',24);
 subplot(2,1,2);plot(t,aML,'linewidth',2); 
 xlabel('Time (s)'); ylabel('Estimated a^2(t)'); axis tight; grid on; ylim([0 2]);

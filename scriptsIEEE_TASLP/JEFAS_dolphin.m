@@ -66,7 +66,7 @@ t = 0:(1/Fs):((T-1)/Fs);
 % Deformations:
 figure;
 subplot(1,2,1);plot(t,dgammaML,'linewidth',2); 
-xlabel('Time (s)'); ylabel('Estimated log(\gamma''(t))'); axis tight; grid on;
+xlabel('Time (s)'); ylabel('Estimated \gamma''(t)'); axis tight; grid on;
 subplot(1,2,2);plot(t,aML,'linewidth',2); 
 xlabel('Time (s)'); ylabel('Estimated a^2(t)'); axis tight; grid on; ylim([0 2]);
 

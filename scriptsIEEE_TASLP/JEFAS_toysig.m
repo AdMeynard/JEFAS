@@ -43,7 +43,7 @@ scalesAM = 2.^(linspace(-1,3.5,NbScales));
 subrate = 7; % subsampling step for the scales to ensure the covariance invertibility
 scalesWP = scalesAM(1:subrate:end);
 
-dmaxWP = 1;
+dmaxWP = 0.1;
 stopWP = 2e-2; % minimal gap between two steps in the gradient
 itWP = 6; % number of gradient iterations
 

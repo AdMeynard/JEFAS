@@ -4,9 +4,9 @@ clear all; close all;
 K = 20;
 for k= 1:K
 %% Stationary sources 
-    N = 3;
+    Ny = 3;
     T = 44100;
-    x = randn(T,N);
+    x = randn(T,Ny);
 
     [x11,Sx11] = BandPassApprox(x(:,1),floor(0.03*T),floor(0.045*T));
     [x12,Sx12] = BandPassApprox(x(:,1),floor(0.06*T),floor(0.08*T));
@@ -31,7 +31,7 @@ for k= 1:K
     [y3,~,dgamma3] = chirpwarp(x3,-0.5);
 
     sigmay = 5e-2;
-    y = [y1';y2';y3'] + sigmay*randn(N,T);
+    y = [y1';y2';y3'] + sigmay*randn(Ny,T);
     dgamma = [dgamma1'; dgamma2'; dgamma3'];
 
     %% Mixing matrix
@@ -40,7 +40,7 @@ for k= 1:K
 
     switch typmel
         case 'stat'
-            A = [1 0.75 -0.1; -0.5 1 0.3;-0.5 1 1];
+            A = [1 0.75 -0.1; -0.5 1 0.3; -0.5 1 1];
             B = inv(A);
             z = A*y;
             for t=1:T
@@ -49,9 +49,9 @@ for k= 1:K
             end
 
         case 'nonstat'
-            heapA = zeros(N,N,T);
-            heapB = zeros(N,N,T);
-            z = zeros(N,T);
+            heapA = zeros(Nz,Ny,T);
+            heapB = zeros(Ny,Nz,T);
+            z = zeros(Nz,T);
             for t=1:T
                 A = [1+0.3*cos(5*pi*t/T) 0.75+0.4*cos(3*pi*t/T) 0.6+0.1*cos(2*pi*t/T);
                     -0.5+0.5*cos(11*pi*t/T) 1+0.1*cos(8*pi*t/T) -0.8+0.3*cos(5*pi*t/T);
@@ -98,11 +98,11 @@ freqdisp = [16 8 4 2 1]; % Displayed frequencies in kHz
 sdisp = log2(nu0./(1e3*freqdisp)); % corresponding log-scales
 
 figure; title('Sources and observations');
-for n=1:N
+for n=1:Ny
     Wy = cwt_JEFAS(y(n,:),scales,wav_typ,wav_param);
-    subplot(2,N,n); imagesc(t,log2(scales),abs(Wy)); yticks(sdisp); yticklabels(freqdisp);
+    subplot(2,Ny,n); imagesc(t,log2(scales),abs(Wy)); yticks(sdisp); yticklabels(freqdisp);
     ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
     Wz = cwt_JEFAS(z(n,:),scales,wav_typ,wav_param);
-    subplot(2,N,N+n); imagesc(t,log2(scales),abs(Wz)); yticks(sdisp); yticklabels(freqdisp);
+    subplot(2,Ny,Ny+n); imagesc(t,log2(scales),abs(Wz)); yticks(sdisp); yticklabels(freqdisp);
     xlabel('Time (s)'); ylabel('Frequency (kHz)'); colormap(flipud(gray)); set(gca,'fontsize',18);
 end

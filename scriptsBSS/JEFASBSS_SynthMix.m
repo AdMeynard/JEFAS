@@ -17,7 +17,7 @@ Bsobi = inv(Asobi);
 %% p-SOBI estimation
 Dtp = 4000;
 vectauns = 1:Dtp:T;
-[heap_Apsobi, heap_Bpsobi] = psobi(z,vectauns);
+[heap_Apsobi, heap_Bpsobi] = psobi(z,N,vectauns);
 haty0 = nonstatunmixing(z,heap_Bpsobi,vectauns);
 
 %% QTF-BSS estimation

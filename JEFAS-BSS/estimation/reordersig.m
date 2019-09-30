@@ -30,9 +30,9 @@ function [ordered_newsig, stablematch] = reordersig(oldsig,newsig)
 N = size(newsig,1);
 
 for n=1:N
-    x = oldsig(n,:);
+    x = newsig(n,:);
     for k=1:N
-        y = newsig(k,:);
+        y = oldsig(k,:);
         M(n,k) = max(abs(xcorr(x,y)));
     end
 end

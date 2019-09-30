@@ -97,17 +97,18 @@ a = ones(N,T);
 haty = nonstatunmixing(z,heapBoptim,vectau0);
 
 %% JEFAS-BSS
+disp = 0; % dispay warping convergence criterion
 cv = 1;
 SIRit = 0;
 figure;
 while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     
-    % WP estimation
+    % Time warping and spectra estimations
     dgammaprec = dgamma;
     aprec = a;
     for n=1:N
         y = haty(n,:); % estimated source n
-        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,1);
+        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,disp);
         dgamma(n,:) = dgammaML;
         a(n,:) = aML;
         Sx(n,:) = Sxn;
@@ -124,10 +125,10 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     haty = nonstatunmixing(z,heapBoptim,vectau);
     haty = reordersig(oldhaty,haty);
     
-    for n=1:N
-        subplot(1,N,n); plot(dgamma(n,:));
-    end
-    drawnow;
+%     for n=1:N
+%         subplot(1,N,n); plot(dgamma(n,:));
+%     end
+%     drawnow;
     
     % convergence
     [~,SIRit,~,~] = bss_eval_sources(oldhaty,haty);

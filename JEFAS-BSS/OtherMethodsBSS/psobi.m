@@ -1,4 +1,4 @@
-function [heapA, heapB] = psobi(z,vectau)
+function [heapA, heapB] = psobi(z,Ny,vectau)
 % PSOBI Piecewise SOBI BSS algorithm
 % usage:	[heapA, heapB] = psobi(z,vectau)
 %
@@ -28,18 +28,18 @@ function [heapA, heapB] = psobi(z,vectau)
 % Author: Adrien MEYNARD
 % Created: 2018-10-18
 
-[N,T] = size(z);
+[Nz,T] = size(z);
 dtau = vectau(2) -vectau(1);
 ltau = length(vectau);
 
-heapA = zeros(N,N,ltau);
-heapB = zeros(N,N,ltau);
+heapA = zeros(Nz,Ny,ltau);
+heapB = zeros(Ny,Nz,ltau);
 k = 1;
 for tau=vectau
    Tau = tau:min((tau+dtau-1),T); 
    ztau = z(:,Tau);
-   heapA(:,:,k) = sobi(ztau,N);
-   B = inv(heapA(:,:,k));
+   heapA(:,:,k) = sobi(ztau,Ny);
+   B = pinv(heapA(:,:,k));
    heapB(:,:,k) = B./sqrt(sum(abs(B).^2,2)); % rows normalization
    k = k+1;
 end

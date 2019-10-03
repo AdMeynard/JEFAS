@@ -1,3 +1,5 @@
+***WARNING:*** Make sure to run the file `download_data.m` once before launching the script `JEFASBSS_SynthMixs.m` or `JEFASBSS_SynthMixsOverDeterm.m`. This allows you to download the required data to run these scripts.
+
 Descriptions of the different MATLAB scripts in the folder scriptsBSS:
 - `JEFASBSS_SynthMix.m`: performs JEFAS-BSS on one realization of a determined synthetic mixture of nonstationary synthetic signals. The performances of JEFAS-BSS are compared with baseline BSS algorithms.
 - `JEFASBSS_SynthMixs.m`: performs JEFAS-BSS on 20 realizations of the same synthetic mixture. Two performances indexes are evaluated and compared with baseline BSS algorithms.

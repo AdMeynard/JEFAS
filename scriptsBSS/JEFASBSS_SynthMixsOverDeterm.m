@@ -1,9 +1,12 @@
+% /!\ Make sure to run the file download_data.m once before launching this
+% script.
+
 clear all; close all; clc;
 addpath('../cwt');
 addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-BSS'));
 
-load('../signals/synthetic_NonstatMixturesOverDet.mat'); 
+load('../signals/synthetic_NonstatMixturesOverDet.mat');
 
 Fs = 44100;
 

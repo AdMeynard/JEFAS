@@ -1,3 +1,6 @@
+% /!\ Make sure to run the file download_data.m once before launching this
+% script.
+
 clear all; close all; clc;
 addpath('../cwt');
 addpath(genpath('../JEFASalgo'));

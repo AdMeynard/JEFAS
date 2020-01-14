@@ -15,6 +15,8 @@ y2 = y2(1:T)/std(y2(1:T)) ;
 y = [y1; y2];
 [N,T] = size(y);
 
+f0 = 50 ; % reference speed variation of the mixing matrix
+
 %% Mixing matrix
 
 typmel = 'nonstat';
@@ -34,8 +36,8 @@ switch typmel
         heapB = zeros(N,N,T);
         z = zeros(N,T);
         for t=1:T
-            A = [1+0.3*cos(5*pi*t/T) 0.75+0.4*cos(3*pi*t/T);
-                -0.7+0.5*cos(2*pi*t/T) 1+0.1*cos(8*pi*t/T)];
+            A = [1+0.3*cos(5*pi*f0*t/T) 0.75+0.4*cos(3*pi*f0*t/T);
+                -0.7+0.5*cos(2*pi*f0*t/T) 1+0.1*cos(8*pi*f0*t/T)];
             B = inv(A);
             z(:,t) = A*y(:,t);
             c(t)=cond(A);
@@ -49,7 +51,7 @@ end
 wav_typ = 'sharp';
 wav_param = 1000;
 
-NbScales = 400;
+NbScales = 150;
 scales = 2.^(linspace(1,6,NbScales));
 
 

@@ -90,7 +90,7 @@ xlabel('Iteration'); ylabel('neg log-vraisemblance du signal');
 figure;
 plot(t,dgamma,'b--',t,dgammaML,'k',t,dgammaEST,'r--','linewidth',2); grid on;
 xlabel('Time (s)'); ylabel('\gamma''(t)')
-legend('Ground truth fonction','JEFAS estimate','JEFAS-S estimate','FontSize',20);
+legend({'Ground truth fonction','JEFAS estimate','JEFAS-S estimate'},'FontSize',20);
 set(gca,'FontSize',20);
 
 uEST = abs(dgammaEST(:)-dgamma).^2;
@@ -119,26 +119,26 @@ set(gca,'FontSize',20);
 subplot(2,1,2);
 imagesc(t,log2(scales),abs(Wy));
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
-colormap(1-gray); 
+%colormap(1-gray); 
 yticks(sdisp); yticklabels(freqdisp);set(gca,'FontSize',20);
 
 figure;
-subplot(1,2,1);
+subplot(1,2,2);
 imagesc(t,log2(scales),abs(Wfinest));
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
 yticks(sdisp); yticklabels(freqdisp);
 set(gca,'FontSize',20);
-subplot(1,2,2);
+subplot(1,2,1);
 imagesc(t,log2(scales),abs(Wy));
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
-colormap(1-gray); 
+%colormap(1-gray); 
 yticks(sdisp); yticklabels(freqdisp);set(gca,'FontSize',20);
 
 Cy = buildSigmay(MMSigmay,T,TT,Delta);
 figure;
 imagesc(t,t,abs(Cy));
 xlabel('Time (s)'); ylabel('Time (s)');
-colormap(1-gray); set(gca,'FontSize',20);
+set(gca,'FontSize',20); %colormap(1-gray); 
 title('Signal expected covariance matrice');
 
 %% Synthesis
@@ -156,7 +156,7 @@ biasXP = yr(:)-y0;
 figure;
 plot(t, biasTH, t, biasXP, 'linewidth', 2); axis tight; 
 xlim([0 1]); grid on; 
-legend('Theoretical bias', 'Experimental bias','FontSize',20);
+legend({'Theoretical bias', 'Experimental bias'},'FontSize',20);
 set(gca,'FontSize',20);
 
 Cyi = inv(Cy);

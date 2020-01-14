@@ -72,7 +72,7 @@ xlabel('Iteration'); ylabel('neg log-vraisemblance du signal');
 figure;
 plot(t,if1/mean(if1),'b--',t,dgammaEST,'r','linewidth',2); grid on;
 xlabel('Time (s)'); ylabel('\gamma''(t)');
-legend('Ground truth fonction','JEFAS-S estimate','FontSize',20);
+legend({'Ground truth fonction','JEFAS-S estimate'},'FontSize',20);
 set(gca,'FontSize',20);
 
 %% Adapted representation
@@ -117,7 +117,7 @@ imagesc(log2(scales),log2(scales),abs(C0new));
 yticks(sdisp); yticklabels(freqdisp);
 xticks(sdisp); xticklabels(freqdisp);
 xlabel('Frequency (Hz)'); ylabel('Frequency (Hz)');
-colormap(1-gray); set(gca,'FontSize',20);
+set(gca,'FontSize',20); %colormap(1-gray);
 
 figure;
 subplot(1,2,1);
@@ -129,13 +129,13 @@ subplot(1,2,2);
 imagesc(t,log2(scales),log1p(abs(Wnew)));
 yticks(sdisp); yticklabels(freqdisp);
 xlabel('Time (s)'); ylabel('Frequency (Hz)');
-colormap(1-gray); set(gca,'FontSize',20);
+set(gca,'FontSize',20); %colormap(1-gray);
 
 figure;
 imagesc(t,log2(scales),log1p(abs(Wy)));
 yticks(sdisp); yticklabels(freqdisp);
 xlabel('Time (s)'); ylabel('Frequency (Hz)');
-set(gca,'FontSize',20); colormap(1-gray);
+set(gca,'FontSize',20); %colormap(1-gray);
 
 
 yr = synthese(W, MatPsi);
@@ -143,5 +143,5 @@ yrnew = synthese(Wnew, MatPsi);
 figure; plot(t,y,'b--',t,yr,'r',t,yrnew,'k','linewidth',2);
 xlabel('Time (s)'); ylabel('Signals');
 xlim([10 30])
-legend('Measured signal','Reconstructed signal / covariance wavelet-like','Reconstructed signal / sparse covariance','FontSize',20);
+legend({'Measured signal','Reconstructed signal / covariance wavelet-like','Reconstructed signal / sparse covariance'},'FontSize',20);
 set(gca,'FontSize',20);

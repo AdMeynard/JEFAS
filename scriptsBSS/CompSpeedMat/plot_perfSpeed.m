@@ -1,5 +1,5 @@
 close all; clear all; clc;
-addpath('results/')
+addpath('../results/')
 
 load results1
 sSIR0(1) = mean(SIR0);

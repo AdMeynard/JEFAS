@@ -1,9 +1,9 @@
 clear all; close all; clc;
-addpath('../cwt');
-addpath(genpath('../JEFASalgo'));
-addpath(genpath('../JEFAS-BSS'));
+addpath('../../cwt');
+addpath(genpath('../../JEFASalgo'));
+addpath(genpath('../../JEFAS-BSS'));
 
-load('../signals/soundMixture50.mat');
+load('../../signals/soundMixture50.mat');
 [N,T] = size(z);
 
 %% SOBI estimation

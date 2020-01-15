@@ -15,7 +15,7 @@ y2 = y2(1:T)/std(y2(1:T)) ;
 y = [y1; y2];
 [N,T] = size(y);
 
-f0 = 50 ; % reference speed variation of the mixing matrix
+f0 = 1 ; % reference speed variation of the mixing matrix
 
 %% Mixing matrix
 

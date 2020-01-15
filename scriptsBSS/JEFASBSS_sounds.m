@@ -21,7 +21,7 @@ haty0 = nonstatunmixing(z,heap_Bpsobi,vectauns);
 eps3 = 0.1; % imaginary part threshold
 eps4 = 100; % real part threshold
 
-pp = 10; % subsampling
+pp = 100; % subsampling
 nn = N; % number of classes
 AQTF = BSS_QTF(z, pp, eps3, eps4, nn); % QTF BSS
 BQTF = inv(AQTF);
@@ -135,6 +135,7 @@ end
 
 % Amari index
 for k=1:Kmat
+   ind0(k) = amari(eye(N),heapA(:,:,vectau(k)));
    indJEFAS(k) = amari(heapBoptim(:,:,k),heapA(:,:,vectau(k)));
    indSOBI(k) = amari(Bsobi,heapA(:,:,vectau(k)));
    indQTF(k) = amari(BQTF,heapA(:,:,vectau(k)));
@@ -155,3 +156,6 @@ xlabel('Time (s)'); ylabel('Amari index (dB)'); grid on; legend('SOBI','p-SOBI',
 subplot(2,1,1);
 plot(convergeSIR,'linewidth',2);
 xlabel('Iteration'); ylabel('Convergence criterion (dB)'); grid on; axis tight;
+
+%% Save
+save('results/results1','indJEFAS','indSOBI','indQTF','indPSOBI','SDR0','SIR0','SDRsobi','SIRsobi','SDRpsobi','SIRpsobi','SDRqtf','SIRqtf','SDR','SIR');

@@ -5,6 +5,10 @@ This repository contains all the files necessary to perform the following algori
 * **JEFAS-BSS**: JEFAS-Blind Source Separation
 * **JEFAS-S**: JEFAS-Synthesis
 
+These algorithms require to implement the wavelet transforms of signals. The folder `cwt` contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the *sharp wavelet*, whose definition is given in [1] (see equation (2)). We also provide the script `example_cwt.m` enabling the display of the sharp wavelet and its Fourier transform (see Supplementary material of [1] for more details).
+
+The folder `signals` contains some audio and synthetic signals used to implement the above-mentioned algorithms.
+
 ***WARNING:*** The implementation of these algorithms uses MATLAB functions from the Optimization Toolbox (e.g. `fmincon`). It is therefore necessary to have access to this toolbox in order to run JEFAS. A less efficient version of the algorithm that does not require the Optimization Toolbox is available upon demand.
 
 # JEFAS
@@ -14,9 +18,7 @@ Speech and Language Processing*, vol. 26, pp. 2371–2380, Dec. 2018, [available
 
 The following folders are related to the implementation of JEFAS:
 
-* `cwt`: contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the wavelets given in the paper (equation (2)). A script `example_cwt.m` enabling the display of the sharp wavelet is also given (including Supplementary material, figs. 1 and 2). 
 * `JEFASalgo`: contains all the functions necessary to implement JEFAS (subfolder `estimation`), together with some functions enabling the analysis (subfolder `analysis`) of the results of JEFAS (comparison with baseline estimations, Cramér-Rao Lower Bound, stationarization). It also contains functions enabling cross-synthesis.
-* `signals`: contains some audio signals including those described in the article.
 * `scriptsIEEE_TASLP`: contains the scripts detailed below, together with their published versions (subfolder `html`), and some corresponding results of JEFAS (estimated time warping functions, amplitude modulation functions, and spectra) in subfolder `results`. All the sounds and the published versions of the Matlab scripts are also [available online](http://meynard.perso.math.cnrs.fr/paperJEFAS/NonStationaryAudio.html).
 
 # JEFAS-BSS

@@ -1,6 +1,27 @@
+%% JEFAS-BSS on 20 realizations of the same overdetermined synthetic mixture.
+% Copyright (C) 2020 Adrien MEYNARD
+% 
+% This program is free software; you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+% 
+% Author: Adrien MEYNARD
+% Email: adrien.meynard@duke.edu
+% Created: 2020-01-16
+
 % /!\ Make sure to run the file download_data.m once before launching this
 % script.
 
+%% load signals
 clear all; close all; clc;
 addpath('../cwt');
 addpath(genpath('../JEFASalgo'));

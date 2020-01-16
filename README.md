@@ -32,7 +32,7 @@ In addition to the folders described above, the following folders are related to
 The theoretical background relative to the algorithm can be found in Chapter 4 of the following thesis:  
 **[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019**
 
-In addition to the folders described above, the following folders are related to the implementation of JEFAS-BSS:
+In addition to the folders described above, the following folders are related to the implementation of JEFAS-S:
 
 * `JEFAS-S`: contains the functions to perform JEFAS-S, a synthesis-based approach for the spectral estimation of signals following the model given in [1].
 * `scriptsJEFAS-S`: contains the scripts that perform JEFAS-S on two examples.
@@ -40,6 +40,6 @@ In addition to the folders described above, the following folders are related to
 # Authors
 
 Authors: Adrien Meynard and Bruno Torrésani  
-Contact email: adrien.meynard@univ-amu.fr  
+Contact email: adrien.meynard@duke.edu  
 Created: 2017-12-19
 

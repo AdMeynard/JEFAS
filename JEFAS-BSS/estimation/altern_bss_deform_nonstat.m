@@ -16,6 +16,9 @@ function [heapBoptim,dgamma,a,Sx,SIRupdate] = altern_bss_deform_nonstat(z,heapB0
 %       scalesWP: vector of scales for the WP estimation
 %       itWP (optional): maximum number of gradient iterations per instant (default: itWP = 6)
 %       stopWP (optional): minimum gradient innovation (default: stopWP = 2e-2)
+%   paramWAV: cell of 2 entries: {wav_typ,wav_param}
+%       wav_typ: wavelet type (see cwt_JEFAS.m for details)
+%       wav_param: corresponding parameter
 %   paramAM: cell of 1 to 3 entries: paramAM = {AMopt,scalesAM,r} where
 %       AMopt: if AM is not estimated AMopt='no AM' => paramAM = {'no AM'}. Esle AMopt='AM' and:
 %       scalesAM: vector of scales for the AM estimation
@@ -108,7 +111,7 @@ while ((cv<=Nit)&&(mean(SIRit)<=stopSIR))
     aprec = a;
     for n=1:N
         y = haty(n,:); % estimated source n
-        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,disp);
+        [aML,dgammaML, Sxn] = estim_altern(y,Dt,ratio,dgammaprec(n,:),aprec(n,:),paramWAV,paramWP,paramAM,paramS,stop_crit,10,0); % you may replace the final parameter (0) with disp to display the JEFAS update values
         dgamma(n,:) = dgammaML;
         a(n,:) = aML;
         Sx(n,:) = Sxn;

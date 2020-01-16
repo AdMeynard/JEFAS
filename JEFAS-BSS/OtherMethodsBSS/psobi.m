@@ -1,9 +1,10 @@
 function [heapA, heapB] = psobi(z,Ny,vectau)
 % PSOBI Piecewise SOBI BSS algorithm
-% usage:	[heapA, heapB] = psobi(z,vectau)
+% usage:	[heapA, heapB] = psobi(z,Ny,vectau)
 %
 % Input:
 %   z: observed signals
+%   Ny: number of sources to be estimated
 %   vectau: vector of subintervals beginnings
 %
 % Output:

@@ -1,6 +1,6 @@
 function [ordered_newsig, stablematch] = reordersig(oldsig,newsig)
 % REORDERSIG Prevent estimated sources order from being changed througth JEFAS-BSS iterations
-% usage:	ordered_newsig = reordersig(oldsig,newsig)
+% usage:	[ordered_newsig, stablematch] = reordersig(oldsig,newsig)
 %
 % Input:
 %   oldsig: previous estimated sources
@@ -8,6 +8,7 @@ function [ordered_newsig, stablematch] = reordersig(oldsig,newsig)
 %
 % Output:
 %   ordered_newsig: reordered current estimated sources
+%   stablematch: index ordering the estimated sources
 
 % Copyright (C) 2018 Adrien MEYNARD
 % 

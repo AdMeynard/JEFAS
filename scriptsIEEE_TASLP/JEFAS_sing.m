@@ -57,7 +57,7 @@ paramWP = {scalesWP};
 paramS = {scalesS};
 
 tic;
-[aML, dgammaML, Sx, stop_crit] = estim_altern(y,Dt,ratio,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
+[aML, dgammaML, Sx, evol_crit] = estim_altern(y,Dt,ratio,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit);
 toc;
 
 %% Analysis: stationarization (CWT and spectrum)

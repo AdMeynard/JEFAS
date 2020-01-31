@@ -1,6 +1,7 @@
 %% Algo EM sur le signal cardiaque
 
 clear all; close all; clc;
+addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-S'));
 addpath(genpath('../cwt'));
 addpath('../signals');
@@ -138,8 +139,8 @@ xlabel('Time (s)'); ylabel('Frequency (Hz)');
 set(gca,'FontSize',20); %colormap(1-gray);
 
 
-yr = synthese(W, MatPsi);
-yrnew = synthese(Wnew, MatPsi);
+yr = synthesis(W, MatPsi);
+yrnew = synthesis(Wnew, MatPsi);
 figure; plot(t,y,'b--',t,yr,'r',t,yrnew,'k','linewidth',2);
 xlabel('Time (s)'); ylabel('Signals');
 xlim([10 30])

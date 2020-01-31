@@ -11,4 +11,3 @@ Descriptions of the different MATLAB scripts in the folder scriptsBSS:
 Descriptions of the different subforders:
 - `CompSpeedMat`: contains MATLAB scripts enabling the evaluation of the BSS performance in function of the speed of variation of the mixing matrix coefficients.
 - `results`: contains some BSS results.
-- `SynthSignals`: contains MATLAB scripts enabling the construction of synthetic nonstationary signals and mixing.

@@ -1,4 +1,4 @@
-function yt = synthese(W, MatPsi)
+function yt = synthesis(W, MatPsi)
 % Synthesize the signal from its adapted transform
 
 MatfPsi = fft(MatPsi,[],1);

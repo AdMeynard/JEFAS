@@ -1,9 +1,9 @@
 function C = calc_cov_sparse(scales,S,theta)
-% CALC_COV Computation the covariance matrix
-% usage:	C = calc_cov(M_psi,S,theta)
+% CALC_COV_SPARSE Computation the covariance matrix with sparse coefficents
+% usage:	C = calc_cov_sparse(scales,S,theta)
 %
 % Input:
-%   M_psi: matrix output of the function BAS_CALC_COV
+%   scales : vector of scales 
 %   S: spectrum of X (row vector)
 %   theta: Time warping parameter 
 %

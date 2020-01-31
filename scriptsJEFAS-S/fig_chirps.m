@@ -1,4 +1,5 @@
 clear all; close all;
+addpath('../cwt');
 
 N = 2^13;
 t = linspace(0,(N-1)/N,N);

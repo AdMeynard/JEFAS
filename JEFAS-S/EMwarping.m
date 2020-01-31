@@ -12,7 +12,7 @@ thetaold = thetaINIT;
 if length(varargin) == 1
     theta = varargin{1};
     errINIT = sum( abs( thetaINIT(:) - theta(:) ).^2 );
-    fprintf(' Initialisation \n Erreur quadratique: %.3f \n\n', errINIT)
+    fprintf(' Initialization \n Quadratic error: %.3f \n\n', errINIT)
 end
 
 options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations',itD,'StepTolerance',stopD,'Display','off'); % fmincon
@@ -49,12 +49,12 @@ while ( (nbit<=Nit) && (stopcrit>thres) )
     
     if length(varargin) == 1
         errEM = sum( abs( thetanew(:) - theta(:) ).^2 );
-        fprintf(' Itération %i \n Erreur quadratique: %.3f \n\n', nbit, errEM)
+        fprintf(' Iteration %i \n Quadratic Error: %.3f \n\n', nbit, errEM)
     else
-        fprintf(' Itération %i \n negloglikelihood signal: %.3f \n\n', nbit, nllV(nbit))
+        fprintf(' Iteration %i \n Negative loglikelihood: %.3f \n\n', nbit, nllV(nbit))
     end
     
-    plot(thetanew); drawnow;
+    %plot(thetanew); drawnow;
     nbit = nbit + 1;
     thetaold = thetanew;
 end

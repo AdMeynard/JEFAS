@@ -19,15 +19,15 @@ omega = (0:(T-1))*2*pi/T;
 
 switch nargout
     case 1
-        Cold = calc_cov(M_psi,S,omega,T,thetaprec); % Covariance old
+        Cold = calc_cov_synth(M_psi,S,omega,T,thetaprec); % Covariance old
         Mn = circshift(MatPsi,t-1,1);
         rGamman = real(Cold - 0.25*Cold * Mn' * iSigmay * Mn * Cold) ;
 
-        C = calc_cov(M_psi,S,theta); % covariance new
+        C = calc_cov_synth(M_psi,S,omega,T,theta); % covariance new
         g = real( logdet(C) + U'*(C\U) + trace(C\rGamman) );
                 
     case 2
-        Cold = calc_cov(M_psi,S,omega,T,thetaprec); % Covariance old
+        Cold = calc_cov_synth(M_psi,S,omega,T,thetaprec); % Covariance old
         Mn = circshift(MatPsi,t-1,1);
         Gammat = Cold - 0.5*Cold * Mn' * iSigmay * Mn * Cold ;
         

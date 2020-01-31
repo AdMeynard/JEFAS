@@ -7,7 +7,7 @@ This repository contains all the files necessary to perform the following algori
 
 These algorithms require to implement the wavelet transforms of signals. The folder `cwt` contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the *sharp wavelet*, whose definition is given in [1] (see equation (2)). We also provide the script `example_cwt.m` enabling the display of the sharp wavelet and its Fourier transform (see Supplementary material of [1] for more details).
 
-The folder `signals` contains some audio and synthetic signals used to implement the above-mentioned algorithms.
+The folder `signals` contains some audio and synthetic signals used to implement the above-mentioned algorithms. Additionally, the folder `SynthSignals` contains functions to synthesize locally time-warped toy signals (both univariate and multivariate).
 
 ***WARNING:*** The implementation of these algorithms uses MATLAB functions from the Optimization Toolbox (e.g. `fmincon`). It is therefore necessary to have access to this toolbox in order to run JEFAS. A less efficient version of the algorithm that does not require the Optimization Toolbox is available upon demand.
 

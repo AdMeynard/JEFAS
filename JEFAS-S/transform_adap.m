@@ -32,7 +32,7 @@ for k = 1:K % k-eme bloc temporel
             Mn = Mn(1:NN,:);
         end
         if n > nMax % evite les redondances
-            C{n} = calc_cov(M_psi,Sxest,omega,TS,thetaE(n));
+            C{n} = calc_cov_synth(M_psi,Sxest,omega,TS,thetaE(n));
         end
         CMn{n-min(nn)+1} = C{n}*Mn';
         Sigmay = Sigmay + Mn*CMn{n-min(nn)+1};

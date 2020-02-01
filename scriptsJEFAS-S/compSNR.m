@@ -46,15 +46,15 @@ scalesR = 2.^linspace(0,3,Nbscales);
 [M_psi,M_tmpdpsi] = bas_calc_dcov(scalesR,wav_typ,wav_paramR,T);
 MatPsi = ifft(M_psi.',[],1);
 
-sigmaH = [5e-5 5e-4 5e-3 5e-2 5e-1 1];
-P = length(sigmaH);
+P = 10:
+sigmaH = logspace(-3.2,-0.5,P);
 
 for p = 1:P
     
     sigmay = sigmaH(p) ;
     y = y0 + sigmay*randn(T,1) ;
     
-    %%% APPLY JEFAS INITIALISATION
+    % Apply JEFAS Initialization
     [~, dgammaML, ~, ~] = estim_altern(y,Dt,ratio,dgamma0,a0,paramWAV,paramWP,paramAM,paramS,stop_crit,10,0);
     thetaINIT = log2(dgammaML); % Initialization from JEFAS results
     
@@ -63,9 +63,9 @@ for p = 1:P
     [dgammaEST, SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_paramWP,Dt,TT,Delta,alpha,Nit,thres,itD,stopD,theta);
     toc;
 
-    dgammaH{p} = dgammaEST ;
-    SxESTH{p} = SxEST ;
-    WH{p} = W ;
+%     dgammaH{p} = dgammaEST ;
+%     SxESTH{p} = SxEST ;
+%     WH{p} = W ;
 
     uEST = abs(dgammaEST(:)-dgamma).^2;
     uML = abs(dgammaML(:)-dgamma).^2;
@@ -80,7 +80,7 @@ for p = 1:P
     snr0th = 10*log10(1 + var(y0)/sigmay^2);
     snr0 = snr(y,y-y0);
     snrc = snr(yr(:),yr(:)-y0);
-    fprintf('SNR original %.2f\n SNR wavelet-like %.2f\n\n',snr0,snrc)
+    fprintf('Input SNR %.2f\nOutput SNR %.2f\n\n',snr0,snrc)
     
     biasTH = theo_bias(y0,TT,Delta,MMSigmay,sigmay);
     biasXP = yr(:)-y0;

@@ -46,7 +46,7 @@ scalesR = 2.^linspace(0,3,Nbscales);
 [M_psi,M_tmpdpsi] = bas_calc_dcov(scalesR,wav_typ,wav_paramR,T);
 MatPsi = ifft(M_psi.',[],1);
 
-P = 10:
+P = 10;
 sigmaH = logspace(-3.2,-0.5,P);
 
 for p = 1:P

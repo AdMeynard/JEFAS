@@ -5,7 +5,7 @@ addpath(genpath('../JEFASalgo'));
 addpath(genpath('../JEFAS-S'));
 addpath('../signals');
 addpath('../cwt');
-addpath('data');
+addpath('results');
 
 load('toysig_short')
 theta = log2(dgamma);

@@ -46,8 +46,8 @@ scalesR = 2.^linspace(0,3,Nbscales);
 [M_psi,M_tmpdpsi] = bas_calc_dcov(scalesR,wav_typ,wav_paramR,T);
 MatPsi = ifft(M_psi.',[],1);
 
-P = 10;
-sigmaH = logspace(-3.2,-0.5,P);
+P = 30;
+sigmaH = logspace(-3,-0.5,P);
 
 for p = 1:P
     
@@ -77,73 +77,29 @@ for p = 1:P
     Cy = buildSigmay(MMSigmay,T,TT,Delta);
     yr = synthesis(Wfinest, MatPsi); % reconstruction
 
-    snr0th = 10*log10(1 + var(y0)/sigmay^2);
-    snr0 = snr(y,y-y0);
-    snrc = snr(yr(:),yr(:)-y0);
-    fprintf('Input SNR %.2f\nOutput SNR %.2f\n\n',snr0,snrc)
+    snrINth = 10*log10(1 + var(y0)/sigmay^2);
+    snrIN = snr(y,y-y0);
+    snrOUT = snr(yr(:),yr(:)-y0);
+    fprintf('Measured input SNR %.2f\nMeasured output SNR %.2f\n',snrIN,snrOUT)
     
     biasTH = theo_bias(y0,TT,Delta,MMSigmay,sigmay);
     biasXP = yr(:)-y0;
 
-    Cyi = inv(Cy);
-    varty0 = trace( (eye(T)-sigmay^2*Cyi)^2 * (sigmay^2*eye(T) + y0*y0.') );
-    vartnoise = sigmay^2 * ( trace((eye(T)-sigmay^2*Cyi)^2) + trace(sigmay^2*Cyi^2*y0*y0.') );
-    SNR_TH = 10*log10( varty0 / vartnoise ); % Theoretical SNR
-    fprintf('Theoretical SNR improvment %.2f\n Experimental SNR improvment %.2f\n\n',SNR_TH-snr0th,snrc-snr0)
+    % Theoretical signal cov matrix
+    [~, MMSigmayTH] = transform_adap(y,sigmay,TT,Delta,M_psi,Sx,log2(dgamma),MatPsi); % adpated representation
+    CyTH = buildSigmay(MMSigmayTH,T,TT,Delta);
+    CyiTH = inv(CyTH);
+    % Theoretical SNR
+    varty0 = trace( (eye(T)-sigmay^2*CyiTH)^2 * (sigmay^2*eye(T) + y0*y0.') );
+    vartnoise = sigmay^2 * ( trace((eye(T)-sigmay^2*CyiTH)^2) + trace(sigmay^2*CyiTH^2*y0*y0.') );
+    snrOUTth = 10*log10( varty0 / vartnoise ); % Theoretical output SNR
+    fprintf('Theoretical Output SNR %.2f\n\n',snrOUTth)
 
-    fprintf('------------------------------------------------\n\n')
+    fprintf('------------------------------------------------\n\n');
+    
+    snrinH(p) = snrIN ;
+    snroutH(p) = snrOUT ;
+    snroutthH(p) = snrOUTth ;
 end
 
-%% Results and Adapted representation
-
-% t = linspace(0,(T-1)/Fs,T);
-% figure;
-% plot(nll,'linewidth',2); grid on;
-% xlabel('Iteration'); ylabel('negative log-likelihood of the signal');
-% 
-% figure;
-% plot(t,dgamma,'b--',t,dgammaML,'k',t,dgammaEST,'r--','linewidth',2); grid on;
-% xlabel('Time (s)'); ylabel('\gamma''(t)')
-% legend({'Ground truth fonction','JEFAS estimate','JEFAS-S estimate'},'FontSize',20);
-% set(gca,'FontSize',20);
-
-% Wfin = transform_adap(y,sigmay,TT,Delta,M_psi,Sx,log2(dgamma),MatPsi);
-
-% xi0 = Fs/4; % wavelet central frequency
-% freqdisp = [2 1 0.5 0.3]; % Displayed frequencies in kHz
-% sdisp = log2(xi0./(freqdisp*1e3));
-% 
-% Wy = cwt_JEFAS(y,scales,wav_typ,wav_param);
-% 
-% figure;
-% subplot(2,1,1);
-% plot(t,y,'linewidth',2);
-% xlabel('Time (s)'); ylabel('Signal');
-% set(gca,'FontSize',20);
-% subplot(2,1,2);
-% imagesc(t,log2(scales),abs(Wy));
-% xlabel('Time (s)'); ylabel('Frequency (kHz)');
-% %colormap(1-gray); 
-% yticks(sdisp); yticklabels(freqdisp);set(gca,'FontSize',20);
-% 
-% figure;
-% subplot(1,2,2);
-% imagesc(t,log2(scales),abs(Wfinest));
-% xlabel('Time (s)'); ylabel('Frequency (kHz)');
-% yticks(sdisp); yticklabels(freqdisp);
-% set(gca,'FontSize',20);
-% subplot(1,2,1);
-% imagesc(t,log2(scales),abs(Wy));
-% xlabel('Time (s)'); ylabel('Frequency (kHz)');
-% %colormap(1-gray); 
-% yticks(sdisp); yticklabels(freqdisp);set(gca,'FontSize',20);
-
-%% Synthesis
-
-% figure; plot(t,y0,'b--',t,y,'k',t,yr,'r','linewidth',2)
-
-% figure;
-% plot(t, biasTH, t, biasXP, 'linewidth', 2); axis tight; 
-% xlim([0 1]); grid on; 
-% legend({'Theoretical bias', 'Experimental bias'},'FontSize',20);
-% set(gca,'FontSize',20);
+save('results/resultsSNR','snrinH','snroutH','snroutthH') ;

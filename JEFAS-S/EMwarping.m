@@ -3,10 +3,8 @@ function [dgammaEST,SxEST, W, nllV] = EMwarping(y,sigmay,thetaINIT,scales,wav_ty
 T = length(y);
 Delta = round(Delta);
 
-[M_psi, M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T); % Pour calculer les matrices de covariance
-% MatPsi = real(ifft(M_psi.',[],1)); % matrice d'ondelettes
+[M_psi, M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T); % To compute the covariance matrices
 MatPsi = ifft(M_psi.',[],1);
-% MatPsiD = MatPsi(1:TT,:);
 
 thetaold = thetaINIT;
 if length(varargin) == 1
@@ -20,29 +18,31 @@ options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations'
 nbit = 1;
 nll = Inf;
 stopcrit = Inf;
+
+% EM alternate estimation
 while ( (nbit<=Nit) && (stopcrit>thres) )
     
-    % Calcul de W: etape E de EM
+    % Step E: Adapted transform estimation
     x = statAMWP(y,ones(T,1),2.^thetaold);
-    Sxest = estim_spec(x,T,alpha); % spectre
+    Sxest = estim_spec(x,T,alpha); % spectrum
     [W, MMSigmay] = transform_adap(y,sigmay,TT,Delta,M_psi,Sxest,thetaold,MatPsi);
-    Sigmay = buildSigmay(MMSigmay,T,TT,Delta); % matrice de tout le signal
-    iSigmay = inv(Sigmay); % son inverse !! Calcul compliqué !!
+    Sigmay = buildSigmay(MMSigmay,T,TT,Delta); % full signal covariance matrix
+    iSigmay = inv(Sigmay); % INVERSION !! DANGER !!
     
-    % Estimation de thetaEM nouveau: etape M de EM
+    % Stem M: Time-warping estimation
     k = 1;
     for t = 1:Dt:T
-        U = W(:,t); % Wvraie(:,t);
+        U = W(:,t);
         theta0 = thetaold(t);
 
-        Qemx = @(x)Qem(x, theta0, t, U, M_psi, M_tmpdpsi, Sxest, MatPsi, iSigmay); % fonction a minimiser
+        Qemx = @(x)Qem(x, theta0, t, U, M_psi, M_tmpdpsi, Sxest, MatPsi, iSigmay); % Minimized function
         thetaEM(k) = fmincon(Qemx,theta0,[],[],[],[],-0.8,0.8,[],options);
         k = k + 1;
     end
-    thetanew = interp1(1:Dt:T,thetaEM,1:T,'linear',thetaEM(end)); % on interpole sur tous les echantillons
+    thetanew = interp1(1:Dt:T,thetaEM,1:T,'linear',thetaEM(end)); % interpolation on all the samples
     
     nllold = nll;
-    nll = negloglikelihoodsig(y,Sigmay); % neg log-vraisemblance qui decroit
+    nll = negloglikelihoodsig(y,Sigmay); % negative log-likelihood (decreasing)
     nllV(nbit) = nll;
     
     stopcrit = nllold - nll;
@@ -54,7 +54,6 @@ while ( (nbit<=Nit) && (stopcrit>thres) )
         fprintf(' Iteration %i \n Negative loglikelihood: %.3f \n\n', nbit, nllV(nbit))
     end
     
-    %plot(thetanew); drawnow;
     nbit = nbit + 1;
     thetaold = thetanew;
 end
@@ -63,5 +62,5 @@ close;
 thetaEST = interp1(1:Dt:T,thetaEM,1:T,'linear',thetaEM(end));
 dgammaEST = 2.^thetaEST;
 x = statAMWP(y,ones(T,1),dgammaEST);
-SxEST = estim_spec(x,T,alpha); % spectre
+SxEST = estim_spec(x,T,alpha); % spectrum
 W = transform_adap(y,sigmay,TT,Delta,M_psi,Sxest,thetaold,MatPsi);

@@ -23,7 +23,7 @@ The following folders are related to the implementation of JEFAS:
 
 # JEFAS-BSS
 The theoretical background relative to the algorithm can be found in the following paper:  
-**[2] A. Meynard, "Spectral Estimation for Multivariate Locally Time-Warped Signals", *IEEE Signal Processing Letters*, vol. 27, pp. 311-315, 2020 [available online](https://hal.archives-ouvertes.fr/hal-02455218).**
+**[2] A. Meynard, "Spectral Estimation for Multivariate Locally Time-Warped Signals", *IEEE Signal Processing Letters*, vol. 27, pp. 311-315, 2020, [available online](https://hal.archives-ouvertes.fr/hal-02455218).**
 
 In addition to the folders described above, the following folders are related to the implementation of JEFAS-BSS:
 
@@ -31,8 +31,10 @@ In addition to the folders described above, the following folders are related to
 * `scriptsBSS`: contains the scripts that perform JEFAS-BSS on a synthetic mixture of both synthetic signals and real audio signals.
 
 # JEFAS-S
-The theoretical background relative to the algorithm can be found in Chapter 4 of the following thesis:  
-**[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019**
+The theoretical background relative to the algorithm can be found in Chapter 4 of the following thesis (in French):  
+**[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019,**
+or in the following conference paper:
+**[4] A. Meynard and B. Torrésani : "Time-Scale Synthesis for Locally Stationary Signals ", 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), May 2020, Barcelona, Spain.**
 
 In addition to the folders described above, the following folders are related to the implementation of JEFAS-S:
 

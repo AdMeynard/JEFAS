@@ -23,7 +23,7 @@ The following folders are related to the implementation of JEFAS:
 
 # JEFAS-BSS
 The theoretical background relative to the algorithm can be found in the following paper:  
-**[2] A. Meynard, "Spectral Estimation for Multivariate Locally Time-Warped Signals", *IEEE Signal Processing Letters*, vol. 27, pp. 315-315, 2020 [available online](https://hal.archives-ouvertes.fr/hal-02455218).**
+**[2] A. Meynard, "Spectral Estimation for Multivariate Locally Time-Warped Signals", *IEEE Signal Processing Letters*, vol. 27, pp. 311-315, 2020 [available online](https://hal.archives-ouvertes.fr/hal-02455218).**
 
 In addition to the folders described above, the following folders are related to the implementation of JEFAS-BSS:
 

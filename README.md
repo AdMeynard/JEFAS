@@ -31,9 +31,8 @@ In addition to the folders described above, the following folders are related to
 * `scriptsBSS`: contains the scripts that perform JEFAS-BSS on a synthetic mixture of both synthetic signals and real audio signals.
 
 # JEFAS-S
-The theoretical background relative to the algorithm can be found in Chapter 4 of the following thesis (in French):  
-**[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019,**
-or in the following conference paper:
+The theoretical background relative to the algorithm can be found in Chapter 4 of the thesis [3](in French) or in the conference paper [4]:  
+**[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019,**   
 **[4] A. Meynard and B. Torrésani : "Time-Scale Synthesis for Locally Stationary Signals ", 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), May 2020, Barcelona, Spain.**
 
 In addition to the folders described above, the following folders are related to the implementation of JEFAS-S:
@@ -46,4 +45,3 @@ In addition to the folders described above, the following folders are related to
 Authors: Adrien Meynard and Bruno Torrésani  
 Contact email: adrien.meynard@duke.edu  
 Created: 2017-12-19
-

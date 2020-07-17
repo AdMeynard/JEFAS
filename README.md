@@ -32,8 +32,8 @@ In addition to the folders described above, the following folders are related to
 
 # JEFAS-S
 The theoretical background relative to the algorithm can be found in Chapter 4 of the thesis [3](in French) or in the conference paper [4]:  
-**[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019,**   
-**[4] A. Meynard and B. Torrésani : "Time-Scale Synthesis for Locally Stationary Signals ", 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), May 2020, Barcelona, Spain.**
+**[3] A. Meynard : "Stationnarités brisées : approches à l'analyse et à la synthèse", PhD thesis, Aix-Marseille Université, Oct. 2019, [available online](https://tel.archives-ouvertes.fr/tel-02356582).**   
+**[4] A. Meynard and B. Torrésani : "Time-Scale Synthesis for Locally Stationary Signals ", 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), May 2020, Barcelona, Spain. pp.5820-5824, [available online](https://hal.archives-ouvertes.fr/hal-02469842v1).**
 
 In addition to the folders described above, the following folders are related to the implementation of JEFAS-S:
 

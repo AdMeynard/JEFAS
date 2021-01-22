@@ -6,7 +6,7 @@ function [W,t,s] = display_cwt_JEFAS(sig,Fs,fmin,fmax,Ms,wav_typ,wav_par,varargi
 %
 % Input:
 %   sig: vector containing the input signal
-%   sig: sampling frequency
+%   Fs: sampling frequency
 %   fmin: minimum frequency to display
 %   fmax: maximum frequency to display
 %   Ms: length of the scales vector (= number of rows of the CWT) 

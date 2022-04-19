@@ -26,7 +26,6 @@ priorList = {prior} ;
 
 itD = 10; % number of iterations for gradient descent
 stopD = 1e-4; % gradient descent: tolerance
-options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations',itD,'StepTolerance',stopD,'Display','off'); % fmincon
 
 Dt = 50; % subsampling value for thetaEM estimation
 TT = 512; %  slicing size for W

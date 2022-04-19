@@ -3,7 +3,7 @@ function C = calc_cov_sparse(scales,S,theta)
 % usage:	C = calc_cov_sparse(scales,S,theta)
 %
 % Input:
-%   scales : vector of scales 
+%   scales: vector of scales 
 %   S: spectrum of X (row vector)
 %   theta: Time warping parameter 
 %

@@ -1,5 +1,6 @@
 function [W, MMSigmay] = transform_adap_sparse(y,sigmay,TT,Delta,scales,Sxest,thetaE,MatPsi) 
-% Calcul de W
+%TRANSFORM_ADAP_SPARSE
+% !!!!!  OLD  !!!!!!!!
 
 T = length(y);
 Sxest = Sxest(:);

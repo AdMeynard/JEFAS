@@ -29,6 +29,9 @@ paramAM = {'no AM'};
 scalesS = 2.^(linspace(-1,3.5,150)); % for spectrum estimation
 paramS = {scalesS};
 
+prior = 'wavelet' ; %prior for the covariance matrix of the time scale representation
+priorList = {prior} ;
+
 itD = 10; % nb d'iterations de la descente de gradient
 stopD = 1e-4; % tolerance de la descente de gradient
 options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations',itD,'StepTolerance',stopD,'Display','off'); % fmincon
@@ -37,6 +40,7 @@ Dt = 50; % valeur du sous echantillonage pour l'estimation de thetaEM
 TT = 512; %1024;%T/16;%256 % taille de la decoupe pour W
 Delta = 0.75*TT; % recouvrement
 alpha = 15; % largeur pour l'estimation du spectre par Welch
+TS = 1024 ;
 
 Nit = 5; % number of iterations
 thres = 0.2; % ?
@@ -60,7 +64,7 @@ for p = 1:P
     
     % Apply JEFAS-S
     tic;
-    [dgammaEST, SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_paramWP,Dt,TT,Delta,alpha,Nit,thres,itD,stopD,theta);
+    [dgammaEST, SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_paramWP,priorList,Dt,TT,Delta,TS,alpha,Nit,thres,itD,stopD,theta);
     toc;
 
 %     dgammaH{p} = dgammaEST ;
@@ -73,7 +77,7 @@ for p = 1:P
     fprintf('Noise variance %.2e\n\n', sigmaH(p)^2);
     fprintf('EQM:\n JEFAS: %.3e\n JEFAS-S: %.3e\n\n',mean(uML(1:8151)),mean(uEST(1:8151)));  % prevent edge effect
     
-    [Wfinest, MMSigmay] = transform_adap(y,sigmay,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi); % adpated representation
+    [Wfinest, MMSigmay] = transform_adap(y,sigmay,priorList,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi); % adpated representation
     Cy = buildSigmay(MMSigmay,T,TT,Delta);
     yr = synthesis(Wfinest, MatPsi); % reconstruction
 
@@ -86,7 +90,7 @@ for p = 1:P
     biasXP = yr(:)-y0;
 
     % Theoretical signal cov matrix
-    [~, MMSigmayTH] = transform_adap(y,sigmay,TT,Delta,M_psi,Sx,log2(dgamma),MatPsi); % adpated representation
+    [~, MMSigmayTH] = transform_adap(y,sigmay,priorList,TT,Delta,M_psi,Sx,log2(dgamma),MatPsi); % adpated representation
     CyTH = buildSigmay(MMSigmayTH,T,TT,Delta);
     CyiTH = inv(CyTH);
     % Theoretical SNR

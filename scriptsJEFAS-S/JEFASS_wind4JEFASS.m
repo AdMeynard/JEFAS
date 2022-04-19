@@ -26,16 +26,12 @@ wav_typ = 'sharp';
 
 prior = 'wavelet' ; %prior for the covariance matrix of the time scale representation
 priorList = {prior} ;
-% prior = 'sharp' ; %prior for the covariance matrix of the time scale representation
-% sigma_sharp = 0.04 ;
-% priorList = {prior; sigma_sharp} ;
 
 itD = 10; % number of iterations for gradient descent
 stopD = 1e-4; % gradient descent: tolerance
-options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations',itD,'StepTolerance',stopD,'Display','off'); % fmincon
 
 Dt = 2 ; % subsampling value for thetaEM estimation
-TT = 512 ; %1024;%T/16;%256 %  slicing size for W
+TT = 512 ; %  slicing size for W
 Delta = 0.75*TT; % overlap
 alpha = 7 ; % width for Welch estimation
 

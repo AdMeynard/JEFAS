@@ -17,6 +17,9 @@ scales = scales(1:7:end); % pour se comparer a JEFAS
 wav_param = 10;
 wav_typ = 'sharp';
 
+prior = 'wavelet' ; %prior for the covariance matrix of the time scale representation
+priorList = {prior} ;
+
 itD = 10; % nb d'iterations de la descente de gradient
 stopD = 1e-4; % tolerance de la descente de gradient
 options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations',itD,'StepTolerance',stopD,'Display','off'); % fmincon
@@ -28,6 +31,8 @@ alpha = 15; % largeur pour l'estimation du spectre par Welch
 
 sigmay = 0.05; % noise variance
 
+TS = T ;
+
 Nit = 75; % nombre d'iterations de EM
 
 initMeth = 'gwn';
@@ -38,11 +43,11 @@ switch initMeth
         
     case 'JEFAS'
         thetaINIT = thetaML; % Initialisation a partir des resultats de JEFAS
-        
-    case 'gwn'
+
+        case 'gwn'
         [M_psi,M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T);
         MatPsi = ifft(M_psi.',[],1);
-        [W, MMSigmay] = transform_adap(y,sigmay,TT,Delta,M_psi,repmat(var(y),1,T),zeros(1,T),MatPsi);
+        [W, MMSigmay] = transform_adap(y,sigmay,priorList,TT,Delta,M_psi,repmat(var(y),1,T),zeros(1,T),MatPsi);
         Sigmay = buildSigmay(MMSigmay,T,TT,Delta); % matrice de tout le signal
         iSigmay = inv(Sigmay);
         Syest = estim_spec(y,T,alpha);
@@ -50,7 +55,7 @@ switch initMeth
         for t = 1:Dt:T
             U = W(:,t);
             theta0 = 0;
-            Qemx = @(x)Qem(x, theta0, t, U, M_psi, M_tmpdpsi, Syest, MatPsi, iSigmay); % fonction a minimiser
+            Qemx = @(x)Qem(x, theta0, t, U, priorList, M_psi, M_tmpdpsi, Syest, MatPsi, iSigmay); % fonction a minimiser
             thetaEM(k) = fmincon(Qemx,theta0,[],[],[],[],-0.8,0.8,[],options);
             k = k + 1;
         end
@@ -60,7 +65,7 @@ end
 
 thres = 0.4;
 tic;
-[dgammaEST,SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_param,Dt,TT,Delta,alpha,Nit,thres,itD,stopD);
+[dgammaEST,SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_param,priorList,Dt,TT,Delta,TS,alpha,Nit,thres,itD,stopD);
 toc;
 
 %% Resultats
@@ -83,7 +88,7 @@ wav_param = 15;
 scales = 2.^linspace(-1,3,Nbscales);
 [M_psi,M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T);
 MatPsi = ifft(M_psi.',[],1);
-W = transform_adap(y,sigmay,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi);
+W = transform_adap(y,sigmay,priorList,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi);
 
 TS = length(SxEST);
 omega = (0:(TS-1))*2*pi/TS;

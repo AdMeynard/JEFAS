@@ -37,7 +37,7 @@ y0 = sigwarp( x,gamma,dgamma ) ;
 sigmay = 2e-1 ;
 y = y0(:) + sigmay*randn(T,1);
 
-% save('../signals/wind4JEFASS','Fs','y0','dgamma','sigmay','y','Sx') ;
+save('../signals/wind4JEFASS','Fs','y0','dgamma','sigmay','y','Sx') ;
 
 %% Show CWT
 t = linspace(0,(T-1)/Fs,T) ;

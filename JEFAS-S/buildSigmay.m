@@ -1,16 +1,16 @@
 function Sigmay = buildSigmay(MMSigmay,T,TT,Delta)
-%BASELINEWARPEST Concatenate short covariance matrices of subsignals to
+%BUILDSIGMAY Concatenate short covariance matrices of subsignals to
 %create the full covariance matrix of the signal
 % usage:	Sigmay = buildSigmay(MMSigmay,T,TT,Delta)
 %
 % Input:
-%   MMSigmay :
-%   T :
-%   TT :
-%   Delta :
+%   MMSigmay: basis for signal covariance matrix estimation
+%   T: signal length
+%   TT: slicing size for W
+%   Delta: overlap
 % 
 % Output:
-%   Sigmay : 
+%   Sigmay: signal covariance matrix
 
 % Copyright (C) 2017 Adrien MEYNARD
 % 
@@ -36,7 +36,6 @@ K = length(MMSigmay);
 for k = 1:K % k-th time block
     nn = ( (k-1)*Delta+1 ):( (k-1)*Delta+TT );
     nn = nn((nn>=1)&(nn<=T)); % instants of the k-th block
-    NN = length(nn);
     
     Sigmay(nn,nn) = MMSigmay{k} ;
 end

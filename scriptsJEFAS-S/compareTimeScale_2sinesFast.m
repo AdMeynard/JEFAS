@@ -79,7 +79,6 @@ Nvpo = min(floor(round(length(scales)/No) / 2)*2,48) ;
 [sst,f] = wsst(y,Fs,'VoicesPerOctave',Nvpo) ;
 
 figure;
-% subplot(5,2,[2 10]); 
 imagesc(t,log(f),log1p(abs(sst)/0.1));
 yticks(sort(log(freqtick))); yticklabels(freqtick) ;
 ylim([log(fmin) log(fmax)])

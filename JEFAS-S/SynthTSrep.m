@@ -1,19 +1,26 @@
 function [W, MMSigmay] = SynthTSrep(y,sigmay,prior,scales,wav_typ,wav_param,Sx,theta,varargin) 
-%TRANSFORM_ADAP	determine the adapted transform of a signal given the warping function and underlying spectrum
-% usage:	[W, MMSigmay] = transform_adap(y,sigmay,TT,Delta,M_psi,Sxest,thetaE,MatPsi) 
+%SYNTHTSREP	generate the synthesis time-scale representation of a TW signal given the warping function and underlying spectrum
+% usage:	[W, MMSigmay] = SynthTSrep(y,sigmay,prior,scales,wav_typ,wav_param,Sx,theta,TT,Delta) 
 %
 % Input:
 %   y: signal
 %   sigmay: noise variance
+%   prior: shape of the a priori covariance matrix ('wavelet', 'sharp' or 'sparse')
+%   scales:  vector of scales
+%   wav_typ: wavelet type:
+%     wav_typ='sharp': The sharp wavelet
+%     wav_typ='dgauss': analytic derivative of gaussian
+%   wav_par: parameter depending on the wavelet type
+%     if wav_typ='sharp': wav_par = -ln(epsilon)>0 where epsilon=value of \hat{\psi}(Fs/2)
+%     if wav_typ='dgauss': wav_par = number of vanishing moments
+%   Sx: underlying spectrum
+%   theta: WP parameters
 %   TT: slicing size for W
 %   Delta: overlap
-%   Sx : underlying spectrum
-%   theta: WP parameters
-%   MatPsi: characterize the transform shape (wavelet)
 % 
 % Output:
-%   W : adapted transform
-%   MMSigmay : basis for signal covariance matrix estimation
+%   W: adapted represnetation
+%   MMSigmay: basis for signal covariance matrix estimation
 
 T = length(y) ;
 

@@ -87,7 +87,7 @@ W = transform_adap(y,sigmay,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi);
 
 TS = length(SxEST);
 omega = (0:(TS-1))*2*pi/TS;
-C0 = calc_cov(M_psi,SxEST,omega,TS,0);
+C0 = calc_cov(M_psi,SxEST,0);
 
 % Sparse covariance
 sigmaW = 5; %time scale representation concentration around the instantaneous frequency

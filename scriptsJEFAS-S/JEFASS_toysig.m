@@ -7,6 +7,9 @@ addpath('../signals');
 addpath('../cwt');
 addpath('results');
 
+cd ../JEFAS-S/minFunc_2012       % Change to the unzipped directory
+mexAll;               % Compile mex files (not necessary on all systems)
+
 load('toysig_short')
 theta = log2(dgamma);
 T = length(y);
@@ -14,18 +17,23 @@ T = length(y);
 
 Nbscales = 100;
 scales = 2.^linspace(0,3,Nbscales);
-scales = scales(1:7:end); % pour se comparer a JEFAS
+scales = scales(1:7:end); % for comparison with JEFAS
 wav_param = 10;
 wav_typ = 'sharp';
 
-itD = 10; % nb d'iterations de la descente de gradient
-stopD = 1e-4; % tolerance de la descente de gradient
+prior = 'wavelet' ; %prior for the covariance matrix of the time scale representation
+priorList = {prior} ;
+
+itD = 10; % number of iterations for gradient descent
+stopD = 1e-4; % gradient descent: tolerance
 options = optimoptions('fmincon','SpecifyObjectiveGradient',true,'MaxIterations',itD,'StepTolerance',stopD,'Display','off'); % fmincon
 
-Dt = 50; % valeur du sous echantillonage pour l'estimation de thetaEM
-TT = 512; %1024;%T/16;%256 % taille de la decoupe pour W
-Delta = 0.75*TT; % recouvrement
-alpha = 15; % largeur pour l'estimation du spectre par Welch
+Dt = 50; % subsampling value for thetaEM estimation
+TT = 512; %  slicing size for W
+Delta = 0.75*TT; % overlap
+alpha = 15; % width for Welch estimation
+
+TS = 1024 ;
 
 Nit = 5; % number of iterations
 
@@ -41,28 +49,11 @@ switch initMeth
     case 'JEFAS'
         load('resJEFAS_toysig.mat')
         thetaINIT = log2(dgammaML); % Initialization from JEFAS results
-        
-    case 'gwn'
-        [M_psi,M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T);
-        MatPsi = ifft(M_psi.',[],1);
-        [W, MMSigmay] = transform_adap(y,sigmay,TT,Delta,M_psi,repmat(var(y),1,T),zeros(1,T),MatPsi);
-        Sigmay = buildSigmay(MMSigmay,T,TT,Delta); % full signal covariance matrix
-        iSigmay = inv(Sigmay);
-        Syest = estim_spec(y,T,alpha);
-        k = 1;
-        for t = 1:Dt:T
-            U = W(:,t);
-            theta0 = 0;
-            Qemx = @(x)Qem(x, theta0, t, U, M_psi, M_tmpdpsi, Syest, MatPsi, iSigmay); % function to minimize
-            thetaEM(k) = fmincon(Qemx,theta0,[],[],[],[],-0.8,0.8,[],options);
-            k = k + 1;
-        end
-        thetaINIT = interp1(1:Dt:T,thetaEM,1:T,'linear',thetaEM(end)); % interpolation on all samples
 end
 
 thres = 0.2;
 tic;
-[dgammaEST, SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_param,Dt,TT,Delta,alpha,Nit,thres,itD,stopD,theta);
+[dgammaEST, SxEST, W, nll] = EMwarping(y,sigmay,thetaINIT,scales,wav_typ,wav_param,priorList,Dt,TT,Delta,TS,alpha,Nit,thres,itD,stopD,theta);
 toc;
 
 %% Results
@@ -80,15 +71,14 @@ set(gca,'FontSize',20);
 
 uEST = abs(dgammaEST(:)-dgamma).^2;
 uML = abs(dgammaML(:)-dgamma).^2;
-fprintf('EQM:\n JEFAS: %.3e\n JEFAS-S: %.3e\n',mean(uML(1:8151)),mean(uEST(1:8151))) % prevent edge effect
+fprintf('MSE:\n JEFAS: %.3e\n JEFAS-S: %.3e\n',mean(uML(1:8151)),mean(uEST(1:8151))) % prevent edge effect
 %% Adapted representation
 wav_param = 200;
 scales = 2.^linspace(0,3,Nbscales);
 [M_psi,M_tmpdpsi] = bas_calc_dcov(scales,wav_typ,wav_param,T);
 MatPsi = ifft(M_psi.',[],1);
 
-% Wfin = transform_adap(y,sigmay,TT,Delta,M_psi,Sx,log2(dgamma),MatPsi);
-[Wfinest, MMSigmay] = transform_adap(y,sigmay,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi);
+[Wfinest, MMSigmay] = transform_adap(y,sigmay,priorList,TT,Delta,M_psi,SxEST,log2(dgammaEST),MatPsi);
 
 xi0 = Fs/4; % wavelet central frequency
 freqdisp = [2 1 0.5 0.3]; % Displayed frequencies in kHz
@@ -104,7 +94,6 @@ set(gca,'FontSize',20);
 subplot(2,1,2);
 imagesc(t,log2(scales),abs(Wy));
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
-%colormap(1-gray); 
 yticks(sdisp); yticklabels(freqdisp);set(gca,'FontSize',20);
 
 figure;
@@ -116,7 +105,6 @@ set(gca,'FontSize',20);
 subplot(1,2,1);
 imagesc(t,log2(scales),abs(Wy));
 xlabel('Time (s)'); ylabel('Frequency (kHz)');
-%colormap(1-gray); 
 yticks(sdisp); yticklabels(freqdisp);set(gca,'FontSize',20);
 
 Cy = buildSigmay(MMSigmay,T,TT,Delta);
@@ -139,7 +127,7 @@ biasTH = theo_bias(y0,TT,Delta,MMSigmay,sigmay);
 biasXP = yr(:)-y0;
 
 figure;
-plot(t, biasTH, t, biasXP, 'linewidth', 2); axis tight; 
+plot(t, biasTH, t, biasXP, 'linewidth', 2); axis tight;
 xlim([0 1]); grid on; 
 legend({'Theoretical bias', 'Experimental bias'},'FontSize',20);
 set(gca,'FontSize',20);

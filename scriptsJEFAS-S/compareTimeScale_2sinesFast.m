@@ -79,8 +79,8 @@ Nvpo = min(floor(round(length(scales)/No) / 2)*2,48) ;
 [sst,f] = wsst(y,Fs,'VoicesPerOctave',Nvpo) ;
 
 figure;
-imagesc(t,log(f),log1p(abs(sst)/0.1));
-yticks(sort(log(freqtick))); yticklabels(freqtick) ;
+imagesc(t,log(f),log1p(abs(sst)/0.1)); axis xy
+yticks(sort(log(freqtick))); yticklabels(sort(freqtick)) ;
 ylim([log(fmin) log(fmax)])
 colormap(1-gray) ;
 xlabel('Time (s)') ;

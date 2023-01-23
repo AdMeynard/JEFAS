@@ -10,7 +10,7 @@ These algorithms require to implement the wavelet transforms of signals. The fol
 
 The folder `signals` contains some audio and synthetic signals used to implement the above-mentioned algorithms. Additionally, the folder `SynthSignals` contains functions to synthesize locally time-warped toy signals (both univariate and multivariate).
 
-Although the following guidelines are for MATLAB files, the 'JEFASpy' folder contains files for running JEFAS in Python. Two execution examples are proposed. The JEFAS-BSS and JEFAS-S algorithms are not yet available in Python.
+Although the following guidelines are for MATLAB files, the `JEFASpy` folder contains files for running JEFAS in Python. Two execution examples are proposed. The JEFAS-BSS and JEFAS-S algorithms are not yet available in Python.
 
 ***WARNING:*** The implementation of these algorithms uses MATLAB functions from the Optimization Toolbox (e.g. `fmincon`). It is therefore necessary to have access to this toolbox in order to run JEFAS. A less efficient version of the algorithm that does not require the Optimization Toolbox is available upon demand.
 

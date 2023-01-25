@@ -20,7 +20,7 @@ The theoretical background relative to the algorithm can be found in the followi
 # JEFAS-S
 The theoretical background relative to the algorithm can be found in the following paper:  
 **A. Meynard and B. Torrésani, "Synthesis-based time-scale transforms for non-stationary signals
-", submitted, 2022, [available online]((https://hal.science/hal-03669280)).**   
+", submitted, 2022, [available online](https://hal.science/hal-03669280).**   
 
 # Authors
 

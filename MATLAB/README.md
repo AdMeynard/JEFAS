@@ -1,4 +1,5 @@
 
+# Requirements
 
 The algorithms require to implement the wavelet transforms of signals. The folder `cwt` contains the functions to compute continuous wavelet transforms and inverse wavelet transforms using the *sharp wavelet*, whose definition is given in [1] (see equation (2)). We also provide the script `example_cwt.m` enabling the display of the sharp wavelet and its Fourier transform (see Supplementary material of [1] for more details).
 

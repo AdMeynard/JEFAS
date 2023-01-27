@@ -1,12 +1,12 @@
 # Contents
 
-This repository contains all the files necessary to perform the following algorithms:
+This repository contains all the MATLAB and Python files that are necessary to perform the following algorithms:
 
 * **JEFAS**: Joint Estimation of Frequency, Amplitude and Spectrum
 * **JEFAS-BSS**: JEFAS-Blind Source Separation
 * **JEFAS-S**: JEFAS-Synthesis
 
-The above-mentioned algorithms are fully available in MATLAB. The `MATLAB` folder provides all available code with additional explanations. The `Python` folder contains (for now) only the routines to implement JEFAS.
+The above-mentioned algorithms are fully available in MATLAB. The `MATLAB` folder provides all available code with additional explanations, several examples, and scripts that produce the figures presented in our articles. The `Python` folder contains (for now) only the routines to implement JEFAS and JEFAS-S, as well as some examples.
 
 # JEFAS
 The theoretical background relative to the algorithm can be found in the following paper:  

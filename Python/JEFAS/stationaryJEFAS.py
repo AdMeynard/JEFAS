@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Adrien MEYNARD
+# Copyright (C) 2023 Adrien MEYNARD
 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by

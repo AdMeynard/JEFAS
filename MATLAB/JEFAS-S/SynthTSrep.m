@@ -19,7 +19,7 @@ function [W, MMSigmay] = SynthTSrep(y,sigmay,prior,scales,wav_typ,wav_param,Sx,t
 %   Delta: overlap
 % 
 % Output:
-%   W: adapted represnetation
+%   W: adapted representation
 %   MMSigmay: basis for signal covariance matrix estimation
 
 T = length(y) ;

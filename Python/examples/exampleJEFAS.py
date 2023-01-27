@@ -1,5 +1,6 @@
-# % Deformation estimations on a singing female voice recording
-# Copyright (C) 2022 Adrien MEYNARD
+#%% Deformation estimations on a racing car sound
+#
+# Copyright (C) 2023 Adrien MEYNARD
 
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -15,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Author: Adrien MEYNARD
-# Email: adrien.meynard@univ-amu.fr
+# Email: adrien.meynard@ens-lyon.fr
 
 #%%  Load signal
 import matplotlib.pyplot as plt
@@ -32,7 +33,7 @@ plt.close('all')
 
 #%% Signal
 
-tmp = loadmat('../../signals/doppler_f1')
+tmp = loadmat('../signals/doppler_f1')
 y = tmp['y'].flatten()
 Fs = float(tmp['Fs'])
 

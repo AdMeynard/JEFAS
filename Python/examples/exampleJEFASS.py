@@ -29,13 +29,12 @@ Nbscales = 18
 scales = 2**np.linspace(-0.67,2.21,Nbscales)
 
 wavparam = 20
-wavtyp = 'sharp'
 
 TT = 512 #  slicing size for W
 
 Nit = 50
 
-dgammaEST, SxEST, W, nll = JEFASS.JEFASS(y,sigmay,scales,wavtyp,wavparam,TT,Nit=Nit,dgammaT=dgamma)
+dgammaEST, SxEST, W, nll = JEFASS.JEFASS(y,sigmay,scales,wavparam,TT,Nit=Nit,dgammaT=dgamma)
 
 
 #%% Results

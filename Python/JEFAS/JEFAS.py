@@ -15,7 +15,7 @@
 
 import numpy as np
 import cwtJEFAS
-import scipy.optimize as scpo
+from scipy.optimize import fmin
 
 #%%
 
@@ -342,7 +342,7 @@ def estimTW(thetaTW0,thetaAM,times,act,Wy,scales,S,wavtyp,wavparam,paramTW,Dt):
         inst = inst[act[inst]==1]
         U = Wy[:,inst] # column(s) we are interested in (we compute a mean over Dt columns)
         
-        theta = scpo.fmin(loglh,theta,args=(U,Mpsi,S_AM),xtol=stopTW,maxiter=itTW,disp=0)
+        theta = fmin(loglh,theta,args=(U,Mpsi,S_AM),xtol=stopTW,maxiter=itTW,disp=0)
         thetaTW[n] = theta
         
     thetaTW = np.log2(2**thetaTW/np.mean(2**thetaTW)) # <gamma'>=1

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import numpy as np
-import scipy.optimize as scpo
+from scipy.optimize import fmin
 from scipy.signal import welch
 
 import stationaryJEFAS
@@ -129,7 +129,7 @@ def JEFASS(y,sigmay,scales,wavparam,TT,wavtyp='sharp',Dt=1,alpha=7,Nit=100,errto
             U = W[:,t]
             theta0 = thetaold[t]
     
-            theta = scpo.fmin(Qem,theta0,args=(theta0, t, U, Mpsi, Sxest, MatPsi, iSigmay),disp=0) # Minimized function
+            theta = fmin(Qem,theta0,args=(theta0, t, U, Mpsi, Sxest, MatPsi, iSigmay),disp=0) # Minimized function
             thetaEM = np.append(thetaEM,theta)
             
         thetanew = np.interp(np.arange(T),np.arange(0,T,Dt),thetaEM,left=thetaEM[0],right=thetaEM[-1]) # interpolation on all the samples
